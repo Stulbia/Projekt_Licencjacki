@@ -124,7 +124,7 @@ class Book
      */
 //    #[ORM\OneToMany(mappedBy: 'book', targetEntity: Comment::class, cascade: ['remove'], fetch: 'EXTRA_LAZY')]
 //    #[ORM\JoinTable(name: 'books_comments')]
-
+//what
     #[ORM\OneToMany(mappedBy: 'book', targetEntity: Comment::class, cascade: ['remove'], fetch: 'EXTRA_LAZY')]
     private Collection $comments;
 
