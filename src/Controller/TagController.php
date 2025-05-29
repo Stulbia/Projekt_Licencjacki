@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Tag controller.
+ * Tag controller .
  */
 
 namespace App\Controller;
