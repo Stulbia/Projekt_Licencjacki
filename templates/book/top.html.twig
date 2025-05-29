@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'title.top_book_list'|trans }}
+{% endblock %}
+{% block body %}
+    <h1>{{ 'title.top_book_list'|trans }}</h1>
+
+        {% if pagination is defined and pagination.items|length %}
+
+            <div class="navigation text-center">
+                {{ knp_pagination_render(pagination) }}
+            </div>
+
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>{{ 'label.book'|trans }}</a></th>
+                    <th>{{ 'label.title'|trans  }}</th>
+                    <th>{{ 'label.rating'|trans }}</th>
+                    <th>{{ 'label.description'|trans }}</th>
+
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for book in pagination.items %}
+                        <tr>
+                            <td>
+
+                                <img src="{{ asset(books_directory ~ book.filename) }}" alt="book" style="
+                                    width: 300px; margin: 5px;" >
+                            </td>
+                            <td>{{ book.title }}</td>
+                            <td>{{ book.avg_value }}</td>
+                            <td><a href="{{ path('book_show', {id: book.id}) }}" class="btn btn-outline-primary" title="{{ 'action.show'|trans }}">
+                                    {{ 'action.show'|trans }}
+                                </a>
+                            </td>
+                        </tr>
+
+                {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="navigation text-center">
+                {{ knp_pagination_render(pagination) }}
+            </div>
+
+        {% else %}
+            <p>
+                {{ 'message.empty_list'|trans }}
+            </p>
+        {% endif %}
+{% endblock %}

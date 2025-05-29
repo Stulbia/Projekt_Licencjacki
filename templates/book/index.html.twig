@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'title.book_list'|trans }}
+{% endblock %}
+{% block body %}
+    <h1>{{ 'title.book_list'|trans }}</h1>
+    {% include'book/list.html.twig' %}
+{% endblock %}

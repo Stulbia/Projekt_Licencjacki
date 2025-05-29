@@ -1,0 +1,553 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="pl" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="label.actions">
+                <source>label.actions</source>
+                <target>Operacje</target>
+            </trans-unit>
+            <trans-unit id="label.login">
+                <source>action.login</source>
+                <target>Zaloguj</target>
+            </trans-unit>
+            <trans-unit id="label.all_books">
+                <source>label.all_books</source>
+                <target>Wszystkie zdjęcia</target>
+            </trans-unit>
+            <trans-unit id="title.comments">
+                <source>title.comments</source>
+                <target>Komentarze</target>
+            </trans-unit>
+            <trans-unit id="label.remember_me">
+                <source>label.remember_me</source>
+                <target>Zapamiętaj mnie</target>
+            </trans-unit>
+
+            <trans-unit id="action.sign_in">
+                <source>action.sign_in</source>
+                <target>Zaloguj się</target>
+            </trans-unit>
+            <trans-unit id="label.confirmPassword">
+                <source>label.confirmPassword</source>
+                <target>Potwtórz hasło</target>
+            </trans-unit>
+
+            <trans-unit id="label.newPassword">
+                <source>label.newPassword</source>
+                <target>Nowe hasło</target>
+            </trans-unit>
+
+            <trans-unit id="title.login_title">
+                <source>title.login_title</source>
+                <target>Zaloguj się</target>
+            </trans-unit>
+
+            <trans-unit id="label.password">
+                <source>label.password</source>
+                <target>Hasło</target>
+            </trans-unit>
+
+
+            <trans-unit id="title.comment_list">
+                <source>title.comment_list</source>
+                <target>Lista komentarzy</target>
+            </trans-unit>
+            <trans-unit id="label.all_galleries">
+                <source>label.all_galleries</source>
+                <target>Galerie</target>
+            </trans-unit>
+
+            <trans-unit id="label.all_tags">
+                <source>label.all_tags</source>
+                <target>Tagi</target>
+            </trans-unit>
+            <trans-unit id="label.users_list">
+                <source>label.users_list</source>
+                <target>Lista użytkowników</target>
+            </trans-unit>
+            <trans-unit id="action.logout">
+                <source>action.logout</source>
+                <target>Wyloguj</target>
+            </trans-unit>
+            <trans-unit id="action.register">
+                <source>action.register</source>
+                <target>Zarejestruj się</target>
+            </trans-unit>
+            <trans-unit id="action.comment">
+                <source>action.comment</source>
+                <target>Skomentuj</target>
+            </trans-unit>
+
+            <trans-unit id="label.email">
+                <source>label.email</source>
+                <target>E-mail</target>
+            </trans-unit>
+
+            <trans-unit id="label.roles">
+                <source>label.roles</source>
+                <target>Role</target>
+            </trans-unit>
+
+            <trans-unit id="label.name">
+                <source>label.name</source>
+                <target>Imię</target>
+            </trans-unit>
+
+            <trans-unit id="title.user_details">
+                <source>title.user_details</source>
+                <target>Szczegóły użytkownika</target>
+            </trans-unit>
+
+            <trans-unit id="title.user_edit">
+                <source>title.user_edit</source>
+                <target>Edycja użytkownika</target>
+            </trans-unit>
+
+            <trans-unit id="title.tag_edit">
+                <source>title.tag_edit</source>
+                <target>Edycja tagu</target>
+            </trans-unit>
+
+            <trans-unit id="title.tag_list">
+                <source>title.tag_list</source>
+                <target>Lista tagów</target>
+            </trans-unit>
+
+            <trans-unit id="title.tag_delete">
+                <source>title.tag_delete</source>
+                <target>Usuwanie tagu</target>
+            </trans-unit>
+
+            <trans-unit id="title.gallery_edit">
+                <source>title.gallery_edit</source>
+                <target>Edycja galerii</target>
+            </trans-unit>
+
+            <trans-unit id="title.gallery_delete">
+                <source>title.gallery_delete</source>
+                <target>Usuwanie galerii</target>
+            </trans-unit>
+
+            <trans-unit id="title.book_delete">
+                <source>title.book_delete</source>
+                <target>Usuwanie zdjęcia</target>
+            </trans-unit>
+
+            <trans-unit id="title.book_edit">
+                <source>title.book_edit</source>
+                <target>Edycja zdjęcia</target>
+            </trans-unit>
+
+
+            <trans-unit id="message.form_error">
+                <source>message.form_error</source>
+                <target>Wystąpił błąd formularza.</target>
+            </trans-unit>
+
+            <trans-unit id="label.logged_in_as">
+                <source>label.logged_in_as</source>
+                <target>Zalogowany jako</target>
+            </trans-unit>
+
+            <trans-unit id="action.show">
+                <source>action.show</source>
+                <target>Szczegóły</target>
+            </trans-unit>
+            <trans-unit id="action.back_to_list">
+                <source>action.back_to_list</source>
+                <target>Wróć</target>
+            </trans-unit>
+            <trans-unit id="action.save">
+                <source>action.save</source>
+                <target>Zapisz</target>
+            </trans-unit>
+            <trans-unit id="action.edit">
+                <source>action.edit</source>
+                <target>Edytuj</target>
+            </trans-unit>
+            <trans-unit id="action.delete">
+                <source>action.delete</source>
+                <target>Usuń</target>
+            </trans-unit>
+            <trans-unit id="action.create">
+                <source>action.create</source>
+                <target>Utwórz</target>
+            </trans-unit>
+
+            <trans-unit id="label.id">
+                <source>label.id</source>
+                <target>Id</target>
+            </trans-unit>
+            <trans-unit id="label.title">
+                <source>label.title</source>
+                <target>Tytuł</target>
+            </trans-unit>
+            <trans-unit id="label.content">
+                <source>label.content</source>
+                <target>Zawartość</target>
+            </trans-unit>
+            <trans-unit id="label.created_at">
+                <source>label.created_at</source>
+                <target>Utworzono</target>
+            </trans-unit>
+            <trans-unit id="label.updated_at">
+                <source>label.updated_at</source>
+                <target>Edytowano</target>
+            </trans-unit>
+            <trans-unit id="label.tags">
+                <source>label.tags</source>
+                <target>Tagi</target>
+            </trans-unit>
+               <trans-unit id="label.gallery">
+                            <source>label.gallery</source>
+                            <target>Galeria</target>
+                        </trans-unit>
+            <trans-unit id="message.empty_list">
+                <source>message.empty_list</source>
+                <target>Lista jest pusta.</target>
+            </trans-unit>
+            <trans-unit id="message.record_not_found">
+                <source>message.record_not_found</source>
+                <target>Nie znaleziono.</target>
+            </trans-unit>
+            <trans-unit id="title.gallery_list">
+                <source>title.gallery_list</source>
+                <target>Galeria Zdjęć</target>
+            </trans-unit>
+            <trans-unit id="title.book_list">
+                            <source>title.book_list</source>
+                            <target>Zdjęcia</target>
+                        </trans-unit>
+            <trans-unit id="title.gallery_view">
+                <source>title.gallery_view</source>
+                <target>Widok #%id%</target>
+            </trans-unit>
+
+            <trans-unit id="message.created_successfully">
+                <source>message.created_successfully</source>
+                <target>Pomyślnie utworzono.</target>
+            </trans-unit>
+
+            <trans-unit id="message.edited_successfully">
+                <source>message.edited_successfully</source>
+                <target>Pomyślnie edytowano.</target>
+            </trans-unit>
+
+            <trans-unit id="message.avatar_does_not_exist">
+                <source>message.avatar_does_not_exist</source>
+                <target>Awatar nie istnieje.</target>
+            </trans-unit>
+
+            <trans-unit id="message.deleted_successfully">
+                <source>message.deleted_successfully</source>
+                <target>Pomyślnie usunięto.</target>
+            </trans-unit>
+
+            <trans-unit id="message.gallery_contains_books">
+                <source>message.gallery_contains_books</source>
+                <target>Galeria zawiera zdjęcia.</target>
+            </trans-unit>
+
+            <trans-unit id="message.registered_successfully">
+                <source>message.registered_successfully</source>
+                <target>Pomyślnie zarejestrowano.</target>
+            </trans-unit>
+
+            <trans-unit id="message.updated_successfully">
+                <source>message.updated_successfully</source>
+                <target>Pomyślnie zaktualizowano.</target>
+            </trans-unit>
+
+            <trans-unit id="title.avatar_create">
+                <source>title.avatar_create</source>
+                <target>Utwórz awatar</target>
+            </trans-unit>
+
+            <trans-unit id="title.avatar_details">
+                <source>title.avatar_details</source>
+                <target>Awatar</target>
+            </trans-unit>
+
+            <trans-unit id="title.avatar_delete">
+                <source>title.avatar_delete</source>
+                <target>Usuń awatar</target>
+            </trans-unit>
+
+            <trans-unit id="title.avatar_edit">
+                <source>title.avatar_edit</source>
+                <target>Edytuj awatar</target>
+            </trans-unit>
+
+            <trans-unit id="title.comment_create">
+                <source>title.comment_create</source>
+                <target>Utwórz komentarz</target>
+            </trans-unit>
+
+            <trans-unit id="title.comment_delete">
+                <source>title.comment_delete</source>
+                <target>Usuń komentarz</target>
+            </trans-unit>
+
+            <trans-unit id="title.comment_edit">
+                <source>title.comment_edit</source>
+                <target>Edytuj komentarz</target>
+            </trans-unit>
+
+            <trans-unit id="title.gallery_create">
+                <source>title.gallery_create</source>
+                <target>Utwórz galerię</target>
+            </trans-unit>
+
+            <trans-unit id="title.gallery_details">
+                <source>title.gallery_details</source>
+                <target>Szczegóły galerii</target>
+            </trans-unit>
+
+            <trans-unit id="label.profile">
+                <source>label.profile</source>
+                <target>Profil</target>
+            </trans-unit>
+
+            <trans-unit id="title.user_delete">
+                <source>title.user_delete</source>
+                <target>Usuń użytkownika</target>
+            </trans-unit>
+
+            <trans-unit id="title.user_list">
+                <source>title.user_list</source>
+                <target>Lista użytkowników</target>
+            </trans-unit>
+
+            <trans-unit id="title.user_create">
+                <source>title.user_create</source>
+                <target>Utwórz użytkownika</target>
+            </trans-unit>
+
+            <trans-unit id="title.comment_details">
+                <source>title.comment_details</source>
+                <target>Szczegóły komentarza</target>
+            </trans-unit>
+
+            <trans-unit id="label.confirm_password">
+                <source>label.confirm_password</source>
+                <target>Powtórz hasło</target>
+            </trans-unit>
+
+
+            <trans-unit id="title.book_create">
+                <source>title.book_create</source>
+                <target>Utwórz zdjęcie</target>
+            </trans-unit>
+
+            <trans-unit id="title.book_details">
+                <source>title.book_details</source>
+                <target>Szczegóły zdjęcia</target>
+            </trans-unit>
+
+            <trans-unit id="title.tag_create">
+                <source>title.tag_create</source>
+                <target>Utwórz tag</target>
+            </trans-unit>
+
+            <trans-unit id="title.tag_details">
+                <source>title.tag_details</source>
+                <target>Szczegóły tagu</target>
+            </trans-unit>
+
+            <trans-unit id="label.tag">
+                <source>label.tag</source>
+                <target>Tag</target>
+            </trans-unit>
+
+            <trans-unit id="message.this_is_last_admin">
+                <source>message.this_is_last_admin</source>
+                <target>Nie można usnunąć ostatniego administratora.</target>
+            </trans-unit>
+            <trans-unit id="label.book">
+                <source>label.book</source>
+                <target>Zdjęcie</target>
+            </trans-unit>
+            <trans-unit id="action.password">
+                <source>action.password</source>
+                <target>Zmień Hasło</target>
+            </trans-unit>
+            <trans-unit id="action.edit.avatar">
+                <source>action.edit.avatar</source>
+                <target>Edytuj awatar</target>
+            </trans-unit>
+            <trans-unit id="title.unpublished_book_list">
+                <source>title.unpublished_book_list</source>
+                <target>Lista nieopublikowanych zdjęć</target>
+            </trans-unit>
+            <trans-unit id="label.avatar">
+                <source>label.avatar</source>
+                <target>Awatar</target>
+            </trans-unit>
+            <trans-unit id="action.edit.admin">
+                <source>action.edit.admin</source>
+                <target>Zarządzaj</target>
+            </trans-unit>
+            <trans-unit id="action.edit.password">
+                <source>action.edit.password</source>
+                <target>Edytuj hasło</target>
+            </trans-unit>
+
+            <trans-unit id="message.Email_in_use">
+                <source>message.Email_in_use</source>
+                <target>Email jest zajęty.</target>
+            </trans-unit>
+
+            <trans-unit id="label.book_status">
+                <source>label.book_status</source>
+                <target>Status zdjęcia</target>
+            </trans-unit>
+            <trans-unit id="label.public">
+                <source>label.public</source>
+                <target>Opublikowane</target>
+            </trans-unit>
+            <trans-unit id="label.private">
+                <source>label.private</source>
+                <target>Szkic</target>
+            </trans-unit>
+            <trans-unit id="label.status">
+                <source>label.status</source>
+                <target>Status</target>
+            </trans-unit>
+
+            <trans-unit id="label.active">
+                <source>label.active</source>
+                <target>Aktywny</target>
+            </trans-unit>
+
+            <trans-unit id="label.banned">
+                <source>label.banned</source>
+                <target>Zablokowany</target>
+            </trans-unit>
+
+            <trans-unit id="message.banned">
+                <source>message.banned</source>
+                <target>Użytkownik został zablokowany.</target>
+            </trans-unit>
+
+            <trans-unit id="ROLE_USER">
+                <source>ROLE_USER</source>
+                <target>Użytkownik</target>
+            </trans-unit>
+
+            <trans-unit id="ROLE_ADMIN">
+                <source>ROLE_ADMIN</source>
+                <target>Administrator</target>
+            </trans-unit>
+            <trans-unit id="label.user">
+                <source>label.user</source>
+                <target>Użytkownik</target>
+            </trans-unit>
+
+            <trans-unit id="label.admin">
+                <source>label.admin</source>
+                <target>Administrator</target>
+            </trans-unit>
+
+            <trans-unit id="title.book_search">
+                <source>title.book_search</source>
+                <target>Wyszukiwanie zdjęć</target>
+            </trans-unit>
+
+
+            <trans-unit id="label.description">
+                <source>label.description</source>
+                <target>Opis</target>
+            </trans-unit>
+
+            <trans-unit id="action.search">
+                <source>action.search</source>
+                <target>Szukaj</target>
+            </trans-unit>
+
+            <trans-unit id="label.rating">
+                <source>label.rating</source>
+                <target>Ocena</target>
+            </trans-unit>
+
+            <trans-unit id="label.file">
+                <source>label.file</source>
+                <target>Plik</target>
+            </trans-unit>
+
+            <trans-unit id="label.none">
+                <source>label.none</source>
+                <target>Brak</target>
+            </trans-unit>
+
+            <trans-unit id="label.users">
+                <source>label.users</source>
+                <target>Użytkownicy</target>
+            </trans-unit>
+
+            <trans-unit id="rating.value">
+                <source>rating.value</source>
+                <target>Wartość oceny</target>
+            </trans-unit>
+
+            <trans-unit id="label.average.rating">
+                <source>label.average.rating</source>
+                <target>Średnia ocena</target>
+            </trans-unit>
+
+            <trans-unit id="title.top_book_list">
+                <source>title.top_book_list</source>
+                <target>Najlepiej oceniane zdjęcia</target>
+            </trans-unit>
+
+            <trans-unit id="action.rate">
+                <source>action.rate</source>
+                <target>Oceń </target>
+            </trans-unit>
+
+            <trans-unit id="action.rate_admin">
+                <source>action.rate_admin</source>
+                <target>Administracja Ocen</target>
+            </trans-unit>
+
+            <trans-unit id="title.rate">
+                <source>title.rate</source>
+                <target>Oceń Zdjęcie</target>
+            </trans-unit>
+
+            <trans-unit id="title.rating_delete">
+                <source>title.rating_delete</source>
+                <target>Usuń ocenę</target>
+            </trans-unit>
+
+            <trans-unit id="action.back">
+                <source>action.back</source>
+                <target>Powrót</target>
+            </trans-unit>
+
+
+            <trans-unit id="label.book_search">
+                <source>label.book_search</source>
+                <target>Szukaj</target>
+            </trans-unit>
+
+            <trans-unit id="label.book_top">
+                <source>label.book_top</source>
+                <target>Najlepsze</target>
+            </trans-unit>
+
+            <trans-unit id="message.incorrect_gallery">
+                <source>message.incorrect_gallery</source>
+                <target>Galeria niedostępna.</target>
+            </trans-unit>
+              <trans-unit id="label.ratings">
+                          <source>label.ratings</source>
+                          <target>Oceny</target>
+                        </trans-unit>
+        <trans-unit id="label.rate">
+                      <source>label.rate</source>
+                      <target>Oceń</target>
+                    </trans-unit>
+
+        </body>
+    </file>
+</xliff>

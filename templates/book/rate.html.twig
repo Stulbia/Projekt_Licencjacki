@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% include 'default/_rating_form.html.twig' with {
+        page_title: 'title.rate'|trans,
+        form: form,
+        submit_label: 'action.save'|trans,
+      back_to_list_path: ''
+    } %}
+{% endblock %}
