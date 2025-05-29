@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Avatar Repository.
+ * Avatar Repository .
  */
 
 namespace App\Repository;
