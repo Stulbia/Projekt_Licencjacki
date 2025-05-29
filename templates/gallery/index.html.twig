@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'title.gallery_list'|trans }}
+{% endblock %}
+
+
+{% block body %}
+    <h1>{{ 'title.gallery_list'|trans }}</h1>
+    {% if pagination is defined and pagination.items|length %}
+
+
+        {% if is_granted('ROLE_USER') %}
+            <div class="navigation ">
+        <a class="btn btn-outline-success mt-3" href="{{ url('gallery_create') }}" title="{{ 'action.create'|trans }}">
+            {{ 'action.create'|trans }}
+        </a>
+            </div>
+
+        {% endif %}
+
+        <div class="navigation text-center">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+        {% if is_granted('USER_ROLE') %}
+            <a href="{{ url('gallery_create') }}" title="{{ 'action.create'|trans }}">
+                {{ 'action.create'|trans }}
+            </a>
+        {% endif %}
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>{{ knp_pagination_sortable(pagination, 'label.title'|trans, 'gallery.title') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label.created_at'|trans, 'gallery.createdAt') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label.updated_at'|trans, 'gallery.updatedAt') }}</th>
+                <th>{{ 'label.actions'|trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for gallery in pagination.items %}
+                <tr>
+                    <td>{{ gallery.title }}</td>
+                    <td>{{ gallery.createdAt|format_date('long') }}</td>
+                    <td>{{ gallery.updatedAt|format_date('long') }}</td>
+
+                    <td>
+                        <a class="btn btn-outline-primary" href="{{ url('gallery_show', {id: gallery.id}) }}" title="{{ 'action.show'|trans }}">
+                            {{ 'action.show'|trans }}
+                        </a>
+                        {% if is_granted('EDIT', gallery) %}
+                            <a class="btn btn-outline-success" href="{{ url('gallery_edit', {id: gallery.id}) }}" title="{{ 'action.edit'|trans }}">
+                                {{ 'action.edit'|trans }}
+                            </a>
+                        {% endif %}
+                        {% if is_granted('DELETE', gallery) %}
+                            <a class="btn btn-outline-danger" href="{{ url('gallery_delete', {id: gallery.id}) }}" title="{{ 'action.delete'|trans }}">
+                                {{ 'action.delete'|trans }}
+                            </a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="navigation text-center">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+    {% else %}
+        <p>
+{#            {{ 'message.empty_list'|trans }}#}
+
+            {# ... #}
+            {% include 'default/_single_alert_message.html.twig' with {
+                type: 'warning',
+                message: 'message.empty_list'|trans
+            } %}
+            {# ... #}
+        </p>
+    {% endif %}
+{% endblock %}

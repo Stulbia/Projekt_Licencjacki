@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Dto\bookListInputFiltersDto;
+use App\Dto\BookListInputFiltersDto;
 use App\Entity\Enum\UserRole;
 use App\Entity\User;
 use App\Form\Type\ChangePasswordType;
@@ -54,7 +54,7 @@ class UserController extends AbstractController
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function index(#[MapQueryParameter] int $page = 1): Response
     {
-        $filters = new bookListInputFiltersDto(null, null, 'PRIVATE'); // Fully qualified name due to global namespace import removal
+        $filters = new BookListInputFiltersDto(null, null, 'PRIVATE'); // Fully qualified name due to global namespace import removal
         $user = $this->getUser();
         $pagination = $this->BookService->getPaginatedUserList($page, $user, $filters);
 
@@ -230,7 +230,7 @@ class UserController extends AbstractController
 
                     return $this->redirectToRoute('user_show', ['id' => $user->getId()]);
                 } catch (\Exception $e) {
-                    $this->addFlash('error', 'message.error: '.$e->getMessage());
+                    $this->addFlash('error', 'message.error: ' . $e->getMessage());
                 }
             }
         }

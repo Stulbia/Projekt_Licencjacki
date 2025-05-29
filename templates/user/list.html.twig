@@ -1,0 +1,85 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'title.user_list'|trans }}
+{% endblock %}
+
+{% block body %}
+    <h1>{{ 'title.user_list'|trans }}</h1>
+    {% if pagination is defined and pagination.items|length %}
+
+        <div class="navigation text-center">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th> {{ 'label.avatar'|trans }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label.id'|trans, 'user.id') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label.email'|trans, 'user.email') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label.roles'|trans, 'user.roles') }}</a></th>
+                <th>{{ 'label.actions'|trans }}</th>
+                <th>{{ 'label.status'|trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            {% for user in pagination.items %}
+                <tr>
+                    <td>
+                    <a href="{{ url('avatar_index', {id: user.id}) }}">
+                        {% if user.avatar.filename is defined and user.avatar.filename|length %}
+                        <img class="nav-profile-img" src="{{ asset(avatars_directory~user.avatar.filename) }}" alt="avatar" style="width: 50px; height: 50px;" >
+                        {% else %}
+                            <img class="nav-profile-img" src="{{ asset('uploads/default.png') }}"
+                                 alt="avatar" style="width: 50px; height: 50px;" >
+                        {% endif %}
+
+                    </a>
+                    </td>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>
+                        {% for role in user.roles %}
+                            {{ role|trans }}{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    </td>
+                 {% if is_granted('ROLE_ADMIN') %}
+                    <td>
+                            <a class="btn btn-outline-primary" href="{{ url('user_show', {id: user.id}) }}" title="{{ 'action.show'|trans }}">
+                                {{ 'action.show'|trans }}
+                            </a>
+                            <a class="btn btn-outline-success" href="{{ url('user_edit', {id: user.id}) }}" title="{{ 'action.edit'|trans }}">
+                                {{ 'action.edit'|trans }}
+                            </a>
+                            <a class="btn btn-outline-success" href="{{ url('user_edit_admin', {id: user.id}) }}" title="{{ 'action.edit.admin'|trans }}">
+                            {{ 'action.edit.admin'|trans }}
+                            </a>
+                        <a class="btn btn-outline-success" href="{{ url('user_password', {id: user.id}) }}" title="{{ 'action.edit.password'|trans }}">
+                            {{ 'action.edit.password'|trans }}
+                        </a>
+                    </td>
+                     <td>
+                     {% if user.banned  %}
+                         <p style="color: #B0413E"> {{ 'label.banned'|trans }} </p>
+                     {% else %}
+                         <p style="color: green"> {{ 'label.active'|trans }} </p>
+                     {% endif %}
+                     </td>
+                 {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="navigation text-center">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+    {% else %}
+        <p>
+            {{ 'message.empty_list'|trans }}
+        </p>
+    {% endif %}
+{% endblock %}
