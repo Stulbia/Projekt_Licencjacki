@@ -1,9 +1,5 @@
 <?php
 
-/**
- * BookListInputFiltersDto resolver.
- */
-
 namespace App\Resolver;
 
 use App\Dto\BookListInputFiltersDto;
@@ -13,17 +9,17 @@ use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
 /**
- * BookListInputFiltersDtoResolver class.
+ * Resolver for BookListInputFiltersDto.
  */
 class BookListInputFiltersDtoResolver implements ValueResolverInterface
 {
     /**
-     * Returns the possible value(s).
+     * Resolves query parameters into a BookListInputFiltersDto.
      *
-     * @param Request          $request  HTTP Request
-     * @param ArgumentMetadata $argument Argument metadata
+     * @param Request          $request  The HTTP request
+     * @param ArgumentMetadata $argument The argument metadata
      *
-     * @return iterable Iterable
+     * @return iterable<BookListInputFiltersDto>
      */
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
@@ -33,10 +29,11 @@ class BookListInputFiltersDtoResolver implements ValueResolverInterface
             return [];
         }
 
-        $galleryId = $request->query->get('galleryId');
         $tagId = $request->query->get('tagId');
-        $statusId = $request->query->get('statusId', BookStatus::PUBLIC->value);
+        $statusRaw = $request->query->get('statusId', BookStatus::PUBLIC->value);
 
-        return [new BookListInputFiltersDto($galleryId, $tagId, $statusId)];
+        $status = BookStatus::tryFrom($statusRaw);
+
+        return [new BookListInputFiltersDto($tagId, $status)];
     }
 }

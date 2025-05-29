@@ -1,7 +1,4 @@
 <?php
-/**
- * BookSearchInputFiltersDto resolver.
- */
 
 namespace App\Resolver;
 
@@ -12,17 +9,17 @@ use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
 /**
- * BookSearchInputFiltersDtoResolver class.
+ * Resolver for BookSearchInputFiltersDto.
  */
 class BookSearchInputFiltersDtoResolver implements ValueResolverInterface
 {
     /**
-     * Returns the possible value(s).
+     * Resolves query parameters into a BookSearchInputFiltersDto.
      *
-     * @param Request          $request  HTTP Request
-     * @param ArgumentMetadata $argument Argument metadata
+     * @param Request          $request  HTTP request
+     * @param ArgumentMetadata $argument Metadata of the controller argument
      *
-     * @return iterable Iterable
+     * @return iterable<BookSearchInputFiltersDto>
      */
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
@@ -32,12 +29,13 @@ class BookSearchInputFiltersDtoResolver implements ValueResolverInterface
             return [];
         }
 
-        $categoryId = $request->query->get('categoryId');
         $tagId = $request->query->get('tagId');
-        $statusId = $request->query->get('statusId', BookStatus::PUBLIC->value);
-        $titleId = $request->query->get('titleId');
-        $descriptionId = $request->query->get('descriptionId');
+        $statusRaw = $request->query->get('statusId', BookStatus::PUBLIC->value);
+        $status = BookStatus::tryFrom($statusRaw);
 
-        return [new BookSearchInputFiltersDto($categoryId, $tagId, $statusId, $titleId, $descriptionId)];
+        $titlePattern = $request->query->get('title');
+        $descriptionPattern = $request->query->get('description');
+
+        return [new BookSearchInputFiltersDto($tagId, $status, $titlePattern, $descriptionPattern)];
     }
 }

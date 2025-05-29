@@ -1,18 +1,12 @@
 <?php
 
-/**
- * Avatar Repository .
- */
-
 namespace App\Repository;
 
 use App\Entity\Avatar;
-use App\Entity\Book;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Exception\ORMException;
-use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
@@ -22,11 +16,6 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class AvatarRepository extends ServiceEntityRepository
 {
-    /**
-     * Constructor for avatar.
-     *
-     * @param ManagerRegistry $registry ManagerRegistry
-     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Avatar::class);
@@ -35,7 +24,7 @@ class AvatarRepository extends ServiceEntityRepository
     /**
      * Save entity.
      *
-     * @param Avatar $avatar Book entity
+     * @param Avatar $avatar Avatar entity
      *
      * @throws ORMException
      * @throws OptimisticLockException
@@ -50,7 +39,7 @@ class AvatarRepository extends ServiceEntityRepository
     /**
      * Delete entity.
      *
-     * @param Avatar $avatar Book entity
+     * @param Avatar $avatar Avatar entity
      *
      * @throws ORMException
      * @throws OptimisticLockException
@@ -63,73 +52,39 @@ class AvatarRepository extends ServiceEntityRepository
     }
 
     /**
-     * Select avatars from database.
+     * Query all avatars.
      *
-     * @return QueryBuilder Query builder
-     *
-     * @throws NoResultException
+     * @return QueryBuilder
      */
     public function queryAll(): QueryBuilder
     {
         return $this->getOrCreateQueryBuilder()
-            ->select(
-                'avatar.{id, filename}',
-            );
+            ->select('partial avatar.{id, filename}');
     }
 
     /**
-     * Select avatar by author.
+     * Query avatar by user.
      *
-     * @param User $user User
+     * @param User $user
      *
-     * @return QueryBuilder Query builder
-     *
-     * @throws NoResultException
+     * @return QueryBuilder
      */
-    public function queryByAuthor(User $user): QueryBuilder
+    public function queryByUser(User $user): QueryBuilder
     {
-        $queryBuilder = $this->queryAll();
-
-        $queryBuilder->andWhere('avatar.user = :user')
+        return $this->queryAll()
+            ->andWhere('avatar.user = :user')
             ->setParameter('user', $user);
-
-        return $queryBuilder;
     }
 
     /**
      * Get or create new query builder.
      *
-     * @param QueryBuilder|null $queryBuilder Query builder
+     * @param QueryBuilder|null $queryBuilder
      *
-     * @return QueryBuilder Query builder
+     * @return QueryBuilder
      */
     private function getOrCreateQueryBuilder(?QueryBuilder $queryBuilder = null): QueryBuilder
     {
         return $queryBuilder ?? $this->createQueryBuilder('avatar');
     }
-
-    //    /**
-    //     * @return Avatar[] Returns an array of Avatar objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('a')
-    //            ->andWhere('a.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('a.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?Avatar
-    //    {
-    //        return $this->createQueryBuilder('a')
-    //            ->andWhere('a.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
 }
