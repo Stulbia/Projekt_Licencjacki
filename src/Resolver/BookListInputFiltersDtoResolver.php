@@ -29,10 +29,12 @@ class BookListInputFiltersDtoResolver implements ValueResolverInterface
             return [];
         }
 
-        $tagId = $request->query->get('tagId');
-        $statusRaw = $request->query->get('statusId', BookStatus::PUBLIC->value);
+        $tagIdRaw = $request->query->get('tagId');
+        $tagId = is_numeric($tagIdRaw) ? (int) $tagIdRaw : null;
 
-        $status = BookStatus::tryFrom($statusRaw);
+        $statusRaw = $request->query->get('statusId', BookStatus::PUBLIC->value);
+        $statusEnum = BookStatus::tryFrom($statusRaw);
+        $status = $statusEnum?->value ?? BookStatus::PUBLIC->value;
 
         return [new BookListInputFiltersDto($tagId, $status)];
     }

@@ -23,7 +23,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 #[Route('/review-tag-assignment')]
 #[IsGranted('IS_AUTHENTICATED_FULLY')]
-class ReviewTagAssignmentController extends AbstractController
+class ReviewTagAssigmentController extends AbstractController
 {
     public function __construct(
         private readonly ReviewTagAssignmentServiceInterface $reviewTagAssignmentService,

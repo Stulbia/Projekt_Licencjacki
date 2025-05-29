@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}All Books{% endblock %}
+
+{% block body %}
+    <h1>All Books</h1>
+
+    {% if pagination.items is not empty %}
+        <ul>
+            {% for book in pagination.items %}
+                <li>
+                    <a href="{{ path('book_show', {id: book.id}) }}">{{ book.title }}</a>
+                    — {{ book.author }}
+                </li>
+            {% endfor %}
+        </ul>
+
+        <div>
+            Page {{ pagination.currentPage }} of {{ pagination.pageCount }}
+        </div>
+
+        {% if pagination.hasPreviousPage %}
+            <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all | merge({'page': pagination.previousPage})) }}">Previous</a>
+        {% endif %}
+        {% if pagination.hasNextPage %}
+            <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all | merge({'page': pagination.nextPage})) }}">Next</a>
+        {% endif %}
+    {% else %}
+        <p>No books found.</p>
+    {% endif %}
+{% endblock %}
