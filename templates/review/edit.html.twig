@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Tag{% endblock %}
+{% block title %}Edit Review{% endblock %}
 
 {% block body %}
-    <h1>Edit Tag: {{ tag.title }}</h1>
+    <h1>Edit Review for {{ review.book.title }}</h1>
 
     {{ form_start(form) }}
     {{ form_widget(form) }}

@@ -1,18 +1,23 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}All Tags{% endblock %}
+{% block title %}My Reviews{% endblock %}
 
 {% block body %}
-    <h1>All Tags</h1>
+    <h1>My Reviews</h1>
 
-    <a href="{{ path('tag_create') }}">Create new tag</a>
+    <a href="{{ path('review_create') }}">Write a new review</a>
 
     {% if pagination.items is not empty %}
         <ul>
-            {% for tag in pagination.items %}
+            {% for review in pagination.items %}
                 <li>
-                    <a href="{{ path('tag_show', {id: tag.id}) }}">{{ tag.title }}</a>
+                    <strong>Book:</strong> {{ review.book.title }}<br>
+                    <strong>Rating:</strong> {{ review.rating }}/10<br>
+                    <strong>Comment:</strong> {{ review.comment|nl2br }}<br>
+                    <a href="{{ path('review_edit', {id: review.id}) }}">Edit</a> |
+                    <a href="{{ path('review_delete', {id: review.id}) }}">Delete</a>
                 </li>
+                <hr>
             {% endfor %}
         </ul>
 
@@ -27,10 +32,9 @@
             <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all | merge({'page': pagination.nextPageNumber})) }}">Next</a>
         {% endif %}
 
-        {# lub po prostu: #}
-        {# {{ knp_pagination_render(pagination) }} #}
+        {# Lub zamiast tego: {{ knp_pagination_render(pagination) }} #}
 
     {% else %}
-        <p>No tags found.</p>
+        <p>You haven't written any reviews yet.</p>
     {% endif %}
 {% endblock %}

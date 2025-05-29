@@ -128,4 +128,20 @@ class BookRepository extends ServiceEntityRepository
 
         return $qb;
     }
+
+    public function findByFilters(?int $minRating = null): QueryBuilder
+    {
+        $qb = $this->createQueryBuilder('b')
+            ->leftJoin('App\Entity\Review', 'r', 'WITH', 'r.book = b')
+            ->addSelect('AVG(r.value) as HIDDEN avgRating')
+            ->groupBy('b.id');
+
+        if ($minRating !== null) {
+            // COALESCE sprawia, że brak recenzji = -1
+            $qb->having('COALESCE(AVG(r.value), -1) >= :minRating')
+                ->setParameter('minRating', $minRating);
+        }
+
+        return $qb;
+    }
 }

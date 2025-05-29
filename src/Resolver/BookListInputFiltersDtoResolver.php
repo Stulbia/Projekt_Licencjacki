@@ -8,33 +8,20 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
-/**
- * Resolver for BookListInputFiltersDto.
- */
 class BookListInputFiltersDtoResolver implements ValueResolverInterface
 {
-    /**
-     * Resolves query parameters into a BookListInputFiltersDto.
-     *
-     * @param Request          $request  The HTTP request
-     * @param ArgumentMetadata $argument The argument metadata
-     *
-     * @return iterable<BookListInputFiltersDto>
-     */
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
-        $argumentType = $argument->getType();
-
-        if (!$argumentType || !is_a($argumentType, BookListInputFiltersDto::class, true)) {
+        if ($argument->getType() !== BookListInputFiltersDto::class) {
             return [];
         }
 
-        $tagIdRaw = $request->query->get('tagId');
-        $tagId = is_numeric($tagIdRaw) ? (int) $tagIdRaw : null;
+        $tagId = $request->query->has('tagId') && is_numeric($request->query->get('tagId'))
+            ? (int) $request->query->get('tagId')
+            : null;
 
         $statusRaw = $request->query->get('statusId', BookStatus::PUBLIC->value);
-        $statusEnum = BookStatus::tryFrom($statusRaw);
-        $status = $statusEnum?->value ?? BookStatus::PUBLIC->value;
+        $status = BookStatus::tryFrom($statusRaw)?->value ?? BookStatus::PUBLIC->value;
 
         return [new BookListInputFiltersDto($tagId, $status)];
     }

@@ -1,18 +1,27 @@
-{# templates/partials/nav.html.twig #}
-<nav>
-    <ul>
-        <li><a href="{{ path('book_index') }}">Books</a></li>
-        <li><a href="{{ path('tag_index') }}">Tags</a></li>
-        <li><a href="{{ path('review_index') }}">Reviews</a></li>
+<nav class="navbar">
+    <div class="logo">📚 Book Library</div>
+
+    <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <div class="nav-links" id="navLinks">
+        <a class="nav-link" href="{{ path('book_index') }}">Books</a>
+        <a class="nav-link" href="{{ path('tag_index') }}">Tags</a>
+        <a class="nav-link" href="{{ path('review_index') }}">Reviews</a>
+
         {% if is_granted('ROLE_ADMIN') %}
-            <li><a href="{{ path('user_list') }}">Users</a></li>
+            <a class="nav-link" href="{{ path('user_list') }}">Users</a>
         {% endif %}
+
         {% if app.user %}
-            <li><a href="{{ path('user_index') }}">My Profile</a></li>
-            <li><a href="{{ path('app_logout') }}">Logout</a></li>
+            <a class="nav-link" href="{{ path('user_index') }}">My Profile</a>
+            <a class="nav-link login-btn" href="{{ path('app_logout') }}">Logout</a>
         {% else %}
-            <li><a href="{{ path('app_login') }}">Login</a></li>
-            <li><a href="{{ path('user_register') }}">Register</a></li>
+            <a class="nav-link" href="{{ path('app_login') }}">Login</a>
+            <a class="nav-link login-btn" href="{{ path('user_register') }}">Register</a>
         {% endif %}
-    </ul>
+    </div>
 </nav>

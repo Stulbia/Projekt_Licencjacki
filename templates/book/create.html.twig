@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Tag{% endblock %}
+{% block title %}Create Book{% endblock %}
 
 {% block body %}
-    <h1>Edit Tag: {{ tag.title }}</h1>
+    <h1>Create a New Book</h1>
 
     {{ form_start(form) }}
     {{ form_widget(form) }}
-    <button type="submit">Update</button>
+    <button type="submit">Create</button>
     {{ form_end(form) }}
 {% endblock %}

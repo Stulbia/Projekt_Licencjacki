@@ -6,25 +6,27 @@
     <h1>All Books</h1>
 
     {% if pagination.items is not empty %}
-        <ul>
-            {% for book in pagination.items %}
-                <li>
-                    <a href="{{ path('book_show', {id: book.id}) }}">{{ book.title }}</a>
-                    — {{ book.author }}
-                </li>
-            {% endfor %}
-        </ul>
+        {% for book in pagination.items %}
+            <div class="book-entry">
+                <a href="{{ path('book_show', {id: book.id}) }}">{{ book.title }}</a>
+                — {{ book.author }}
+            </div>
+        {% endfor %}
 
-        <div>
-            Page {{ pagination.currentPage }} of {{ pagination.pageCount }}
+        <div class="pagination-info">
+            Page {{ pagination.currentPageNumber }} of {{ pagination.pageCount }}
         </div>
 
-        {% if pagination.hasPreviousPage %}
-            <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all | merge({'page': pagination.previousPage})) }}">Previous</a>
-        {% endif %}
-        {% if pagination.hasNextPage %}
-            <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all | merge({'page': pagination.nextPage})) }}">Next</a>
-        {% endif %}
+        <div class="pagination-links">
+            {% if pagination.previousPageNumber is defined %}
+                <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all | merge({'page': pagination.previousPageNumber})) }}">Previous</a>
+            {% endif %}
+            {% if pagination.nextPageNumber is defined %}
+                <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all | merge({'page': pagination.nextPageNumber})) }}">Next</a>
+            {% endif %}
+        </div>
+
+        {{ knp_pagination_render(pagination) }}
     {% else %}
         <p>No books found.</p>
     {% endif %}

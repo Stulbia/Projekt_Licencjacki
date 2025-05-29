@@ -77,27 +77,7 @@ class BookType extends AbstractType
                 'required' => true,
                 'attr' => ['max_length' => 255], ]
         );
-        $builder->add(
-            'gallery',
-            EntityType::class,
-            [
-                'class' => Gallery::class,
-                'choice_label' => function ($gallery) {
-                    return $gallery->getTitle();
-                },
-                'label' => 'label.gallery',
-                'placeholder' => 'label.none',
-                'required' => true,
-                'choice_attr' => function ($gallery) {
-                    $attrs = [];
-                    if (!$this->authorizationChecker->isGranted('EDIT', $gallery)) {
-                        $attrs['disabled'] = 'disabled';
-                    }
 
-                    return $attrs;
-                },
-            ]
-        );
 
         $builder->add(
             'description',

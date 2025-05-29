@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Search Books{% endblock %}
+
+{% block body %}
+    <h1>Search Books</h1>
+
+    <div class="search-layout">
+        <aside class="search-form">
+            {{ form_start(form, {'attr': {'class': 'filter-form'}}) }}
+            <h2 class="filter-heading">Filtruj</h2>
+
+            <div class="form-group">
+                {{ form_label(form.status) }}
+                {{ form_widget(form.status, {'attr': {'class': 'custom-select'}}) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.tag) }}
+                {{ form_widget(form.tag, {'attr': {'class': 'custom-select'}}) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.rating) }}
+                {{ form_widget(form.rating, {'attr': {'class': 'custom-select'}}) }}
+            </div>
+
+            <button type="submit" class="filter-btn">Szukaj</button>
+            {{ form_end(form) }}
+        </aside>
+
+        <section class="search-results">
+            {% if pagination.items is defined %}
+                <h2>Wyniki</h2>
+                {% if pagination.items is not empty %}
+                    <div class="book-grid">
+                        {% for book in pagination.items %}
+                            <div class="book-card">
+                                <a href="{{ path('book_show', {id: book.id}) }}">
+                                    <h3>{{ book.title }}</h3>
+                                </a>
+                                <p class="author">{{ book.author }}</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p>No books found.</p>
+                {% endif %}
+            {% endif %}
+        </section>
+    </div>
+{% endblock %}

@@ -31,7 +31,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  * Class UserController.
  */
 #[Route('/user')]
-#[IsGranted('IS_AUTHENTICATED_FULLY')]
+
 class UserController extends AbstractController
 {
     public function __construct(
@@ -41,10 +41,11 @@ class UserController extends AbstractController
     ) {
     }
 
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[Route(name: 'user_index', methods: ['GET'])]
     public function index(#[MapQueryParameter] int $page = 1): Response
     {
-        $filters = new BookListInputFiltersDto(null, null, 'PRIVATE');
+        $filters = new BookListInputFiltersDto(null, 'PRIVATE');
         $user = $this->getUser();
         $pagination = $this->bookService->getPaginatedUserList($page, $user, $filters);
 
@@ -78,6 +79,7 @@ class UserController extends AbstractController
 
     #[Route('/list', name: 'user_list', methods: ['GET'])]
     #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function list(#[MapQueryParameter] int $page = 1): Response
     {
         $pagination = $this->userManager->getPaginatedList($page);
@@ -87,6 +89,7 @@ class UserController extends AbstractController
 
     #[Route('/{id}', name: 'user_show', requirements: ['id' => '[1-9]\d*'], methods: ['GET'])]
     #[IsGranted('VIEW', subject: 'user')]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function show(User $user): Response
     {
         return $this->render('user/show.html.twig', ['user' => $user]);
@@ -94,6 +97,7 @@ class UserController extends AbstractController
 
     #[Route('/{id}/edit', name: 'user_edit', requirements: ['id' => '[1-9]\d*'], methods: ['GET', 'PUT'])]
     #[IsGranted('EDIT', subject: 'user')]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function edit(Request $request, User $user): Response
     {
         $form = $this->createForm(UserUpdateType::class, $user, [
@@ -117,6 +121,7 @@ class UserController extends AbstractController
 
     #[Route('/{id}/edit/admin', name: 'user_edit_admin', requirements: ['id' => '[1-9]\d*'], methods: ['GET', 'PUT'])]
     #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function editAdmin(Request $request, User $user): Response
     {
         if ($this->getUser()?->getUserIdentifier() === $user->getUserIdentifier()) {
@@ -148,6 +153,7 @@ class UserController extends AbstractController
 
     #[Route('/{id}/password', name: 'user_password', requirements: ['id' => '[1-9]\d*'], methods: ['GET', 'PUT'])]
     #[IsGranted('EDIT', subject: 'user')]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function changePassword(Request $request, User $user): Response
     {
         $form = $this->createForm(ChangePasswordType::class, $user, [

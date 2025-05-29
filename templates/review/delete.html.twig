@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Delete Review{% endblock %}
+
+{% block body %}
+    <h1>Delete Review</h1>
+
+    <p>Are you sure you want to delete your review for <strong>{{ review.book.title }}</strong>?</p>
+
+    <blockquote>
+        <strong>Rating:</strong> {{ review.rating }}/10<br>
+        <strong>Comment:</strong> {{ review.comment|nl2br }}
+    </blockquote>
+
+    {{ form_start(form) }}
+    <button type="submit">Yes, delete</button>
+    {{ form_end(form) }}
+
+    <a href="{{ path('review_index') }}">Cancel</a>
+{% endblock %}
