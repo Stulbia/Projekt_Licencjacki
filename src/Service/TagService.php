@@ -76,7 +76,6 @@ class TagService implements TagServiceInterface
      *
      * @return Tag|null Tag entity
      *
-     * @throws NonUniqueResultException
      */
     public function findOneById(int $id): ?Tag
     {

@@ -33,4 +33,6 @@ interface BookServiceInterface
      * @return Book[]
      */
     public function findByTags(array $tagName): array;
+    public function findOneWithTags(string $slug): ?Book;
+
 }

@@ -2,8 +2,8 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Enum\BookStatus;
 use App\Entity\Book;
+use App\Entity\Enum\BookStatus;
 use App\Entity\Tag;
 use App\Entity\User;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -21,8 +21,8 @@ class BookFixtures extends AbstractBaseFixtures implements DependentFixtureInter
 
         $this->createMany(20, 'books', function (int $i) {
             $book = new Book();
-            $book->setTitle($this->faker->sentence);
-            $book->setFilename(sprintf('%d.jpg', $i % 10)); // np. 0.jpg do 9.jpg
+            $book->setTitle($this->faker->sentence(3));
+            $book->setFilename(sprintf('%d.jpg', $i % 10));
             $book->setDescription($this->faker->text(150));
             $book->setStatus(BookStatus::PUBLIC);
             $book->setCreatedAt(
@@ -45,6 +45,9 @@ class BookFixtures extends AbstractBaseFixtures implements DependentFixtureInter
             foreach ($tags as $tag) {
                 $book->addTag($tag);
             }
+
+            // 🚨 wymuszenie regeneracji sluga (jeśli Gedmo z jakiegoś powodu nie odpala automatycznie)
+            $book->setTitle($book->getTitle());
 
             return $book;
         });

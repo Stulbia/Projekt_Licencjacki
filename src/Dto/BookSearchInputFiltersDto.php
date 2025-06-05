@@ -18,7 +18,13 @@ class BookSearchInputFiltersDto
      * @param string|null $titleId       Title identifier
      * @param string|null $descriptionId Description identifier
      */
-    public function __construct(public ?int $tagId = null, public string $statusId = 'PUBLIC', public ?string $titleId = null, public ?string $descriptionId = null)
-    {
-    }
+//    public function __construct(public ?int $tagId = null, public string $statusId = 'PUBLIC', public ?string $titleId = null, public ?string $descriptionId = null)
+//    {
+//    }
+    public function __construct(
+        public ?int $tagId = null,
+        public string $bookStatus = "PRIVATE",
+        public ?string $titlePattern = null,
+        public ?string $descriptionPattern = null
+    ){}
 }

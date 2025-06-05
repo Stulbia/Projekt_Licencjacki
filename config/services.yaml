@@ -73,3 +73,6 @@ services:
             - '@App\Form\DataTransformer\TagsDataTransformer'  # Argument 1: TagsDataTransformer
             - '@security.authorization_checker'  # Argument 2: AuthorizationCheckerInterface
         tags: [ 'form.type' ]
+    Gedmo\Sluggable\SluggableListener:
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }

@@ -7,7 +7,6 @@
 namespace App\Dto;
 
 use App\Entity\Enum\BookStatus;
-use App\Entity\Gallery;
 use App\Entity\Tag;
 
 /**
@@ -23,7 +22,15 @@ class BookSearchFiltersDto
      * @param string|null  $titlePattern       Title pattern
      * @param string|null  $descriptionPattern Description pattern
      */
-    public function __construct( public readonly ?Tag $tag, public readonly BookStatus $bookStatus, public readonly ?string $titlePattern, public readonly ?string $descriptionPattern)
-    {
-    }
+    //public function __construct( public readonly ?Tag $tag, public readonly BookStatus $bookStatus, public readonly ?string $titlePattern, public readonly ?string $descriptionPattern)
+    //{
+    //}
+
+    public function __construct(
+        public readonly ?Tag $tag,
+        public readonly BookStatus $bookStatus,
+        public readonly ?string $titlePattern,
+        public readonly ?string $descriptionPattern,
+
+    ) {}
 }

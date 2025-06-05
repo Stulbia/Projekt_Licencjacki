@@ -119,9 +119,14 @@ class BookService implements BookServiceInterface
     {
         return new BookSearchFiltersDto(
             tag: $filters->tagId ? $this->tagService->findOneById($filters->tagId) : null,
-            bookStatus: BookStatus::tryFrom($filters->statusId),
-            titlePattern: $filters->titleId,
-            descriptionPattern: $filters->descriptionId,
+            bookStatus:  BookStatus::tryFrom($filters->bookStatus),
+            titlePattern: $filters->titlePattern,
+            descriptionPattern: $filters->descriptionPattern,
         );
     }
+    public function findOneWithTags(string $slug): ?Book
+    {
+        return $this->bookRepository->findOneBySlugWithTags($slug);
+    }
+
 }

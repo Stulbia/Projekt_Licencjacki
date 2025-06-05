@@ -22,6 +22,7 @@ class ReviewTag
      * @var Collection<int, ReviewTagAssignment>
      */
     #[ORM\OneToMany(mappedBy: 'tag', targetEntity: ReviewTagAssignment::class)]
+    #[ORM\ManyToOne(inversedBy: 'reviewTagAssignments')]
     private Collection $reviewTagAssignments;
 
     public function __construct()
@@ -74,5 +75,9 @@ class ReviewTag
         }
 
         return $this;
+    }
+    public function __toString(): string
+    {
+        return $this->name ?? '';
     }
 }

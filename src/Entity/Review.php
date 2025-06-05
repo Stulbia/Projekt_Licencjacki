@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ReviewRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -28,6 +30,19 @@ class Review
     #[ORM\JoinColumn(nullable: false)]
     private ?Book $book = null;
 
+
+    /**
+     * @var Collection<int, ReviewTagAssignment>
+     */
+    #[ORM\OneToMany(mappedBy: 'review', targetEntity: ReviewTagAssignment::class, cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(inversedBy: 'tagAssignments')]
+    private Collection $tagAssignments;
+
+    public function __construct()
+    {
+        $this->tagAssignments = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -41,7 +56,6 @@ class Review
     public function setRating(int $rating): static
     {
         $this->rating = $rating;
-
         return $this;
     }
 
@@ -53,7 +67,6 @@ class Review
     public function setComment(string $comment): static
     {
         $this->comment = $comment;
-
         return $this;
     }
 
@@ -65,7 +78,6 @@ class Review
     public function setAuthor(?User $author): static
     {
         $this->author = $author;
-
         return $this;
     }
 
@@ -77,6 +89,34 @@ class Review
     public function setBook(?Book $book): static
     {
         $this->book = $book;
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ReviewTagAssignment>
+     */
+    public function getTagAssignments(): Collection
+    {
+        return $this->tagAssignments;
+    }
+
+    public function addTagAssignment(ReviewTagAssignment $assignment): static
+    {
+        if (!$this->tagAssignments->contains($assignment)) {
+            $this->tagAssignments->add($assignment);
+            $assignment->setReview($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTagAssignment(ReviewTagAssignment $assignment): static
+    {
+        if ($this->tagAssignments->removeElement($assignment)) {
+            if ($assignment->getReview() === $this) {
+                $assignment->setReview(null);
+            }
+        }
 
         return $this;
     }

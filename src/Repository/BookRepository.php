@@ -31,7 +31,7 @@ class BookRepository extends ServiceEntityRepository
     public function queryAll(BookListFiltersDto $filters): QueryBuilder
     {
         $qb = $this->getOrCreateQueryBuilder()
-            ->select('partial book.{id, createdAt, updatedAt, title, description, filename}')
+            ->select('partial book.{id, createdAt, updatedAt, title, description, filename, slug}')
             ->leftJoin('book.tags', 'tags')
             ->addSelect('partial tags.{id, title}')
             ->orderBy('book.updatedAt', 'DESC');
@@ -42,7 +42,7 @@ class BookRepository extends ServiceEntityRepository
     public function querySearch(BookSearchFiltersDto $filters): QueryBuilder
     {
         $qb = $this->getOrCreateQueryBuilder()
-            ->select('partial book.{id, createdAt, updatedAt, title, description, filename}')
+            ->select('partial book.{id, createdAt, updatedAt, title, description, filename, slug}')
             ->leftJoin('book.tags', 'tags')
             ->addSelect('partial tags.{id, title}')
             ->orderBy('book.updatedAt', 'DESC');
@@ -108,7 +108,7 @@ class BookRepository extends ServiceEntityRepository
     {
         if ($filters->tag instanceof Tag) {
             $qb->andWhere('tags IN (:tag)')
-                ->setParameter('tag', $filters->tag);
+                ->setParameter('tag', $filters->tag);;
         }
 
         if ($filters->bookStatus instanceof BookStatus) {
@@ -143,5 +143,49 @@ class BookRepository extends ServiceEntityRepository
         }
 
         return $qb;
+    }
+//
+//    public function findOneBySlugWithTags(string $slug): ?Book
+//    {
+//        return $this->createQueryBuilder('b')
+//            ->leftJoin('b.tags', 't')
+//            ->addSelect('t')
+//            ->where('b.slug = :slug')
+//            ->setParameter('slug', $slug)
+//            ->getQuery()
+//            ->getOneOrNullResult();
+//    }
+
+//    public function findOneBySlugWithTags(string $slug): ?Book
+//    {
+//        return $this->createQueryBuilder('b')
+//            ->leftJoin('b.tags', 't')
+//            ->addSelect('t')
+//            ->leftJoin('b.reviews', 'r')
+//            ->addSelect('r')
+//            ->leftJoin('r.tagAssignments', 'ra')
+//            ->addSelect('ra')
+//            ->leftJoin('ra.tag', 'rt')
+//            ->addSelect('rt')
+//            ->where('b.slug = :slug')
+//            ->setParameter('slug', $slug)
+//            ->getQuery()
+//            ->getOneOrNullResult();
+//    }
+    public function findOneBySlugWithTags(string $slug): ?Book
+    {
+        return $this->createQueryBuilder('b')
+            ->leftJoin('b.tags', 't')
+            ->addSelect('t')
+            ->leftJoin('b.reviews', 'r')
+            ->addSelect('r')
+            ->leftJoin('r.tagAssignments', 'ra')
+            ->addSelect('ra')
+            ->leftJoin('ra.tag', 'rt')
+            ->addSelect('rt')
+            ->where('b.slug = :slug')
+            ->setParameter('slug', $slug)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 }

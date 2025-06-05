@@ -8,7 +8,10 @@
     {% if pagination.items is not empty %}
         {% for book in pagination.items %}
             <div class="book-entry">
-                <a href="{{ path('book_show', {id: book.id}) }}">{{ book.title }}</a>
+{#                <a href="{{ path('book_show', {id: book.id}) }}">{{ book.title }}</a>#}
+                <a href="{{ path('book_show', {slug: book.slug}) }}">{{ book.title }}</a>
+
+
                 — {{ book.author }}
             </div>
         {% endfor %}

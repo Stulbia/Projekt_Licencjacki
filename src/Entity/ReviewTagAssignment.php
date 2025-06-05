@@ -12,9 +12,8 @@ class ReviewTagAssignment
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-
-    #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(inversedBy: 'tagAssignments')]
     private ?Review $review = null;
 
     #[ORM\ManyToOne(inversedBy: 'reviewTagAssignments')]

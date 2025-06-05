@@ -1,13 +1,113 @@
+{#{% extends 'base.html.twig' %}#}
+
+{#{% block title %}Book Details{% endblock %}#}
+
+{#{% block body %}#}
+{#    <h1>{{ book.title }}</h1>#}
+{#    <p><strong>Author:</strong> {{ book.author }}</p>#}
+{#    <p><strong>Description:</strong> {{ book.description }}</p>#}
+
+{#    <a href="{{ path('book_edit', {id: book.id}) }}">Edit</a>#}
+{#    <a href="{{ path('book_delete', {id: book.id}) }}">Delete</a>#}
+{#    <a href="{{ path('book_index') }}">Back to list</a>#}
+{#{% endblock %}#}
+
+{#{% extends 'base.html.twig' %}#}
+
+{#{% block title %}{{ book.title }}{% endblock %}#}
+
+{#{% block body %}#}
+{#    <div class="book-details">#}
+{#        <h1>{{ book.title }}</h1>#}
+
+{#        <p><strong>Autor:</strong> {{ book.author }}</p>#}
+
+{#        <p><strong>Opis:</strong></p>#}
+{#        <p>{{ book.description }}</p>#}
+
+{#        <p><strong>Status:</strong> {{ book.status }}</p>#}
+
+{#        <p><strong>Plik:</strong> {{ book.filename }}</p>#}
+
+{#        <p><strong>Data utworzenia:</strong> {{ book.createdAt|date('Y-m-d H:i') }}</p>#}
+{#        <p><strong>Data modyfikacji:</strong> {{ book.updatedAt|date('Y-m-d H:i') }}</p>#}
+
+{#        <h3>Tagi:</h3>#}
+{#        {% if book.tags is not empty %}#}
+{#            <ul class="tag-list">#}
+{#                {% for tag in book.tags %}#}
+{#                    <li class="tag">{{ tag.title }}</li>#}
+{#                {% endfor %}#}
+{#            </ul>#}
+{#        {% else %}#}
+{#            <p><em>Brak przypisanych tagów.</em></p>#}
+{#        {% endif %}#}
+
+{#        <a href="{{ path('book_index') }}" class="btn btn-primary mt-4">Powrót do listy</a>#}
+{#    </div>#}
+{#{% endblock %}#}
+
+
 {% extends 'base.html.twig' %}
 
-{% block title %}Book Details{% endblock %}
+{% block title %}{{ book.title }}{% endblock %}
 
 {% block body %}
-    <h1>{{ book.title }}</h1>
-    <p><strong>Author:</strong> {{ book.author }}</p>
-    <p><strong>Description:</strong> {{ book.description }}</p>
+    <div class="container mt-4">
+        <h1>{{ book.title }}</h1>
 
-    <a href="{{ path('book_edit', {id: book.id}) }}">Edit</a>
-    <a href="{{ path('book_delete', {id: book.id}) }}">Delete</a>
-    <a href="{{ path('book_index') }}">Back to list</a>
+        <p><strong>Autor:</strong> {{ book.author }}</p>
+
+        <p><strong>Opis:</strong></p>
+        <p>{{ book.description }}</p>
+
+{#       <p><strong>Status:</strong> {{ book.status.trans(app.translator) }}</p>#}
+        <p>Status: {{ ('status.' ~ book.status.name|lower)|trans }}</p>
+
+
+        <p><strong>Data utworzenia:</strong> {{ book.createdAt|date('Y-m-d H:i') }}</p>
+        <p><strong>Data modyfikacji:</strong> {{ book.updatedAt|date('Y-m-d H:i') }}</p>
+
+        <p><strong>Plik:</strong> {{ book.filename }}</p>
+
+        <h3 class="mt-4">Tagi:</h3>
+        {% if book.tags|length > 0 %}
+            <ul class="list-inline">
+                {% for tag in book.tags %}
+                    <li class="list-inline-item badge bg-secondary">{{ tag.title }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p><em>Brak przypisanych tagów.</em></p>
+        {% endif %}
+
+        <a href="{{ path('book_index') }}" class="btn btn-outline-primary mt-4">Powrót do listy</a>
+    </div>
+
+    <h3>Recenzje:</h3>
+
+    {% if book.reviews|length > 0 %}
+        <ul class="list-group">
+
+            {% for review in book.reviews %}
+                <div class="review">
+                    <p><strong>Autor:</strong> {{ review.author }}</p>
+                    <p><strong>Ocena:</strong> {{ review.rating }}/10</p>
+                    <p>{{ review.comment }}</p>
+
+                    {% if review.tagAssignments|length > 0 %}
+                        <p><strong>Tagi:</strong>
+                            {% for assignment in review.tagAssignments %}
+                                <span class="badge bg-secondary">{{ assignment.tag.name }}</span>
+                            {% endfor %}
+                        </p>
+                    {% else %}
+                        <p><em>Brak tagów</em></p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p><em>Brak recenzji dla tej książki.</em></p>
+    {% endif %}
 {% endblock %}
