@@ -64,6 +64,7 @@ class BookSearchInputFiltersDtoResolver implements ValueResolverInterface
 //        $status = BookStatus::tryFrom($statusRaw) ?? BookStatus::PUBLIC;
 
 
+
         $titlePattern = $request->query->get('title');
         $descriptionPattern = $request->query->get('description');
         return [new BookSearchInputFiltersDto($tag, $status, $titlePattern, $descriptionPattern)];
