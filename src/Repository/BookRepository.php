@@ -28,27 +28,107 @@ class BookRepository extends ServiceEntityRepository
         parent::__construct($registry, Book::class);
     }
 
+//    public function queryAll(BookListFiltersDto $filters): QueryBuilder
+//    {
+//        $qb = $this->getOrCreateQueryBuilder()
+//            ->select('partial book.{id, createdAt, updatedAt, title, description, filename, slug}')
+//            ->leftJoin('book.tags', 'tags')
+//            ->addSelect('partial tags.{id, title}')
+//            ->orderBy('book.updatedAt', 'DESC');
+//
+//        return $this->applyFiltersToList($qb, $filters);
+//    }
+
     public function queryAll(BookListFiltersDto $filters): QueryBuilder
     {
         $qb = $this->getOrCreateQueryBuilder()
             ->select('partial book.{id, createdAt, updatedAt, title, description, filename, slug}')
             ->leftJoin('book.tags', 'tags')
-            ->addSelect('partial tags.{id, title}')
-            ->orderBy('book.updatedAt', 'DESC');
+            ->addSelect('partial tags.{id, title}');
+
+        // Jeśli sortujemy po ratingu – dołącz recenzje i oblicz średnią
+        if ($filters->sortBy === 'rating') {
+            $qb->leftJoin('book.reviews', 'r')
+                ->addSelect('AVG(r.rating) AS HIDDEN avgRating')
+                ->groupBy('book.id')
+                ->orderBy('avgRating', 'DESC');
+        } else {
+            // Domyślnie sortujemy po dacie aktualizacji
+            $qb->orderBy('book.updatedAt', 'DESC');
+        }
 
         return $this->applyFiltersToList($qb, $filters);
     }
+
+
+//    public function querySearch(BookSearchFiltersDto $filters): QueryBuilder
+//    {
+//        $qb = $this->getOrCreateQueryBuilder()
+//            ->select('partial book.{id, createdAt, updatedAt, title, description, filename, slug}')
+//            ->leftJoin('book.tags', 'tags')
+//            ->addSelect('partial tags.{id, title}')
+//            ->orderBy('book.updatedAt', 'DESC');
+//
+//        return $this->applyFiltersToSearchList($qb, $filters);
+//    }
+
+//    public function querySearch(BookSearchFiltersDto $filters): QueryBuilder
+//    {
+//        $qb = $this->getOrCreateQueryBuilder()
+//            ->select('partial book.{id, createdAt, updatedAt, title, description, filename, slug}')
+//            ->leftJoin('book.tags', 'tags')
+//            ->addSelect('partial tags.{id, title}');
+//
+//        // Czy trzeba dołączyć recenzje (dla ratingu lub minRating)
+//        $needsRating = $filters->sortBy === 'rating' || $filters->minRating !== null;
+//
+//        if ($needsRating) {
+//            $qb->leftJoin('book.reviews', 'r')
+//                ->addSelect('COALESCE(AVG(r.rating), 0) AS HIDDEN avgRating')
+//                ->groupBy('book.id, tags.id');
+//        }
+//
+//        // HAVING tylko jeśli potrzebne
+//        if ($filters->minRating !== null) {
+//            $qb->having('avgRating >= :minRating')
+//                ->setParameter('minRating', $filters->minRating);
+//        }
+//
+//        // Sortowanie
+//        if ($filters->sortBy === 'rating') {
+//            $qb->orderBy('avgRating', 'DESC');
+//        } elseif ($filters->sortBy === 'title') {
+//            $qb->orderBy('book.title', 'ASC');
+//        } else {
+//            $qb->orderBy('book.updatedAt', 'DESC');
+//        }
+//
+//        return $this->applyFiltersToSearchList($qb, $filters);
+//    }
+
 
     public function querySearch(BookSearchFiltersDto $filters): QueryBuilder
     {
         $qb = $this->getOrCreateQueryBuilder()
             ->select('partial book.{id, createdAt, updatedAt, title, description, filename, slug}')
             ->leftJoin('book.tags', 'tags')
-            ->addSelect('partial tags.{id, title}')
-            ->orderBy('book.updatedAt', 'DESC');
+            ->addSelect('partial tags.{id, title}');
 
+        // Jeśli potrzebujemy oceny (sortBy lub minRating), robimy join z reviews i liczymy średnią
+        if ($filters->minRating !== null) {
+            $qb->leftJoin('book.reviews', 'r')
+                ->addSelect('AVG(r.rating) AS HIDDEN avgRating')
+                ->groupBy('book.id, tags.id');
+        }
+
+        // HAVING dla minimalnej oceny
+        if ($filters->minRating !== null) {
+            $qb->having('COALESCE(AVG(r.rating), -1) >= :minRating')
+                ->setParameter('minRating', $filters->minRating);
+        }
         return $this->applyFiltersToSearchList($qb, $filters);
     }
+
 
     public function queryByAuthor(User $user, BookListFiltersDto $filters): QueryBuilder
     {
@@ -133,17 +213,18 @@ class BookRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('b')
             ->leftJoin('App\Entity\Review', 'r', 'WITH', 'r.book = b')
-            ->addSelect('AVG(r.value) as HIDDEN avgRating')
+            ->addSelect('AVG(r.rating) as HIDDEN avgRating')
             ->groupBy('b.id');
 
         if ($minRating !== null) {
             // COALESCE sprawia, że brak recenzji = -1
-            $qb->having('COALESCE(AVG(r.value), -1) >= :minRating')
+            $qb->having('COALESCE(AVG(r.rating), -1) >= :minRating')
                 ->setParameter('minRating', $minRating);
         }
 
         return $qb;
     }
+
 //
 //    public function findOneBySlugWithTags(string $slug): ?Book
 //    {

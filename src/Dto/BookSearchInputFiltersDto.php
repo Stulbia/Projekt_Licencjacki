@@ -1,30 +1,26 @@
 <?php
-/**
- * Book list input filters DTO.
- */
 
 namespace App\Dto;
 
 /**
- * Class BookSearchInputFiltersDto.
+ * DTO z parametrami filtrowania wyszukiwania książek z zapytania HTTP.
  */
 class BookSearchInputFiltersDto
 {
     /**
-     * Constructor.
-     *
-     * @param int|null    $tagId         Tag identifier
-     * @param string      $statusId      Status identifier
-     * @param string|null $titleId       Title identifier
-     * @param string|null $descriptionId Description identifier
+     * @param int|null    $tagId               Tag ID z query param
+     * @param string      $bookStatus          Status jako string (np. "PUBLIC")
+     * @param string|null $titlePattern        Fragment tytułu do wyszukania
+     * @param string|null $descriptionPattern  Fragment opisu do wyszukania
+     * @param string|null $sortBy              Pole sortowania (np. "rating", "title")
+     * @param int|null    $minRating           Minimalna średnia ocena
      */
-//    public function __construct(public ?int $tagId = null, public string $statusId = 'PUBLIC', public ?string $titleId = null, public ?string $descriptionId = null)
-//    {
-//    }
     public function __construct(
         public ?int $tagId = null,
-        public string $bookStatus = "PRIVATE",
+        public string $bookStatus = 'PUBLIC',
         public ?string $titlePattern = null,
-        public ?string $descriptionPattern = null
+        public ?string $descriptionPattern = null,
+        public ?string $sortBy = null,
+        public ?int $minRating = null
     ){}
 }

@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Review;
+use App\Entity\ReviewTag;
+use App\Entity\ReviewTagAssignment;
 use App\Form\Type\ReviewType;
 use App\Service\ReviewServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -58,6 +60,16 @@ class ReviewController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var ReviewTag[] $selectedTags */
+            $selectedTags = $form->get('reviewTags')->getData();
+
+            foreach ($selectedTags as $tag) {
+                $assignment = new ReviewTagAssignment();
+                $assignment->setReview($review);
+                $assignment->setTag($tag);
+                $review->addTagAssignment($assignment);
+            }
+
             $this->reviewService->save($review, $user);
             $this->addFlash('success', $this->translator->trans('message.created_successfully'));
 
@@ -78,9 +90,29 @@ class ReviewController extends AbstractController
             'action' => $this->generateUrl('review_edit', ['id' => $review->getId()]),
         ]);
 
+        // Pre-fill existing tag data
+        $existingTags = $review->getTagAssignments()->map(fn(ReviewTagAssignment $a) => $a->getTag())->toArray();
+        $form->get('reviewTags')->setData($existingTags);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Clear old assignments
+            foreach ($review->getTagAssignments() as $assignment) {
+                $review->removeTagAssignment($assignment);
+            }
+
+            // Add new ones
+            /** @var ReviewTag[] $selectedTags */
+            $selectedTags = $form->get('reviewTags')->getData();
+
+            foreach ($selectedTags as $tag) {
+                $assignment = new ReviewTagAssignment();
+                $assignment->setReview($review);
+                $assignment->setTag($tag);
+                $review->addTagAssignment($assignment);
+            }
+
             $this->reviewService->edit($review);
             $this->addFlash('success', $this->translator->trans('message.updated_successfully'));
 

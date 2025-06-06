@@ -4,6 +4,8 @@ namespace App\Form\Type;
 
 use App\Entity\Book;
 use App\Entity\Review;
+use App\Entity\ReviewTag;
+use App\Entity\ReviewTagAssignment;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -41,7 +43,17 @@ class ReviewType extends AbstractType
                 'label' => 'label.comment',
                 'required' => true,
                 'attr' => ['rows' => 5],
+            ])
+            ->add('reviewTags', EntityType::class, [
+                'class' => ReviewTag::class,
+                'choice_label' => 'name',
+                'label' => 'label.review_tags',
+                'required' => false,
+                'multiple' => true,
+                'expanded' => true,
+                'mapped' => false, // <- ważne! nie powiązane bezpośrednio z encją Review
             ]);
+
     }
 
     /**

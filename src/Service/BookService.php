@@ -12,18 +12,13 @@ use App\Entity\Tag;
 use App\Entity\User;
 use App\Repository\BookRepository;
 use Doctrine\ORM\Exception\ORMException;
-use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\OptimisticLockException;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
-use Psr\Log\InvalidArgumentException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * Class BookService.
- */
 class BookService implements BookServiceInterface
 {
     private const PAGINATOR_ITEMS_PER_PAGE = 10;
@@ -40,10 +35,10 @@ class BookService implements BookServiceInterface
 
     public function getPaginatedUserList(int $page, UserInterface $author, BookListInputFiltersDto $filters): PaginationInterface
     {
-        $filters = $this->prepareFilters($filters);
+        $parsedFilters = $this->prepareFilters($filters);
 
         return $this->paginator->paginate(
-            $this->bookRepository->queryByAuthor($author, $filters),
+            $this->bookRepository->queryByAuthor($author, $parsedFilters),
             $page,
             self::PAGINATOR_ITEMS_PER_PAGE
         );
@@ -51,10 +46,9 @@ class BookService implements BookServiceInterface
 
     public function getPaginatedList(int $page, BookListInputFiltersDto $filters): PaginationInterface
     {
-        $filters = $this->prepareFilters($filters);
-
+        $parsedFilters = $this->prepareFilters($filters);
         return $this->paginator->paginate(
-            $this->bookRepository->queryAll($filters),
+            $this->bookRepository->queryAll($parsedFilters),
             $page,
             self::PAGINATOR_ITEMS_PER_PAGE
         );
@@ -62,12 +56,22 @@ class BookService implements BookServiceInterface
 
     public function getSearchList(int $page, BookSearchInputFiltersDto $filters): PaginationInterface
     {
-        $filters = $this->prepareSearchFilters($filters);
+        $parsedFilters = $this->prepareSearchFilters($filters);
+
+//        return $this->paginator->paginate(
+//            $this->bookRepository->querySearch($parsedFilters),
+//            $page,
+//            self::PAGINATOR_ITEMS_PER_PAGE
+//        );
 
         return $this->paginator->paginate(
-            $this->bookRepository->querySearch($filters),
+            $this->bookRepository->querySearch($parsedFilters),
             $page,
-            self::PAGINATOR_ITEMS_PER_PAGE
+            self::PAGINATOR_ITEMS_PER_PAGE,
+            [
+                'wrap-queries' => true,
+                'useOutputWalkers' => true, // ← to jest kluczowe
+            ]
         );
     }
 
@@ -79,7 +83,7 @@ class BookService implements BookServiceInterface
 
         try {
             $this->bookRepository->save($book);
-        } catch (OptimisticLockException|ORMException) {
+        } catch (OptimisticLockException | ORMException) {
         }
     }
 
@@ -87,7 +91,7 @@ class BookService implements BookServiceInterface
     {
         try {
             $this->bookRepository->save($book);
-        } catch (OptimisticLockException|ORMException) {
+        } catch (OptimisticLockException | ORMException) {
         }
     }
 
@@ -96,7 +100,7 @@ class BookService implements BookServiceInterface
         $filename = $book->getFilename();
 
         if (null !== $filename) {
-            $this->filesystem->remove($this->targetDirectory.'/'.$filename);
+            $this->filesystem->remove($this->targetDirectory . '/' . $filename);
         }
 
         $this->bookRepository->delete($book);
@@ -111,7 +115,8 @@ class BookService implements BookServiceInterface
     {
         return new BookListFiltersDto(
             tag: $filters->tagId ? $this->tagService->findOneById($filters->tagId) : null,
-            bookStatus: BookStatus::tryFrom($filters->statusId)
+            bookStatus: BookStatus::tryFrom($filters->bookStatus),
+            sortBy: ($filters->sortBy ?? 'id'),
         );
     }
 
@@ -119,14 +124,16 @@ class BookService implements BookServiceInterface
     {
         return new BookSearchFiltersDto(
             tag: $filters->tagId ? $this->tagService->findOneById($filters->tagId) : null,
-            bookStatus:  BookStatus::tryFrom($filters->bookStatus),
+            bookStatus: BookStatus::tryFrom($filters->bookStatus),
             titlePattern: $filters->titlePattern,
             descriptionPattern: $filters->descriptionPattern,
+            sortBy: $filters->sortBy ?? null,
+            minRating: $filters->minRating ?? null
         );
     }
+
     public function findOneWithTags(string $slug): ?Book
     {
         return $this->bookRepository->findOneBySlugWithTags($slug);
     }
-
 }

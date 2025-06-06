@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Search Books{% endblock %}
+{% block title %}Szukaj książek{% endblock %}
 
 {% block body %}
-    <h1>Search Books</h1>
+    <h1>Szukaj książek</h1>
 
     <div class="search-layout">
         <aside class="search-form">
-            {{ form_start(form, {'attr': {'class': 'filter-form'}}) }}
+            {{ form_start(form, {'method': 'get', 'attr': {'class': 'filter-form'}}) }}
             <h2 class="filter-heading">Filtruj</h2>
 
             <div class="form-group">
@@ -20,32 +20,52 @@
                 {{ form_widget(form.tag, {'attr': {'class': 'custom-select'}}) }}
             </div>
 
-{#            <div class="form-group">#}
-{#                {{ form_label(form.rating) }}#}
-{#                {{ form_widget(form.rating, {'attr': {'class': 'custom-select'}}) }}#}
-{#            </div>#}
+            <div class="form-group">
+                <label for="minRating">Minimalna ocena</label>
+                <select name="minRating" id="minRating" class="custom-select">
+                    <option value="">Dowolna</option>
+                    {% for i in 1..10 %}
+                        <option value="{{ i }}" {{ app.request.get('minRating') == i ? 'selected' : '' }}>{{ i }}+</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="sortBy">Sortuj według</label>
+                <select name="sortBy" id="sortBy" class="custom-select">
+                    <option value="">Domyślnie</option>
+                    <option value="rating" {{ app.request.get('sortBy') == 'rating' ? 'selected' : '' }}>Średnia ocena</option>
+                    <option value="title" {{ app.request.get('sortBy') == 'title' ? 'selected' : '' }}>Tytuł</option>
+                    <option value="updatedAt" {{ app.request.get('sortBy') == 'updatedAt' ? 'selected' : '' }}>Ostatnia aktualizacja</option>
+                </select>
+            </div>
 
             <button type="submit" class="filter-btn">Szukaj</button>
             {{ form_end(form) }}
         </aside>
 
         <section class="search-results">
-            {% if pagination.items is defined %}
-                <h2>Wyniki</h2>
-                {% if pagination.items is not empty %}
-                    <div class="book-grid">
-                        {% for book in pagination.items %}
-                            <div class="book-card">
-{#                                <a href="{{ path('book_show', {id: book.id}) }}">#}
-                                    <h3>{{ book.title }}</h3>
+            <h2>Wyniki</h2>
+
+            {% if pagination.items is not empty %}
+                <div class="book-grid">
+                    {% for book in pagination.items %}
+                        <div class="book-card">
+                            <h3>
+                                <a href="{{ path('book_show', { slug: book.slug }) }}">
+                                    {{ book.title }}
                                 </a>
-                                <p class="author">{{ book.author }}</p>
-                            </div>
-                        {% endfor %}
-                    </div>
-                {% else %}
-                    <p>No books found.</p>
-                {% endif %}
+                            </h3>
+                            <p class="author">{{ book.author.email ?? 'Nieznany autor' }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="pagination">
+                    {{ knp_pagination_render(pagination) }}
+                </div>
+            {% else %}
+                <p>Brak wyników wyszukiwania.</p>
             {% endif %}
         </section>
     </div>

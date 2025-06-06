@@ -24,10 +24,6 @@ class SearchBookType extends AbstractType
                 'label' => 'label.title',
                 'required' => false,
             ])
-            ->add('description', SearchType::class, [
-                'label' => 'label.description',
-                'required' => false,
-            ])
             ->add('status', ChoiceType::class, [
                 'label' => 'label.book_status',
                 'required' => false,
@@ -41,6 +37,7 @@ class SearchBookType extends AbstractType
                 'class' => Tag::class,
                 'choice_label' => 'title',
                 'required' => false,
+                'multiple' => true,
                 'placeholder' => 'label.any_tag',
                 'label' => 'label.tag',
             ]);
