@@ -1,5 +1,5 @@
 <nav class="navbar">
-    <div class="logo">📚 Book Library</div>
+    <div class="logo"> <a href="{{ path('homepage') }}">Book Library </a> </div>
 
     <div class="hamburger" id="hamburger">
         <span></span>
@@ -8,8 +8,8 @@
     </div>
 
     <div class="nav-links" id="navLinks">
-        <a class="nav-link" href="{{ path('book_index') }}">Books</a>
-        <a class="nav-link" href="{{ path('tag_index') }}">Tags</a>
+        <a class="nav-link" href="{{ path('book_search') }}">Books</a>
+        <a class="nav-link" href="{{ path('my_books') }}">Library</a>
         <a class="nav-link" href="{{ path('review_index') }}">Reviews</a>
 
         {% if is_granted('ROLE_ADMIN') %}

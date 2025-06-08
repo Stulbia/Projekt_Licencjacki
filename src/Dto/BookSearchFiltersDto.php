@@ -2,6 +2,7 @@
 
 namespace App\Dto;
 
+use App\Entity\Author;
 use App\Entity\Enum\BookStatus;
 use App\Entity\Tag;
 
@@ -16,7 +17,8 @@ class BookSearchFiltersDto
         public readonly ?string $titlePattern,
         public readonly ?string $descriptionPattern,
         public readonly ?string $sortBy,
-        public readonly ?int $minRating
+        public readonly ?int $minRating,
+        public readonly ?Author $author
     ) {
     }
 }

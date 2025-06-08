@@ -7,4 +7,4 @@ controllers:
 # config/routes.yaml
 default_route:
     path: /book
-    controller: App\Controller\BookController::index
+    controller: App\Controller\HomeController::index

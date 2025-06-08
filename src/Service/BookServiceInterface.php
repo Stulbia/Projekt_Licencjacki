@@ -60,4 +60,13 @@ interface BookServiceInterface
 * Pobierz książkę po slug z tagami i recenzjami.
 */
     public function findOneWithTags(string $slug): ?Book;
+
+    /**
+     * @param int $page
+     * @param UserInterface $user
+     * @param BookSearchInputFiltersDto $filters
+     * @return PaginationInterface
+     */
+    public function getUserBooksList(int $page, UserInterface $user, BookSearchInputFiltersDto $filters): PaginationInterface;
+    public function findMostPopularBooks(int $page): PaginationInterface;
 }

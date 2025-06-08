@@ -37,7 +37,6 @@ class UserController extends AbstractController
     public function __construct(
         private readonly UserManagerInterface $userManager,
         private readonly TranslatorInterface $translator,
-        private readonly BookServiceInterface $bookService
     ) {
     }
 
@@ -45,12 +44,9 @@ class UserController extends AbstractController
     #[Route(name: 'user_index', methods: ['GET'])]
     public function index(#[MapQueryParameter] int $page = 1): Response
     {
-        $filters = new BookListInputFiltersDto(null, 'PRIVATE');
         $user = $this->getUser();
-        $pagination = $this->bookService->getPaginatedUserList($page, $user, $filters);
 
         return $this->render('user/index.html.twig', [
-            'pagination' => $pagination,
             'user' => $user,
         ]);
     }

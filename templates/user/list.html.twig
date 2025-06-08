@@ -28,7 +28,7 @@
             {% for user in pagination.items %}
                 <tr>
                     <td>
-                    <a href="{{ url('avatar_index', {id: user.id}) }}">
+{#                    <a href="{{ url('avatar_index', {id: user.id}) }}">#}
                         {% if user.avatar.filename is defined and user.avatar.filename|length %}
                         <img class="nav-profile-img" src="{{ asset(avatars_directory~user.avatar.filename) }}" alt="avatar" style="width: 50px; height: 50px;" >
                         {% else %}

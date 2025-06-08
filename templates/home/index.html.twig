@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Witamy w Bibliotece!{% endblock %}
+
+{% block body %}
+    <section class="hero">
+        <h1>Odkrywaj, oceniaj i dziel się książkami</h1>
+{#        <p>Dołącz do naszej społeczności i odkrywaj najlepsze lektury!</p> <a href="{{ path('register') }}" class="register-btn">Załóż konto</a>#}
+    </section>
+
+    <section class="dashboard-content">
+        <h2>Najpopularniejsze książki</h2>
+
+        {% if popularBooks is not empty %}
+            <div class="book-grid">
+                {% for book in popularBooks %}
+                    <div class="book-card">
+                        <h3>
+                            <a href="{{ path('book_show', { slug: book.slug }) }}">
+                                {{ book.title }}
+                            </a>
+                        </h3>
+                        <p>{{ book.author.email ?? 'Nieznany autor' }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>Brak książek do wyświetlenia.</p>
+        {% endif %}
+    </section>
+
+    <section class="features">
+        <a href="{{ path('book_search') }}" class="feature-card">
+            <span class="icon">📚</span>
+            <h3>Setki książek</h3>
+            <p>Przeglądaj naszą stale rosnącą kolekcję książek z recenzjami użytkowników.</p>
+        </a>
+
+        <a href="{{ path('review_index') }}" class="feature-card">
+            <span class="icon">⭐</span>
+            <h3>Recenzje i oceny</h3>
+            <p>Sprawdzaj opinie innych czytelników i dziel się swoimi wrażeniami.</p>
+        </a>
+
+        <a href="{{ path('user_register') }}" class="feature-card">
+            <span class="icon">👤</span>
+            <h3>Dołącz do społeczności</h3>
+            <p>Załóż darmowe konto i bądź częścią książkowej społeczności online.</p>
+        </a>
+    </section>
+
+{% endblock %}

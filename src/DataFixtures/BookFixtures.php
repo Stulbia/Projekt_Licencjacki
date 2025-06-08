@@ -5,7 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\Book;
 use App\Entity\Enum\BookStatus;
 use App\Entity\Tag;
-use App\Entity\User;
+use App\Entity\Author;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 /**
@@ -36,8 +36,8 @@ class BookFixtures extends AbstractBaseFixtures implements DependentFixtureInter
                 )
             );
 
-            /** @var User $author */
-            $author = $this->getRandomReference('users');
+            /** @var Author $author */
+            $author = $this->getRandomReference('authors');
             $book->setAuthor($author);
 
             /** @var array<Tag> $tags */
@@ -46,7 +46,7 @@ class BookFixtures extends AbstractBaseFixtures implements DependentFixtureInter
                 $book->addTag($tag);
             }
 
-            // 🚨 wymuszenie regeneracji sluga (jeśli Gedmo z jakiegoś powodu nie odpala automatycznie)
+            // regeneracja sluga (jeśli Gedmo nie działa na constructorze)
             $book->setTitle($book->getTitle());
 
             return $book;
@@ -58,7 +58,7 @@ class BookFixtures extends AbstractBaseFixtures implements DependentFixtureInter
     public function getDependencies(): array
     {
         return [
-            UserFixtures::class,
+            AuthorFixtures::class,
             TagFixtures::class,
         ];
     }

@@ -188,7 +188,11 @@ class BookRepository extends ServiceEntityRepository
     {
         if ($filters->tag instanceof Tag) {
             $qb->andWhere('tags IN (:tag)')
-                ->setParameter('tag', $filters->tag);;
+                ->setParameter('tag', $filters->tag);
+        }
+        if (null !== $filters->author) {
+            $qb->andWhere('book.author = :author')
+                ->setParameter('author', $filters->author);
         }
 
         if ($filters->bookStatus instanceof BookStatus) {
@@ -224,6 +228,47 @@ class BookRepository extends ServiceEntityRepository
 
         return $qb;
     }
+
+    public function queryForUserBooks(User $user, BookSearchFiltersDto $filters): QueryBuilder
+    {
+        $qb = $this->getOrCreateQueryBuilder()
+            ->select('partial book.{id, createdAt, updatedAt, title, description, filename, slug}')
+            ->leftJoin('book.tags', 'tags')
+            ->addSelect('partial tags.{id, title}')
+            ->innerJoin('book.userBookRelations', 'relation') // zakładam, że relacja `UserBookRelation` to "a"
+            ->andWhere('relation.owner = :user')
+            ->setParameter('user', $user);
+
+        // Potrzebujemy oceny (dla minRating)
+        if ($filters->minRating !== null || $filters->sortBy === 'rating') {
+            $qb->leftJoin('book.reviews', 'r')
+                ->addSelect('AVG(r.rating) AS HIDDEN avgRating')
+                ->groupBy('book.id, tags.id');
+        }
+
+        // HAVING dla oceny
+        if ($filters->minRating !== null) {
+            $qb->having('COALESCE(AVG(r.rating), -1) >= :minRating')
+                ->setParameter('minRating', $filters->minRating);
+        }
+
+        // Sortowanie
+        if ($filters->sortBy === 'rating') {
+            $qb->orderBy('avgRating', 'DESC');
+        } elseif ($filters->sortBy === 'title') {
+            $qb->orderBy('book.title', 'ASC');
+        } else {
+            $qb->orderBy('book.updatedAt', 'DESC');
+        }
+
+        // Reszta filtrów
+        return $this->applyFiltersToSearchList($qb, $filters);
+    }
+
+
+
+
+
 
 //
 //    public function findOneBySlugWithTags(string $slug): ?Book
@@ -269,4 +314,20 @@ class BookRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    public function queryForMostPopularBooks(int $limit = 6): array
+    {
+        return $this->createQueryBuilder('b')
+            ->leftJoin('b.reviews', 'r')
+            ->addSelect('AVG(r.rating) AS HIDDEN avg_rating')
+            ->groupBy('b.id')
+            ->orderBy('avg_rating', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
+
+
+
 }

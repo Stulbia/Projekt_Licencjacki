@@ -17,6 +17,31 @@
     color: #1e2a38;
 }
 
+/* Dla <select multiple> */
+.custom-select[multiple] {
+    min-height: 8rem;
+    padding: 0.6rem;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    background-color: #f9fafb;
+    font-size: 1rem;
+    resize: vertical;
+    overflow-y: auto;
+    transition: border-color 0.2s ease;
+}
+
+/* Opcje wewnątrz select multiple */
+.custom-select[multiple] option {
+    padding: 0.4rem;
+}
+
+/* Po focusie */
+.custom-select[multiple]:focus {
+    border-color: #4c9aff;
+    outline: none;
+    background-color: #fff;
+}
+
 .form-group {
     display: flex;
     flex-direction: column;

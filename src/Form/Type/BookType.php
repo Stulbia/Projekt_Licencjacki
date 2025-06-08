@@ -7,7 +7,6 @@
 namespace App\Form\Type;
 
 use App\Entity\Enum\BookStatus;
-use App\Entity\Gallery;
 use App\Entity\Book;
 use App\Form\DataTransformer\TagsDataTransformer;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;

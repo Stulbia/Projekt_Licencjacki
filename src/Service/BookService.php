@@ -18,6 +18,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\User\UserInterface;
+use App\Service\AuthorServiceInterface;
 
 class BookService implements BookServiceInterface
 {
@@ -29,7 +30,8 @@ class BookService implements BookServiceInterface
         private readonly FileUploadServiceInterface $fileUploadService,
         private readonly Filesystem $filesystem,
         private readonly PaginatorInterface $paginator,
-        private readonly TagServiceInterface $tagService
+        private readonly TagServiceInterface $tagService,
+        private readonly AuthorServiceInterface $authorService
     ) {
     }
 
@@ -78,7 +80,7 @@ class BookService implements BookServiceInterface
     public function save(Book $book, UploadedFile $uploadedFile, UserInterface $user): void
     {
         $bookFilename = $this->fileUploadService->upload($uploadedFile);
-        $book->setAuthor($user);
+        //$book->setAuthor($user);
         $book->setFilename($bookFilename);
 
         try {
@@ -128,12 +130,50 @@ class BookService implements BookServiceInterface
             titlePattern: $filters->titlePattern,
             descriptionPattern: $filters->descriptionPattern,
             sortBy: $filters->sortBy ?? null,
-            minRating: $filters->minRating ?? null
+            minRating: $filters->minRating ?? null,
+            author: $filters->author ? $this->authorService->findOneById($filters->author) : null,
         );
     }
-
     public function findOneWithTags(string $slug): ?Book
     {
         return $this->bookRepository->findOneBySlugWithTags($slug);
+    }
+
+//    public function getUserBooksList(int $page, UserInterface $user, BookSearchInputFiltersDto $filters): PaginationInterface
+//    {
+//        $parsedFilters = $this->prepareSearchFilters($filters);
+//
+//        return $this->paginator->paginate(
+//            $this->bookRepository->queryForUserBooks($user->getId(), $parsedFilters),
+//            $page,
+//            self::PAGINATOR_ITEMS_PER_PAGE
+//        );
+//    }
+
+    public function getUserBooksList(int $page, UserInterface $user, BookSearchInputFiltersDto $filters): PaginationInterface
+    {
+        $parsedFilters = $this->prepareSearchFilters($filters);
+
+        return $this->paginator->paginate(
+            $this->bookRepository->queryForUserBooks($user, $parsedFilters),
+            $page,
+            self::PAGINATOR_ITEMS_PER_PAGE,
+            [
+                'wrap-queries' => true,
+                'useOutputWalkers' => true, // ← to jest kluczowe!
+            ]
+        );
+    }
+    public function findMostPopularBooks(int $page): PaginationInterface
+    {
+         return $this->paginator->paginate(
+             $this->bookRepository->QueryForMostPopularBooks(),
+             $page,
+             self::PAGINATOR_ITEMS_PER_PAGE,
+             [
+             'wrap-queries' => true,
+             'useOutputWalkers' => true,
+             ]
+         );
     }
 }

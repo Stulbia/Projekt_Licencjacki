@@ -2,6 +2,7 @@
 
 namespace App\Form\Type;
 
+use App\Entity\Author;
 use App\Entity\Enum\BookStatus;
 use App\Entity\Tag;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -40,9 +41,15 @@ class SearchBookType extends AbstractType
                 'multiple' => true,
                 'placeholder' => 'label.any_tag',
                 'label' => 'label.tag',
+            ])
+            ->add('author', EntityType::class, [
+                'class' => Author::class,
+                'choice_label' => 'pseudonym', // albo -> __toString() jeśli zdefiniowane
+                'required' => false,
+                'placeholder' => 'label.any_author',
+                'label' => 'label.author',
             ]);
     }
-
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([

@@ -39,11 +39,10 @@ class Book
     #[Assert\Length(min: 3, max: 64)]
     private ?string $title = null;
 
-    #[ORM\ManyToOne(targetEntity: User::class, fetch: 'EXTRA_LAZY')]
+    #[ORM\ManyToOne(targetEntity: Author::class, inversedBy: 'books', fetch: 'EXTRA_LAZY')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotBlank]
-    #[Assert\Type(User::class)]
-    private ?User $author = null;
+    private ?Author $author = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     #[Gedmo\Slug(fields: ['title'])]
@@ -68,10 +67,21 @@ class Book
     #[ORM\OneToMany(mappedBy: 'book', targetEntity: Review::class, orphanRemoval: true)]
     private Collection $reviews;
 
+    #[ORM\OneToMany(mappedBy: 'book', targetEntity: UserBookRelation::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
+    private Collection $userBookRelations;
+
+
+    #[ORM\Column(nullable: true)]
+    private ?string $coverFilename = null;
+
+
+
+
     public function __construct()
     {
         $this->tags = new ArrayCollection();
         $this->reviews = new ArrayCollection();
+        $this->userBookRelations = new ArrayCollection();
         $this->createdAt = new \DateTimeImmutable();
         $this->updatedAt = new \DateTimeImmutable();
     }
@@ -131,12 +141,12 @@ class Book
         $this->slug = $slug;
     }
 
-    public function getAuthor(): ?User
+    public function getAuthor(): ?Author
     {
         return $this->author;
     }
 
-    public function setAuthor(?User $author): void
+    public function setAuthor(?Author $author): void
     {
         $this->author = $author;
     }
@@ -207,8 +217,48 @@ class Book
         return $this;
     }
 
+    /**
+     * @return Collection<int, UserBookRelation>
+     */
+    public function getUserBookRelations(): Collection
+    {
+        return $this->userBookRelations;
+    }
+
+    public function addUserBookRelation(UserBookRelation $relation): static
+    {
+        if (!$this->userBookRelations->contains($relation)) {
+            $this->userBookRelations->add($relation);
+            $relation->setBook($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserBookRelation(UserBookRelation $relation): static
+    {
+        if ($this->userBookRelations->removeElement($relation)) {
+            if ($relation->getBook() === $this) {
+                $relation->setBook(null);
+            }
+        }
+
+        return $this;
+    }
+
     public function __toString(): string
     {
         return $this->title ?? 'Book #' . ($this->id ?? 'N/A');
+    }
+
+    public function getCoverFilename(): ?string
+    {
+        return $this->coverFilename;
+    }
+
+    public function setCoverFilename(?string $coverFilename): self
+    {
+        $this->coverFilename = $coverFilename;
+        return $this;
     }
 }

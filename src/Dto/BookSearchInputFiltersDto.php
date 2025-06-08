@@ -21,6 +21,7 @@ class BookSearchInputFiltersDto
         public ?string $titlePattern = null,
         public ?string $descriptionPattern = null,
         public ?string $sortBy = null,
+        public ?string $author = null,
         public ?int $minRating = null
     ){}
 }

@@ -1,3 +1,4 @@
+{# templates/book/search.html.twig #}
 {% extends 'base.html.twig' %}
 
 {% block title %}Szukaj książek{% endblock %}
@@ -17,7 +18,7 @@
 
             <div class="form-group">
                 {{ form_label(form.tag) }}
-                {{ form_widget(form.tag, {'attr': {'class': 'custom-select'}}) }}
+                {{ form_widget(form.tag, {'attr': {'class': 'js-tag-select'}}) }}
             </div>
 
             <div class="form-group">

@@ -42,4 +42,5 @@ enum BookStatus: string implements TranslatableInterface
             array_map(fn(self $status) => $status->value, self::cases())
         );
     }
+
 }

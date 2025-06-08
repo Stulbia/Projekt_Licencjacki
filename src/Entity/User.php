@@ -42,15 +42,31 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\Type('boolean')]
     private bool $banned = false;
 
-    #[ORM\OneToOne(mappedBy: 'user', inversedBy: 'user', cascade: ['persist', 'remove'])]
-    private ?Avatar $avatar = null;
-
     #[ORM\OneToMany(mappedBy: 'author', targetEntity: Review::class, orphanRemoval: true)]
     private Collection $reviews;
+
+    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: UserBookRelation::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
+    private Collection $bookRelations;
+
+
+    #[ORM\Column(nullable: true)]
+    private ?string $avatarFilename = null;
+
+    public function getAvatarFilename(): ?string
+    {
+        return $this->avatarFilename;
+    }
+
+    public function setAvatarFilename(?string $avatarFilename): self
+    {
+        $this->avatarFilename = $avatarFilename;
+        return $this;
+    }
 
     public function __construct()
     {
         $this->reviews = new ArrayCollection();
+        $this->bookRelations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -131,15 +147,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->banned = $banned;
     }
 
-    public function getAvatar(): ?Avatar
-    {
-        return $this->avatar;
-    }
 
-    public function setAvatar(?Avatar $avatar): void
-    {
-        $this->avatar = $avatar;
-    }
 
     /**
      * @return Collection<int, Review>
@@ -166,8 +174,50 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
     }
 
+    /**
+     * @return Collection<int, UserBookRelation>
+     */
+    public function getBookRelations(): Collection
+    {
+        return $this->bookRelations;
+    }
+
+    public function addBookRelation(UserBookRelation $relation): static
+    {
+        if (!$this->bookRelations->contains($relation)) {
+            $this->bookRelations[] = $relation;
+            $relation->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBookRelation(UserBookRelation $relation): static
+    {
+        if ($this->bookRelations->removeElement($relation)) {
+            if ($relation->getOwner() === $this) {
+                $relation->setOwner(null);
+            }
+        }
+
+        return $this;
+    }
+
     public function __toString(): string
     {
-        return $this->getName(); // albo $this->getEmail(), zależnie co chcesz pokazywać
+        return $this->getName();
+    }
+
+    private ?string $plainPassword = null;
+
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(?string $plainPassword): self
+    {
+        $this->plainPassword = $plainPassword;
+        return $this;
     }
 }

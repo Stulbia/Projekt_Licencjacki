@@ -1,6 +1,6 @@
 {# templates/base.html.twig #}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}App{% endblock %}</title>
@@ -9,6 +9,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {# Choices.js styles #}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+
     {% block stylesheets %}{% endblock %}
 </head>
 <body>
@@ -25,6 +29,23 @@
 
     {% block body %}{% endblock %}
 </main>
+
+{# Choices.js script #}
+<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const tagSelect = document.querySelector('.js-tag-select');
+        if (tagSelect) {
+            new Choices(tagSelect, {
+                removeItemButton: true,
+                placeholder: true,
+                placeholderValue: 'Wybierz tagi',
+                noResultsText: 'Brak wyników',
+                itemSelectText: 'Wybierz'
+            });
+        }
+    });
+</script>
 
 {% block javascripts %}{% endblock %}
 </body>
