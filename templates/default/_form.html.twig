@@ -1,4 +1,3 @@
-
 {% extends 'base.html.twig' %}
 
 {% block title %}
@@ -6,24 +5,20 @@
 {% endblock %}
 
 {% block body %}
-    <h1>{{ page_title }}</h1>
-    {{ form_start(form) }}
-  {% if false == form.vars.valid %}  {#  formularz nieprawidlowy, popraw pola#}
-        {% include 'default/_single_alert_message.html.twig' with {
-            type: 'danger',
-            message: 'message.form_error'|trans,
-        }%}
-    {% endif %}
-    {{ form_widget(form) }}
-    <div class="form-group row float-sm-right">
-        <input type="submit" value="{{ submit_label }}" class="btn btn-primary"/>
-    </div>
-    {% if back_to_list_path|default(false) %}
-        <div class="form-group row float-sm-left">
-            <a href="{{ url(back_to_list_path) }}" class="btn btn-secondary">
-                {{ 'action.back_to_list'|trans }}
-            </a>
-        </div>
-    {% endif %}
+    <div class="formWrapper">
+        <h1 class="formTitle">{{ page_title }}</h1>
+
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+
+        <button class="btn btnLg btnPrimary mt-2" type="submit">
+            {{ submit_label }}
+        </button>
+
+
+        <a href="{{ path(back_to_list_path) }}" class="btn btnSecondary mt-2">
+            ← {{ 'action.back_to_list'|trans }}
+        </a>
     {{ form_end(form) }}
+    </div>
 {% endblock %}

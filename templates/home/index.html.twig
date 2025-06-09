@@ -3,33 +3,38 @@
 {% block title %}Witamy w Bibliotece!{% endblock %}
 
 {% block body %}
-    <section class="hero">
+    <section class="hero animate-fadeInUp">
         <h1>Odkrywaj, oceniaj i dziel się książkami</h1>
-{#        <p>Dołącz do naszej społeczności i odkrywaj najlepsze lektury!</p> <a href="{{ path('register') }}" class="register-btn">Załóż konto</a>#}
+        <p>Dołącz do naszej społeczności i odkrywaj najlepsze lektury!</p>
+        <a href="{{ path('user_register') }}" class="register-btn">Załóż konto</a>
     </section>
 
-    <section class="dashboard-content">
+    <section class="dashboard-content animate-fadeInUp">
         <h2>Najpopularniejsze książki</h2>
 
         {% if popularBooks is not empty %}
             <div class="book-grid">
                 {% for book in popularBooks %}
-                    <div class="book-card">
+                    <div class="book-card animate-fadeInUp" style="animation-delay: {{ loop.index0 * 0.1 }}s">
+                      {% if book.coverFilename %}
+                            <img src="{{ asset('uploads/' ~ book.coverFilename) }}"
+                                 alt="Okładka {{ book.title }}"
+                                 class="book-cover">
+                     {% endif %}
                         <h3>
                             <a href="{{ path('book_show', { slug: book.slug }) }}">
                                 {{ book.title }}
                             </a>
                         </h3>
-                        <p>{{ book.author.email ?? 'Nieznany autor' }}</p>
+                        <p class="author">{{ book.author.name ?? 'Nieznany autor' }}</p>
                     </div>
                 {% endfor %}
             </div>
-        {% else %}
-            <p>Brak książek do wyświetlenia.</p>
+
         {% endif %}
     </section>
 
-    <section class="features">
+    <section class="features animate-fadeInUp">
         <a href="{{ path('book_search') }}" class="feature-card">
             <span class="icon">📚</span>
             <h3>Setki książek</h3>
@@ -48,5 +53,4 @@
             <p>Załóż darmowe konto i bądź częścią książkowej społeczności online.</p>
         </a>
     </section>
-
 {% endblock %}

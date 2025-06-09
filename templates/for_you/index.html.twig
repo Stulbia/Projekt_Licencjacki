@@ -3,15 +3,15 @@
 {% block title %}Dla Ciebie{% endblock %}
 
 {% block body %}
-    <h1 class="text-2xl font-bold mb-4">Rekomendacje dla Ciebie</h1>
+    <h1 class="text2xl fontBold mb4">Rekomendacje dla Ciebie</h1>
 
     {% if books is not empty %}
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <div class="grid gridCols1 sm:gridCols2 md:gridCols3 gap4">
             {% for book in books %}
-                <div class="border rounded-xl p-4 shadow">
-                    <h2 class="text-xl font-semibold">{{ book.title }}</h2>
-                    <p class="text-sm mt-2">{{ book.description|u.truncate(100) }}</p>
-                    <a href="{{ path('book_show', {slug: book.slug}) }}" class="text-blue-600 text-sm">Zobacz szczegóły</a>
+                <div class="border roundedXl p4 shadow">
+                    <h2 class="textXl fontSemibold">{{ book.title }}</h2>
+                    <p class="textSm mt2">{{ book.description|u.truncate(100) }}</p>
+                    <a href="{{ path('book_show', {slug: book.slug}) }}" class="textBlue600 textSm">Zobacz szczegóły</a>
                 </div>
             {% endfor %}
         </div>

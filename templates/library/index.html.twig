@@ -1,13 +1,80 @@
+{# templates/book/search.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block body %}
-    <h1>Moja biblioteczka</h1>
+{% block title %}Biblioteczka{% endblock %}
 
-    <ul>
-        {% for relation in relations %}
-            <li>
-                <strong>{{ relation.book.title }}</strong> – {{ relation.status.value }}
-            </li>
-        {% endfor %}
-    </ul>
+{% block body %}
+    <h1>Biblioteczka</h1>
+aaaaaaaaaaaaaaa
+    <div class="searchLayout">
+        <aside class="searchForm">
+            {{ form_start(form, {'method': 'get', 'attr': {'class': 'filter-form'}}) }}
+            <h2 class="filterHeading">Filtruj</h2>
+
+            <div class="formGroup">
+                {{ form_label(form.status) }}
+                {{ form_widget(form.status, {'attr': {'class': 'custom-select'}}) }}
+            </div>
+
+            <div class="formGroup">
+                {{ form_label(form.tag) }}
+                {{ form_widget(form.tag, {'attr': {'class': 'js-tag-select'}}) }}
+            </div>
+
+            <div class="formGroup">
+                <label for="minRating">Minimalna ocena</label>
+                <select name="minRating" id="minRating" class="customSelect">
+                    <option value="">Dowolna</option>
+                    {% for i in 1..10 %}
+                        <option value="{{ i }}" {{ app.request.get('minRating') == i ? 'selected' : '' }}>{{ i }}+</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="formGroup">
+                <label for="sortBy">Sortuj według</label>
+                <select name="sortBy" id="sortBy" class="customSelect">
+                    <option value="">Domyślnie</option>
+                    <option value="rating" {{ app.request.get('sortBy') == 'rating' ? 'selected' : '' }}>Średnia ocena</option>
+                    <option value="title" {{ app.request.get('sortBy') == 'title' ? 'selected' : '' }}>Tytuł</option>
+                    <option value="updatedAt" {{ app.request.get('sortBy') == 'updatedAt' ? 'selected' : '' }}>Ostatnia aktualizacja</option>
+                </select>
+            </div>
+
+            <button type="submit" class="filterBtn">Szukaj</button>
+            {{ form_end(form) }}
+        </aside>
+
+        <section class="searchResults">
+            <h2>Wyniki</h2>
+
+            {% if pagination.items is not empty %}
+                <div class="bookGrid">
+                    {% for book in pagination.items %}
+                        <div class="bookCard">
+                            {% if book.coverFilename %}
+                                <img src="{{ asset('uploads/' ~ book.coverFilename) }}"
+                                     alt="Okładka książki {{ book.title }}"
+                                     class="book-cover">
+                            {% endif %}
+
+                            <h3>
+                                <a href="{{ path('book_show', { slug: book.slug }) }}">
+                                    {{ book.title }}
+                                </a>
+                            </h3>
+                            <p class="author">{{ book.author.name ?? 'Nieznany autor' }}</p>
+                        </div>
+                    {% endfor %}
+
+                </div>
+
+                <div class="pagination">
+                    {{ knp_pagination_render(pagination) }}
+                </div>
+            {% else %}
+                <p>Brak wyników wyszukiwania.</p>
+            {% endif %}
+        </section>
+    </div>
 {% endblock %}

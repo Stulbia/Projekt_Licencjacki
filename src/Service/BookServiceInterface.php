@@ -26,7 +26,7 @@ interface BookServiceInterface
 /**
 * Wyszukiwanie książek (title/description + sortBy).
 */
-    public function getSearchList(int $page, BookSearchInputFiltersDto $filters): PaginationInterface;
+    public function getSearchList(int $page, BookSearchInputFiltersDto $filters, int $items): PaginationInterface;
 
 /**
 * Lista książek użytkownika.

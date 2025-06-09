@@ -56,7 +56,7 @@ class BookService implements BookServiceInterface
         );
     }
 
-    public function getSearchList(int $page, BookSearchInputFiltersDto $filters): PaginationInterface
+    public function getSearchList(int $page, BookSearchInputFiltersDto $filters, int $items): PaginationInterface
     {
         $parsedFilters = $this->prepareSearchFilters($filters);
 
@@ -69,7 +69,7 @@ class BookService implements BookServiceInterface
         return $this->paginator->paginate(
             $this->bookRepository->querySearch($parsedFilters),
             $page,
-            self::PAGINATOR_ITEMS_PER_PAGE,
+            $items,
             [
                 'wrap-queries' => true,
                 'useOutputWalkers' => true, // ← to jest kluczowe
@@ -169,7 +169,7 @@ class BookService implements BookServiceInterface
          return $this->paginator->paginate(
              $this->bookRepository->QueryForMostPopularBooks(),
              $page,
-             self::PAGINATOR_ITEMS_PER_PAGE,
+             5,
              [
              'wrap-queries' => true,
              'useOutputWalkers' => true,

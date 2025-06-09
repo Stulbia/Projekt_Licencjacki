@@ -75,7 +75,7 @@ class BookController extends AbstractController
             'action' => $this->generateUrl('book_search'),
         ]);
 
-        $pagination = $this->bookService->getSearchList($page, $filters);
+        $pagination = $this->bookService->getSearchList($page, $filters, 10);
 
         return $this->render('book/search.html.twig', [
             'pagination' => $pagination,

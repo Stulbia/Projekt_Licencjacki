@@ -26,6 +26,7 @@ class BookCrudController extends AbstractCrudController
             IdField::new('id')->onlyOnIndex(),
 
             TextField::new('title'),
+            TextField::new('coverFilename'),
             SlugField::new('slug')->setTargetFieldName('title')->onlyOnForms(),
 
             TextEditorField::new('description')->hideOnIndex(),

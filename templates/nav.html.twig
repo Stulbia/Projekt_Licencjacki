@@ -1,27 +1,35 @@
 <nav class="navbar">
     <div class="logo"> <a href="{{ path('homepage') }}">Book Library </a> </div>
 
-    <div class="hamburger" id="hamburger">
+    <div class="navHamburger" id="hamburger">
+
         <span></span>
         <span></span>
         <span></span>
     </div>
 
-    <div class="nav-links" id="navLinks">
-        <a class="nav-link" href="{{ path('book_search') }}">Books</a>
-        <a class="nav-link" href="{{ path('my_books') }}">Library</a>
-        <a class="nav-link" href="{{ path('review_index') }}">Reviews</a>
-
-        {% if is_granted('ROLE_ADMIN') %}
-            <a class="nav-link" href="{{ path('user_list') }}">Users</a>
-        {% endif %}
+    <div class="navLinks" id="navLinks">
+        <a class="navLink" href="{{ path('book_search') }}">Books</a>
+        <a class="navLink" href="{{ path('my_books') }}">Library</a>
+        <a class="navLink" href="{{ path('review_index') }}">Reviews</a>
 
         {% if app.user %}
-            <a class="nav-link" href="{{ path('user_index') }}">My Profile</a>
-            <a class="nav-link login-btn" href="{{ path('app_logout') }}">Logout</a>
+            <a class="navLink" href="{{ path('user_index') }}">My Profile</a>
+            <a class="navLink loginBtn" href="{{ path('app_logout') }}">Logout</a>
         {% else %}
-            <a class="nav-link" href="{{ path('app_login') }}">Login</a>
-            <a class="nav-link login-btn" href="{{ path('user_register') }}">Register</a>
+            <a class="navLink" href="{{ path('app_login') }}">Login</a>
+            <a class="navLink loginBtn" href="{{ path('user_register') }}">Register</a>
         {% endif %}
+{#        <button id="themeToggle" class="navButton">Toggle Theme</button>#}
+
+        <div class="themeControls">
+            <button id="themeToggle" class="navButton btnPrimary" title="Przełącz motyw">🌙</button>
+
+            <select id="accentSelect" class="navButton btnPrimary" title="Wybierz kolor">
+                <option value="green">🟢 Green</option>
+                <option value="orange">🟠 Orange</option>
+            </select>
+        </div>
+
     </div>
 </nav>

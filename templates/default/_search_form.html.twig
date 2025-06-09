@@ -9,12 +9,12 @@
         }%}
     {% endif %}
     {{ form_widget(form) }}
-    <div class="form-group row float-sm-right">
-        <input type="submit" value="{{ submit_label }}" class="btn btn-primary"/>
+    <div class="formGroup row floatSmRight">
+        <input type="submit" value="{{ submit_label }}" class="btn btnPrimary"/>
     </div>
     {% if back_to_list_path|default(false) %}
-        <div class="form-group row float-sm-left">
-            <a href="{{ url(back_to_list_path) }}" class="btn btn-secondary">
+        <div class="formGroup row floatSmLeft">
+            <a href="{{ url(back_to_list_path) }}" class="btn btnSecondary">
                 {{ 'action.back_to_list'|trans }}
             </a>
         </div>

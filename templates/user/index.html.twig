@@ -7,7 +7,7 @@
 {% block body %}
     {% if user is defined and user|length %}
     <h1>{{ user.name}} </h1>
-        <dl class="dl-horizontal">
+        <dl class="dlHorizontal">
         <dt>{{ 'label.email'|trans }}</dt>
         <dd>{{  user.email }}</dd>
         {% if is_granted('ROLE_ADMIN') %}
@@ -18,13 +18,13 @@
                 {% endfor %}
             </dd>
         {% endif %}
-        <a class="btn btn-outline-primary" href="{{ url('user_password', {id: user.id} ) }}" title="{{ 'action.show'|trans }}">
+        <a class="btn btnOutlinePrimary" href="{{ url('user_password', {id: user.id} ) }}" title="{{ 'action.show'|trans }}">
             {{ 'action.password'|trans }}
         </a>
-        <a class="btn btn-outline-success" href="{{ url('user_edit', {id: user.id}) }}" title="{{ 'action.edit'|trans }}">
+        <a class="btn btnOutlineSuccess" href="{{ url('user_edit', {id: user.id}) }}" title="{{ 'action.edit'|trans }}">
             {{ 'action.edit'|trans }}
         </a>
-{#        <a class="btn btn-outline-success" href="{{ url('avatar_index', {id: user.id}) }}" title="{{ 'action.edit.avatar'|trans }}">#}
+{#        <a class="btn btnOutlineSuccess" href="{{ url('avatar_index', {id: user.id}) }}" title="{{ 'action.edit.avatar'|trans }}">#}
 {#            {{ 'action.edit.avatar'|trans }}#}
 {#        </a>#}
     {% else %}

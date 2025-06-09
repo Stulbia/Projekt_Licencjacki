@@ -22,7 +22,7 @@ class BookFixtures extends AbstractBaseFixtures implements DependentFixtureInter
         $this->createMany(20, 'books', function (int $i) {
             $book = new Book();
             $book->setTitle($this->faker->sentence(3));
-            $book->setFilename(sprintf('%d.jpg', $i % 10));
+            $book->setCoverFilename(sprintf('%d.jpg', $i % 10));
             $book->setDescription($this->faker->text(150));
             $book->setStatus(BookStatus::PUBLIC);
             $book->setCreatedAt(

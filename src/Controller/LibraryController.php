@@ -2,14 +2,20 @@
 
 namespace App\Controller;
 
+use App\Dto\BookSearchInputFiltersDto;
 use App\Entity\Book;
 use App\Entity\UserBookRelation;
+use App\Form\Type\SearchBookType;
 use App\Form\Type\UserBookRelationType;
 use App\Repository\UserBookRelationRepository;
+use App\Resolver\BookSearchInputFiltersDtoResolver;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
+use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/library')]
@@ -48,13 +54,38 @@ class LibraryController extends AbstractController
         ]);
     }
 
+    /**
+     * @param BookSearchInputFiltersDto $filters
+     * @param int $page
+     * @param UserBookRelationRepository $relationRepo
+     * @param PaginatorInterface $paginator
+     * @return Response
+     */
     #[Route('/my-books', name: 'library_index')]
-    public function myLibrary(UserBookRelationRepository $repo): Response
-    {
-        $relations = $repo->findBy(['owner' => $this->getUser()]);
+    public function myLibrary(
+        Request $request,
+        #[MapQueryString(resolver: BookSearchInputFiltersDtoResolver::class)] BookSearchInputFiltersDto $filters,
+        UserBookRelationRepository $relationRepo,
+        PaginatorInterface $paginator,
+        #[MapQueryParameter] int $page = 1
+    ): Response {
+
+        $user = $this->getUser();
+
+        $form = $this->createForm(SearchBookType::class, [
+            'action' => $this->generateUrl('library_index'),
+        ]);
+
+        // Query
+        $query = $relationRepo->getBooksByUserWithFilters($user, $filters);
+
+        // Pagination
+        $pagination = $paginator->paginate($query, $page, 8);
 
         return $this->render('library/index.html.twig', [
-        'relations' => $relations,
+            'form' => $form->createView(),
+            'pagination' => $pagination,
+            'filters' => $filters,
         ]);
     }
 }

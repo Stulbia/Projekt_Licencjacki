@@ -42,7 +42,7 @@ class BookRepository extends ServiceEntityRepository
     public function queryAll(BookListFiltersDto $filters): QueryBuilder
     {
         $qb = $this->getOrCreateQueryBuilder()
-            ->select('partial book.{id, createdAt, updatedAt, title, description, filename, slug}')
+            ->select('partial book.{id, createdAt, updatedAt, title, description, coverFilename, slug}')
             ->leftJoin('book.tags', 'tags')
             ->addSelect('partial tags.{id, title}');
 
@@ -110,7 +110,7 @@ class BookRepository extends ServiceEntityRepository
     public function querySearch(BookSearchFiltersDto $filters): QueryBuilder
     {
         $qb = $this->getOrCreateQueryBuilder()
-            ->select('partial book.{id, createdAt, updatedAt, title, description, filename, slug}')
+            ->select('partial book.{id, createdAt, updatedAt, title, description, coverFilename, slug}')
             ->leftJoin('book.tags', 'tags')
             ->addSelect('partial tags.{id, title}');
 
@@ -232,7 +232,7 @@ class BookRepository extends ServiceEntityRepository
     public function queryForUserBooks(User $user, BookSearchFiltersDto $filters): QueryBuilder
     {
         $qb = $this->getOrCreateQueryBuilder()
-            ->select('partial book.{id, createdAt, updatedAt, title, description, filename, slug}')
+            ->select('partial book.{id, createdAt, updatedAt, title, description, coverFilename, slug}')
             ->leftJoin('book.tags', 'tags')
             ->addSelect('partial tags.{id, title}')
             ->innerJoin('book.userBookRelations', 'relation') // zakładam, że relacja `UserBookRelation` to "a"

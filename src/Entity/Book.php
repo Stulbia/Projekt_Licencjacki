@@ -58,12 +58,6 @@ class Book
     #[Assert\Length(min: 1, max: 255)]
     private ?string $description = null;
 
-    #[ORM\Column(name: 'fileName', type: 'string', length: 191)]
-    #[Assert\NotBlank]
-    #[Assert\Type('string')]
-    #[Assert\Length(min: 1, max: 191)]
-    private ?string $filename = null;
-
     #[ORM\OneToMany(mappedBy: 'book', targetEntity: Review::class, orphanRemoval: true)]
     private Collection $reviews;
 
@@ -72,7 +66,7 @@ class Book
 
 
     #[ORM\Column(nullable: true)]
-    private ?string $coverFilename = null;
+    private ?string $coverFilename;
 
 
 
@@ -184,11 +178,6 @@ class Book
     public function getFilename(): ?string
     {
         return $this->filename;
-    }
-
-    public function setFilename(?string $filename): void
-    {
-        $this->filename = $filename;
     }
 
     public function getReviews(): Collection

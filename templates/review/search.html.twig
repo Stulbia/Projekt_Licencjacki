@@ -3,33 +3,33 @@
 {% block title %}Szukaj recenzji{% endblock %}
 
 {% block body %}
-    <h1 class="text-2xl font-bold mb-4">Szukaj recenzji</h1>
+    <h1 class="text2xl fontBold mb4">Szukaj recenzji</h1>
 
-    <div class="flex flex-col lg:flex-row gap-8">
-        <aside class="w-full lg:w-1/3">
+    <div class="flex flexCol lg:flexRow gap8">
+        <aside class="wFull lg:w1/3">
             {{ form_start(filtersForm, {'method': 'get', 'attr': {'class': 'space-y-4'}}) }}
             {{ form_row(filtersForm.tagIds) }}
             {{ form_row(filtersForm.search) }}
             {{ form_row(filtersForm.minRating) }}
-            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+            <button type="submit" class="bgBlue600 textWhite px4 py2 rounded hover:bgBlue700">
                 Szukaj
             </button>
             {{ form_end(filtersForm) }}
         </aside>
 
-        <section class="w-full lg:w-2/3">
+        <section class="wFull lg:w2/3">
             {% if pagination.items is not empty %}
-                <ul class="space-y-4">
+                <ul class="spaceY4">
                     {% for review in pagination.items %}
-                        <li class="border p-4 rounded shadow">
-                            <h2 class="font-semibold">{{ review.book.title ?? 'Nieznana książka' }}</h2>
-                            <p class="text-sm text-gray-700">{{ review.comment|u.truncate(150) }}</p>
-                            <p class="text-xs text-gray-500 mt-2">Autor: {{ review.author.email ?? 'Anonim' }}</p>
-                            <a href="{{ path('book_show', {slug: review.book.slug}) }}" class="text-blue-600 text-sm">Zobacz książkę</a>
+                        <li class="border p4 rounded shadow">
+                            <h2 class="fontSemibold">{{ review.book.title ?? 'Nieznana książka' }}</h2>
+                            <p class="textSm textGray700">{{ review.comment|u.truncate(150) }}</p>
+                            <p class="textXs textGray500 mt2">Autor: {{ review.author.email ?? 'Anonim' }}</p>
+                            <a href="{{ path('book_show', {slug: review.book.slug}) }}" class="textBlue600 textSm">Zobacz książkę</a>
                         </li>
                     {% endfor %}
                 </ul>
-                <div class="mt-4">
+                <div class="mt4">
                     {{ knp_pagination_render(pagination) }}
                 </div>
             {% else %}

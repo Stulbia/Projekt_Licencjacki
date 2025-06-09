@@ -7,7 +7,7 @@
 
     {% if pagination.items is not empty %}
         {% for book in pagination.items %}
-            <div class="book-entry">
+            <div class="bookEntry">
 {#                <a href="{{ path('book_show', {id: book.id}) }}">{{ book.title }}</a>#}
                 <a href="{{ path('book_show', {slug: book.slug}) }}">{{ book.title }}</a>
 
@@ -16,11 +16,11 @@
             </div>
         {% endfor %}
 
-        <div class="pagination-info">
+        <div class="paginationInfo">
             Page {{ pagination.currentPageNumber }} of {{ pagination.pageCount }}
         </div>
 
-        <div class="pagination-links">
+        <div class="paginationLinks">
             {% if pagination.previousPageNumber is defined %}
                 <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all | merge({'page': pagination.previousPageNumber})) }}">Previous</a>
             {% endif %}
