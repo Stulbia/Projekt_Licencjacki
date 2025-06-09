@@ -1,22 +1,17 @@
 <?php
 
-/**
- * Review service.
- */
-
 namespace App\Service;
 
+use App\Dto\ReviewSearchFiltersDto;
 use App\Entity\Review;
 use App\Repository\ReviewRepository;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\QueryBuilder;
 use Knp\Component\Pager\PaginatorInterface;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * Class ReviewService.
- */
 class ReviewService implements ReviewServiceInterface
 {
     private const PAGINATOR_ITEMS_PER_PAGE = 10;
@@ -27,9 +22,6 @@ class ReviewService implements ReviewServiceInterface
     ) {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPaginatedList(int $page): PaginationInterface
     {
         return $this->paginator->paginate(
@@ -39,9 +31,6 @@ class ReviewService implements ReviewServiceInterface
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPaginatedUserList(int $page, UserInterface $user): PaginationInterface
     {
         return $this->paginator->paginate(
@@ -51,9 +40,6 @@ class ReviewService implements ReviewServiceInterface
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function save(Review $review, UserInterface $user): void
     {
         $review->setAuthor($user);
@@ -65,9 +51,6 @@ class ReviewService implements ReviewServiceInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function edit(Review $review): void
     {
         try {
@@ -77,9 +60,6 @@ class ReviewService implements ReviewServiceInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function delete(Review $review): void
     {
         try {
@@ -87,5 +67,13 @@ class ReviewService implements ReviewServiceInterface
         } catch (ORMException|OptimisticLockException) {
             // handle exception if needed
         }
+    }
+
+    /**
+     * Build query to search reviews by filters (e.g. tags).
+     */
+    public function queryByFilters(ReviewSearchFiltersDto $filters): QueryBuilder
+    {
+        return $this->reviewRepository->queryByFilters($filters);
     }
 }

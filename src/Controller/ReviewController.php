@@ -5,10 +5,15 @@ namespace App\Controller;
 use App\Entity\Review;
 use App\Entity\ReviewTag;
 use App\Entity\ReviewTagAssignment;
+use App\Form\Type\ReviewSearchFiltersType;
+use App\Form\Type\ReviewSearchType;
 use App\Form\Type\ReviewType;
 use App\Service\ReviewServiceInterface;
+use Knp\Component\Pager\PaginatorInterface;
+use App\Dto\ReviewSearchFiltersDto;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
@@ -146,6 +151,29 @@ class ReviewController extends AbstractController
         return $this->render('review/delete.html.twig', [
             'form' => $form->createView(),
             'review' => $review,
+        ]);
+    }
+/////////////////////////////////////
+
+    #[Route('/search', name: 'review_search')]
+    public function search(
+        Request $request,
+        PaginatorInterface $paginator,
+        FormFactoryInterface $formFactory
+    ): Response {
+        $filtersDto = new ReviewSearchFiltersDto();
+        $form = $formFactory->create(ReviewSearchFiltersType::class, $filtersDto, [
+            'method' => 'GET',
+        ]);
+        $form->handleRequest($request);
+
+        $query = $this->reviewService->queryByFilters($filtersDto);
+
+        $pagination = $paginator->paginate($query, $request->query->getInt('page', 1), 10);
+
+        return $this->render('review/search.html.twig', [
+            'pagination' => $pagination,
+            'filtersForm' => $form->createView(),
         ]);
     }
 }

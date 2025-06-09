@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Dto\ReviewSearchFiltersDto;
 use App\Entity\Review;
 use App\Entity\User;
 use App\Entity\Book;
@@ -43,12 +44,23 @@ class ReviewRepository extends ServiceEntityRepository
             ->orderBy('review.id', 'DESC');
     }
 
-    public function queryByUser(User $user): QueryBuilder
+//    public function queryByUser(User $user): QueryBuilder
+//    {
+//        return $this->getOrCreateQueryBuilder()
+//            ->andWhere('review.author = :author')
+//            ->setParameter('author', $user);
+//    }
+
+    public function queryByAuthor(User $user): QueryBuilder
     {
-        return $this->getOrCreateQueryBuilder()
-            ->andWhere('review.author = :author')
-            ->setParameter('author', $user);
+        return $this->createQueryBuilder('r')
+            ->leftJoin('r.book', 'b')
+            ->addSelect('b')
+            ->andWhere('r.author = :author')
+            ->setParameter('author', $user)
+            ->orderBy('r.createdAt', 'DESC');
     }
+
 
     public function queryByBook(Book $book): QueryBuilder
     {
@@ -61,4 +73,65 @@ class ReviewRepository extends ServiceEntityRepository
     {
         return $qb ?? $this->createQueryBuilder('review');
     }
+
+    public function findTopTagIdsUsedByUser(User $user, int $limit = 3): array
+    {
+        return $this->createQueryBuilder('r')
+            ->select('t.id')
+            ->join('r.tagAssignments', 'a')
+            ->join('a.tag', 't')
+            ->where('r.author = :author')
+            ->setParameter('author', $user)
+            ->groupBy('t.id')
+            ->orderBy('COUNT(t.id)', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getSingleColumnResult(); // Doctrine >= 2.8
+    }
+//
+//    public function queryByFilters(ReviewSearchFiltersDto $filters): QueryBuilder
+//    {
+//        $qb = $this->createQueryBuilder('r')
+//            ->leftJoin('r.book', 'b')
+//            ->addSelect('b');
+//
+//        if ($filters->getTagIds()) {
+//            $qb->join('r.tagAssignments', 'assignment')
+//                ->join('assignment.tag', 'tag')
+//                ->andWhere('tag.id IN (:tagIds)')
+//                ->setParameter('tagIds', $filters->getTagIds());
+//        }
+//
+//        return $qb->orderBy('r.createdAt', 'DESC');
+//    }
+//
+
+    public function queryByFilters(ReviewSearchFiltersDto $filters): QueryBuilder
+    {
+        $qb = $this->createQueryBuilder('r')
+            ->leftJoin('r.book', 'b')
+            ->addSelect('b');
+
+
+        if (!empty($filters->getTagIdValues())) {
+            $qb->join('r.tagAssignments', 'a')
+                ->join('a.tag', 't')
+                ->andWhere('t.id IN (:tagIds)')
+                ->setParameter('tagIds', $filters->getTagIdValues());
+        }
+
+
+        if ($filters->getSearch()) {
+            $qb->andWhere('r.comment LIKE :search')
+                ->setParameter('search', '%' . $filters->getSearch() . '%');
+        }
+        if ($filters->getMinRating() !== null) {
+            $qb->andWhere('r.rating >= :minRating')
+                ->setParameter('minRating', $filters->getMinRating());
+        }
+
+        return $qb->orderBy('r.rating', 'DESC');
+    }
+
+
 }

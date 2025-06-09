@@ -21,26 +21,27 @@ class Review
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $comment = null;
-
-    #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'reviews')]
     private ?User $author = null;
 
     #[ORM\ManyToOne(inversedBy: 'reviews')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Book $book = null;
 
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    private ?\DateTimeImmutable $createdAt = null;
 
     /**
      * @var Collection<int, ReviewTagAssignment>
      */
-    #[ORM\OneToMany(mappedBy: 'review', targetEntity: ReviewTagAssignment::class, cascade: ['persist', 'remove'])]
-    #[ORM\ManyToOne(inversedBy: 'tagAssignments')]
+    #[ORM\OneToMany(mappedBy: 'review', targetEntity: ReviewTagAssignment::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $tagAssignments;
 
     public function __construct()
     {
         $this->tagAssignments = new ArrayCollection();
+        $this->createdAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -89,6 +90,17 @@ class Review
     public function setBook(?Book $book): static
     {
         $this->book = $book;
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    {
+        $this->createdAt = $createdAt;
         return $this;
     }
 

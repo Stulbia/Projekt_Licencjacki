@@ -328,6 +328,26 @@ class BookRepository extends ServiceEntityRepository
     }
 
 
+    public function findBooksByTagIdsExcludingUserReviewed(array $tagIds, User $user, int $limit = 5): array
+    {
+        return $this->createQueryBuilder('b')
+            ->distinct()
+            ->join('b.reviews', 'r2')
+            ->join('r2.tagAssignments', 'ta')
+            ->join('ta.tag', 't')
+            ->where('t.id IN (:tagIds)')
+            ->andWhere('b NOT IN (
+            SELECT b2 FROM App\Entity\Book b2
+            JOIN b2.reviews r3
+            WHERE r3.author = :user
+        )')
+            ->setParameter('tagIds', $tagIds)
+            ->setParameter('user', $user)
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
 
 
 }

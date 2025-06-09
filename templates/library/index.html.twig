@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Moja biblioteczka</h1>
+
+    <ul>
+        {% for relation in relations %}
+            <li>
+                <strong>{{ relation.book.title }}</strong> – {{ relation.status.value }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

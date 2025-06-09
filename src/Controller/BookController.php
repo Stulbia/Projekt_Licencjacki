@@ -138,6 +138,7 @@ class BookController extends AbstractController
 //    }
 
     #[Route('/my_books', name: 'my_books', methods: ['GET'])]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function myBooks(
         #[MapQueryString(resolver: BookSearchInputFiltersDtoResolver::class)] BookSearchInputFiltersDto $filters,
         #[MapQueryParameter] int $page = 1

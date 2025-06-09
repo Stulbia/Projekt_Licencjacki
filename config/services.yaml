@@ -32,6 +32,11 @@ services:
         tags:
             - { name: 'controller.argument_value_resolver' }
 
+    App\Resolver\ReviewSearchFiltersDtoResolver:
+        tags:
+            - { name: 'controller.argument_value_resolver' }
+
+
     App\EventListener\AccessDeniedListener:
         tags:
             - { name: 'kernel.event_listener', event: 'kernel.exception', method: 'onKernelException' }
@@ -45,6 +50,12 @@ services:
             - '@App\Form\DataTransformer\TagsDataTransformer'
             - '@security.authorization_checker'
         tags: [ 'form.type' ]
+
+
+    App\Form\DataTransformer\ReviewTagToIdArrayTransformer:
+        autowire: true
+        autoconfigure: true
+
 
     App\Form\Type\BookEditType:
         arguments:

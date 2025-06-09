@@ -1,18 +1,13 @@
 <?php
 
-/**
- * Review service interface.
- */
-
 namespace App\Service;
 
+use App\Dto\ReviewSearchFiltersDto;
 use App\Entity\Review;
+use Doctrine\ORM\QueryBuilder;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * Interface ReviewServiceInterface.
- */
 interface ReviewServiceInterface
 {
     /**
@@ -37,8 +32,8 @@ interface ReviewServiceInterface
     /**
      * Save review.
      *
-     * @param Review         $review Review entity
-     * @param UserInterface  $user   Author
+     * @param Review        $review Review entity
+     * @param UserInterface $user   Author
      */
     public function save(Review $review, UserInterface $user): void;
 
@@ -55,4 +50,13 @@ interface ReviewServiceInterface
      * @param Review $review Review entity
      */
     public function delete(Review $review): void;
+
+    /**
+     * Query reviews by filters (e.g. tags).
+     *
+     * @param ReviewSearchFiltersDto $filters
+     *
+     * @return QueryBuilder
+     */
+    public function queryByFilters(ReviewSearchFiltersDto $filters): QueryBuilder;
 }

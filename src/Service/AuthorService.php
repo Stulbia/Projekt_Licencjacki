@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Author;
+use App\Entity\Book;
 use App\Repository\AuthorRepository;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\OptimisticLockException;
@@ -40,5 +41,26 @@ class AuthorService implements AuthorServiceInterface
         } catch (ORMException | OptimisticLockException) {
             // log error if needed
         }
+    }
+
+    /**
+     * Zwraca autorów mających książki.
+     *
+     * @return Author[]
+     */
+    public function findAuthorsWithBooks(): array
+    {
+        return $this->authorRepository->findAuthorsWithBooks();
+    }
+
+    /**
+     * Zwraca książki danego autora.
+     *
+     * @param Author $author
+     * @return Book[]
+     */
+    public function findBooksByAuthor(Author $author): array
+    {
+        return $this->authorRepository->findBooksByAuthor($author);
     }
 }

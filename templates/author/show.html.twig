@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ author.pseudonym ?? author.firstName ~ ' ' ~ author.name }}
+{% endblock %}
+
+{% block body %}
+    <div class="dashboard-content">
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold">
+                {{ author.pseudonym ?? author.firstName ~ ' ' ~ author.name }}
+            </h1>
+
+            {% if author.photoFilename %}
+                <img src="{{ asset('uploads/authors/' ~ author.photoFilename) }}" alt="Zdjęcie autora" class="mt-4 rounded-xl w-48 h-auto shadow">
+            {% endif %}
+
+            {% if author.description %}
+                <p class="mt-4 text-gray-700">{{ author.description }}</p>
+            {% endif %}
+        </div>
+
+        <h2 class="text-2xl font-semibold mb-4">Książki tego autora</h2>
+
+        {% if books is not empty %}
+            <div class="book-grid">
+                {% for book in books %}
+                    <div class="book-card">
+                        <h3>
+                            <a href="{{ path('book_show', { slug: book.slug }) }}">
+                                {{ book.title }}
+                            </a>
+                        </h3>
+                        {% if book.coverFilename %}
+                            <img src="{{ asset('uploads/books/' ~ book.coverFilename) }}" alt="Okładka" class="book-cover">
+                        {% endif %}
+                        <p>{{ book.description|u.truncate(100) }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>Ten autor nie ma jeszcze żadnych książek.</p>
+        {% endif %}
+    </div>
+{% endblock %}

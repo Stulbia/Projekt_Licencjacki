@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Dodaj do biblioteczki: {{ book.title }}</h1>
+
+    {{ form_start(form) }}
+    {{ form_row(form.status) }}
+    <button class="btn btn-primary">Zapisz</button>
+    {{ form_end(form) }}
+{% endblock %}
