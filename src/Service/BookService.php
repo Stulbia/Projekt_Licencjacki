@@ -117,7 +117,7 @@ class BookService implements BookServiceInterface
     private function prepareFilters(BookListInputFiltersDto $filters): BookListFiltersDto
     {
         return new BookListFiltersDto(
-            tag: $filters->tagId ? $this->tagService->findOneById($filters->tagId) : null,
+            tag: $filters->tagId ? $this->tagService->findManyById($filters->tagId) : null,
             bookStatus: BookStatus::tryFrom($filters->bookStatus),
             sortBy: ($filters->sortBy ?? 'id'),
         );
@@ -126,14 +126,14 @@ class BookService implements BookServiceInterface
     private function prepareSearchFilters(BookSearchInputFiltersDto $filters): BookSearchFiltersDto
     {
         return new BookSearchFiltersDto(
-            tag: $filters->tagId ? $this->tagService->findOneById($filters->tagId) : null,
+            tag: $filters->tagId ? $this->tagService->findManyById($filters->tagId) : null,
             bookStatus: BookStatus::tryFrom($filters->bookStatus),
             titlePattern: $filters->titlePattern,
             descriptionPattern: $filters->descriptionPattern,
             sortBy: $filters->sortBy ?? null,
             minRating: $filters->minRating ?? null,
             author: $filters->author ??  null,
-            reviewTagIds: $filters->reviewTagId ? $this->reviewTagService->findOneById($filters->reviewTagId) : null
+            reviewTagIds: $filters->reviewTagId ? $this->reviewTagService->findManyById($filters->reviewTagId) : null
         );
     }
     public function findOneWithTags(string $slug): ?Book

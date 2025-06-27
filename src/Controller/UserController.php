@@ -11,7 +11,9 @@ use App\Form\Type\ChangePasswordType;
 use App\Form\Type\UserType;
 use App\Form\Type\UserTypeForAdmin;
 use App\Form\Type\UserUpdateType;
+use App\Repository\UserBookRelationRepository;
 use App\Service\BookServiceInterface;
+use App\Service\ReviewServiceInterface;
 use App\Service\UserManagerInterface;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -32,6 +34,9 @@ class UserController extends AbstractController
     public function __construct(
         private readonly UserManagerInterface $userManager,
         private readonly TranslatorInterface $translator,
+        private readonly BookServiceInterface $bookService,
+        private readonly ReviewServiceInterface $reviewService,
+        private readonly UserBookRelationRepository $bookRepo,
     ) {
     }
 
@@ -69,7 +74,7 @@ class UserController extends AbstractController
     }
 
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    #[Route('/profile', name: 'user_show', methods: ['GET'])]
+    #[Route('/show', name: 'user_show', methods: ['GET'])]
     public function show(): Response
     {
         return $this->render('user/show.html.twig', ['user' => $this->getUser()]);
@@ -134,6 +139,34 @@ class UserController extends AbstractController
             'form' => $form->createView(),
             'user' => $user,
             'back_to_list_path' => 'user_index'
+        ]);
+    }
+
+    #[Route('/profile/{slug}', name: 'user_public_profile', methods: ['GET'])]
+    public function showPublic(string $slug, $request): Response
+    {
+        $user = $this->userManager->findOneBySlug($slug);
+
+        if (!$user) {
+            throw $this->createNotFoundException('Nie znaleziono użytkownika.');
+        }
+
+
+
+//        BIBLIOTECZKA UZYTKOWNIKA
+        $page = $request->query->getInt('page', 1);
+
+        $paginationR = $this->reviewService->getPaginatedUserList($request->query->getInt('page', 1), $user);
+        if ($user) {
+            $paginationB = $this->bookService->getPaginatedUserList($page, $user); //przepisac metode na bez filtrow
+        } else {
+            return $this->redirectToRoute('login');
+        }
+
+        return $this->render('user/public_profile.html.twig', [
+            'user' => $user,
+            'paginationR' => $paginationR,
+            'paginationB' => $paginationB,
         ]);
     }
 }

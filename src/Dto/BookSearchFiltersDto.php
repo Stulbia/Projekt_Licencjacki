@@ -12,7 +12,7 @@ use App\Entity\Tag;
 class BookSearchFiltersDto
 {
     public function __construct(
-        public readonly ?Tag $tag,
+        public ?array $tag,
         public readonly ?BookStatus $bookStatus,
         public readonly ?string $titlePattern,
         public readonly ?string $descriptionPattern,

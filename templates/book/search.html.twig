@@ -1,41 +1,57 @@
 {# templates/book/search.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block title %}Szukaj książek
-    <pre>{{ dump(app.request.server.get('REQUEST_URI')) }}</pre>
-{% endblock %}
+{% block title %}Szukaj książek{% endblock %}
 
 {% block body %}
 
     <h1>Szukaj książek</h1>
 
+
     <div class="searchLayout">
 
-        <aside class="searchForm">
 
-            {#             ——— FORMULARZ ———#}
-            {{ form_start(form, {method: 'get', action: path(app.request.attributes.get('_route')),attr: {class: 'filter-form'}}) }}
+        <aside class="book.searchForm">
+
+            {# ——— FORMULARZ ——— #}
+            {{ form_start(form, {
+                method: 'get',
+                action: path(app.request.attributes.get('_route')),
+                attr: {class: 'filter-form'}
+            }) }}
 
             <h2 class="filterHeading">Filtry</h2>
 
-            {#             — przyciski —#}
+            {# — przyciski — #}
             <div class="formActions">
                 <button type="submit" class="btn btnPrimary">🔍︎ Szukaj</button>
-                {#                <a href="{{ path('index') }}" class="btn btnReset">Wyczyść</a>#}
             </div>
-
 
             <div class="formGroup">
+                {{ form_label(form.title, null, {label_attr: {class: 'formLabel'}}) }}
+                {{ form_widget(form.title, {
+                    attr: {class: 'textInput', placeholder: 'Wichrowe wzgorza...'}
+                }) }}
+            </div>
+            {# — AUTOR — #}
+            <div class="formGroup">
                 {{ form_label(form.authorTerm, null, {label_attr: {class: 'formLabel'}}) }}
-                {{ form_widget(form.authorTerm, {attr: {class: 'textInput', placeholder: 'Brandon / King …'}}) }}
+                {{ form_widget(form.authorTerm, {
+                    attr: {class: 'textInput', placeholder: 'Brandon / King …'}
+                }) }}
             </div>
 
-            {#             — tagi (dropdown) —#}
-            <div class="formGroup tagFilter">
+            {# — TAGI KSIĄŻKI — #}
+            <div class="formGroup tagFilter" data-filter="bookTags">
                 {{ form_widget(form.tag, {attr: {class: 'hidden-tag-select'}}) }}
-                <button type="button" id="tagToggle" class="btnPrimary tagToggle" aria-expanded="false">Wybierz tagi</button>
-                <div id="tagPills" class="tagPills"></div>
-                <div id="tagDropdown" class="tagDropdown">
+
+                <button type="button" class="btnPrimary tagToggle" aria-expanded="false">
+                    Wybierz tagi
+                </button>
+
+                <div class="tagPills"></div>
+
+                <div class="tagDropdown">
                     {% for choice in form.tag.vars.choices %}
                         <label class="tagOption">
                             <input type="checkbox" value="{{ choice.value }}" data-label="{{ choice.label }}">
@@ -45,7 +61,7 @@
                 </div>
             </div>
 
-            {#             — minimalna ocena —#}
+            {# — MINIMALNA OCENA — #}
             <div class="formGroup">
                 <label class="formLabel" for="minRatingRange">
                     Minimalna ocena:
@@ -57,26 +73,47 @@
                        class="rangeInput">
             </div>
 
-            {#             — sortowanie —#}
+            {# — TAGI RECENZJI — #}
+            <div class="formGroup tagFilter" data-filter="reviewTags">
+                {{ form_widget(form.reviewTags, {attr: {class: 'hidden-tag-select'}}) }}
+
+                <button type="button" class="btnPrimary tagToggle" aria-expanded="false">
+                    Wybierz tagi recenzji
+                </button>
+
+                <div class="tagPills"></div>
+
+                <div class="tagDropdown">
+                    <div class="tagDropdownInner">
+                        <div class="tagOptions">
+                            {% for choice in form.reviewTags.vars.choices %}
+                                <label class="tagOption">
+                                    <input type="checkbox" value="{{ choice.value }}" data-label="{{ choice.label }}">
+                                    <span class="tagLabel">{{ choice.label }}</span>
+                                </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {# — SORTOWANIE — #}
             <div class="formGroup">
                 <label class="formLabel" for="sortBy">Sortuj według</label>
                 <select id="sortBy" name="sortBy" class="customSelect">
                     <option value="">Domyślnie</option>
                     <option value="rating"    {{ app.request.get('sortBy') == 'rating'    ? 'selected' }}>Średnia ocena</option>
                     <option value="title"     {{ app.request.get('sortBy') == 'title'     ? 'selected' }}>Tytuł</option>
-                    <option value="updatedAt" {{ app.request.get('sortBy') == 'updatedAt' ? 'selected' }}>Ostatnia aktualizacja</option>
                 </select>
             </div>
 
-            {{ form_rest(form) }}  {# CSRF & ukryte pola#}
+            {{ form_rest(form) }} {# CSRF & ukryte pola #}
             {{ form_end(form, {render_rest: false}) }}
         </aside>
 
         {# ——— WYNIKI ——— #}
         <section class="searchResults">
             <h2>Wyniki</h2>
-
-
 
             {% if pagination.items is not empty %}
                 <div class="bookGrid">
@@ -86,7 +123,7 @@
                                 <img src="{{ asset('uploads/covers/' ~ book.coverFilename) }}" class="book-cover"
                                      alt="Okładka: {{ book.title }}">
                             {% else %}
-                                <img src="{{ asset('uploads/defaultCover.svg') }}" alt="Okladka {{ book.title }}">
+                                <img src="{{ asset('uploads/defaultCover.svg') }}" alt="Okładka {{ book.title }}">
                             {% endif %}
                             <h3><a href="{{ path('book_show', {slug: book.slug}) }}">{{ book.title }}</a></h3>
                             <p class="author">{{ book.author ? book.author : 'Nieznany autor' }}</p>
@@ -101,20 +138,27 @@
         </section>
     </div>
 
-
-<script>
-            document.addEventListener('DOMContentLoaded', () => {
-
+    <script>
+        /**
+         * Skrypt obsługujący pola wyboru tagów (zarówno książek, jak i recenzji).
+         * Działa dla dowolnej liczby bloków .tagFilter, bo każdy blok działa w swojej
+         * własnej, zamkniętej przestrzeni – nie ma już konfliktu identyfikatorów.
+         */
+        document.addEventListener('DOMContentLoaded', () => {
+            /**
+             * Dla każdego kontenera .tagFilter podpinamy niezależny zestaw listenerów.
+             */
+            document.querySelectorAll('.tagFilter').forEach(filter => {
                 /* --- referencje --- */
-                const toggleBtn   = document.getElementById('tagToggle');
-                const dropdown    = document.getElementById('tagDropdown');
-                const pillsBox    = document.getElementById('tagPills');
-                const hiddenSelect= document.querySelector('.hidden-tag-select');
+                const toggleBtn    = filter.querySelector('.tagToggle');
+                const dropdown     = filter.querySelector('.tagDropdown');
+                const pillsBox     = filter.querySelector('.tagPills');
+                const hiddenSelect = filter.querySelector('.hidden-tag-select');
 
-                /* --- helpery --- */
+                /* --- helper: renderuje pigułki z zaznaczonymi tagami --- */
                 const renderPills = () => {
                     pillsBox.innerHTML = '';
-                    [...hiddenSelect.selectedOptions].forEach(opt => {
+                    Array.from(hiddenSelect.selectedOptions).forEach(opt => {
                         const pill = document.createElement('span');
                         pill.className = 'tagPill';
                         pill.innerHTML = `${opt.text} <span class="remove" data-value="${opt.value}">×</span>`;
@@ -132,31 +176,32 @@
                 /* --- klik w checkbox --- */
                 dropdown.addEventListener('change', e => {
                     const box   = e.target;
+                    if (box.tagName !== 'INPUT') return; // bezpieczeństwo
                     const value = box.value;
 
-                    /* synchronizuj hidden <select> */
-                    [...hiddenSelect.options].forEach(opt => {
+                    /* synchronizuj ukryty <select> */
+                    Array.from(hiddenSelect.options).forEach(opt => {
                         if (opt.value === value) opt.selected = box.checked;
                     });
 
                     renderPills();
                 });
 
-                /* --- usuwanie z pigułki --- */
+                /* --- usuwanie tagu z pigułki --- */
                 pillsBox.addEventListener('click', e => {
                     if (!e.target.classList.contains('remove')) return;
                     const value = e.target.dataset.value;
 
-                    /* odznacz checkbox + select */
+                    /* odznacz checkbox + <select> */
                     dropdown.querySelector(`input[value="${value}"]`).checked = false;
-                    [...hiddenSelect.options].find(opt => opt.value === value).selected = false;
+                    Array.from(hiddenSelect.options).find(opt => opt.value === value).selected = false;
 
                     renderPills();
                 });
 
                 /* --- klik poza dropdown → zamknij --- */
                 document.addEventListener('click', e => {
-                    if (!dropdown.contains(e.target) && !toggleBtn.contains(e.target)) {
+                    if (!filter.contains(e.target)) {
                         dropdown.classList.remove('open');
                         toggleBtn.setAttribute('aria-expanded', 'false');
                     }
@@ -165,7 +210,15 @@
                 /* --- inicjalizacja z już-wybranymi (np. po powrocie z wyników) --- */
                 renderPills();
             });
-        </script>
+            const ratingInput = document.getElementById('minRatingRange');
+            const ratingPreview = document.getElementById('ratingPreview');
 
-    </div>
+            if (ratingInput && ratingPreview) {
+                ratingInput.addEventListener('input', () => {
+                    ratingPreview.textContent = ratingInput.value;
+                });
+            }
+        });
+    </script>
+
 {% endblock %}

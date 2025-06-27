@@ -32,30 +32,18 @@ class ReviewType extends AbstractType
         /** @var Book|null $book */
         $book = $options['book'];
 
-        if ($book instanceof Book) {
-            // ukryte pole z ID, bo książka przyszła z URL-a (np. /book/{slug}/review/new)
-            $builder->add('book', HiddenType::class, [
-                'data'   => $book->getId(),
-                'mapped' => false,
-            ]);
+        $builder->add('book', HiddenType::class, [
+            'data'   => $book?->getId(),
+            'mapped' => false,
+        ]);
 
-            // listener mapujący ID → encja
-            $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($book): void {
-                $review = $event->getData();
-                if ($review instanceof Review) {
-                    $review->setBook($book);
-                }
-            });
-        } else {
-            // brak książki w kontekście – pokaż <select>
-            $builder->add('book', EntityType::class, [
-                'class'       => Book::class,
-                'choice_label'=> 'title',
-                'placeholder' => 'label.select_book',
-                'label'       => 'label.book',
-                'required'    => true,
-            ]);
-        }
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($book): void {
+            $review = $event->getData();
+            if ($review instanceof Review && $book instanceof Book) {
+                $review->setBook($book);
+            }
+        });
+
         $builder
             ->add('rating', RangeType::class, [
                 'label'    => 'label.rating',

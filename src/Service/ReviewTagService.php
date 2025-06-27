@@ -69,4 +69,14 @@ class ReviewTagService implements ReviewTagServiceInterface
     {
         return $this->reviewTagRepository->findOneById($id);
     }
+
+    public function findManyById(array $ids): array
+    {
+        return $this->reviewTagRepository->createQueryBuilder('rt')
+            ->where('rt.id IN (:ids)')
+            ->setParameter('ids', $ids)
+            ->getQuery()
+            ->getResult();
+    }
+
 }

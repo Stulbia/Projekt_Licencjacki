@@ -33,7 +33,23 @@
                 </p>
 
                 <p class="book-description">{{ book.description }}</p>
-                <p class="book-rating"><strong>Średnia ocen:</strong> {{ avg }}/10</p>
+{#                <p class="book-rating"><strong>Średnia ocen:</strong> {{ avg }}/10</p>#}
+
+
+                {% if avg and avg >= 1 %}
+                    <div class="book-rating">
+                        <strong>Średnia ocen:</strong>
+                        <div class="star-wrapper" aria-label="Ocena {{ avg }}/10">
+                            {% for i in 1..10 %}
+                                <span class="star {{ i <= avg ? 'filled' : '' }}">★</span>
+                            {% endfor %}
+                        </div>
+{#                        <span class="rating-number">{{ avg }}/10</span>#}
+                    </div>
+                {% else %}
+                    <p class="no-reviews">Ta książka nie posiada jeszcze ocen.</p>
+                {% endif %}
+
 
                 {% if book.tags|length > 0 %}
                     <div class="book-tags">
@@ -43,13 +59,32 @@
                     </div>
                 {% endif %}
 
-                {% block add_buttons %}
-                    {% if not formVisible %}
-                        <a href="{{ path('library_add', {id: book.id}) }}" class="btn btnPrimary mt2">➕ Dodaj do biblioteczki</a>
-                    {% endif %}
+{#                {% block add_buttons %}#}
+{#                    {% if not formVisible %}#}
+{#                        <a href="{{ path('library_add', {id: book.id}) }}" class="btn btnPrimary mt2">➕ Dodaj do biblioteczki</a>#}
+{#                    {% endif %}#}
 
-                    {% if not formVisibleReview and not hasUserReview %}
-                        <a href="{{ path('review_create', {bookId: book.id}) }}" class="btn btnPrimary mt2">➕ Dodaj recenzję</a>
+{#                    {% if not formVisibleReview and not hasUserReview %}#}
+{#                        <a href="{{ path('review_create', {bookId: book.id}) }}" class="btn btnPrimary mt2">➕ Dodaj recenzję</a>#}
+{#                    {% endif %}#}
+{#                {% endblock %}#}
+
+                {% block add_buttons %}
+                    {% if app.user %}
+                        {% if not formVisible %}
+                            {% if inLibrary %}
+                                <a href="{{ path('library_add', {id: book.id}) }}" class="btn btnPrimary mt2">➕ Zmien Status w biblioteczce</a>
+                            {% else %}
+                                <a href="{{ path('library_add', {id: book.id}) }}" class="btn btnPrimary mt2">➕ Dodaj do biblioteczki</a>
+                            {% endif %}
+
+                        {% endif %}
+
+                        {% if not formVisibleReview and not hasUserReview %}
+                            <a href="{{ path('review_create', {bookId: book.id}) }}" class="btn btnPrimary mt2">➕ Dodaj recenzję</a>
+                        {% endif %}
+                    {% else %}
+                        <p class="textNotice mt2">🔒 <a href="{{ path('app_login') }}">Zaloguj się</a>, aby dodawać książki do biblioteczki i pisać recenzje.</p>
                     {% endif %}
                 {% endblock %}
 

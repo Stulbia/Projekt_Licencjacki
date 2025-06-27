@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'users')]
@@ -55,11 +56,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\Type('string')]
     private ?string $opis = null;
 
+    #[ORM\Column(length: 255, unique: true, nullable: false)]
+    #[Gedmo\Slug(fields: ['name'], updatable: false)]
+    private ?string $slug = null;
+
+
     public function __construct()
     {
         $this->reviews = new ArrayCollection();
         $this->bookRelations = new ArrayCollection();
         $this->accounts = new ArrayCollection();
+    }
+
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
     }
 
     public function getId(): ?int

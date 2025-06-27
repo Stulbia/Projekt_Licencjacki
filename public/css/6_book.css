@@ -65,6 +65,26 @@ body:not(.lightMode) .book-show .book-cover {
 .book-show .book-tags .badge {
     font-size: 0.85rem;
 }
+.book-show .book-tags .badge {
+    background-color: #38ed41;
+    color: #fff;
+    padding: 0.3rem 0.6rem;
+    border-radius: 9999px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: background 0.3s;
+}
+
+body.lightMode .book-show .book-tags .badge {
+    background-color: #e0e7ff;
+    color: #278c27;
+}
+.book-show .book-tags .badge:hover {
+    background-color: #6b7280;
+    cursor: default;
+}
+
 
 .book-show .book-reviews {
     max-width: 1000px;
@@ -102,3 +122,70 @@ body.lightMode .book-show .review-comment {
 .book-show .mt2 {
     margin-top: 1rem;
 }
+
+.book-show .book-rating {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.book-show .star-bar {
+    position: relative;
+    display: inline-block;
+    width: 120px; /* szerokość 10 gwiazdek */
+    height: 1.2rem;
+    background: repeating-linear-gradient(
+            to right,
+            #ccc 0,
+            #ccc 10%,
+            transparent 10%,
+            transparent 20%
+    );
+    background-size: 10% 100%;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.book-show .star-bar-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: linear-gradient(to right, #facc15, #f59e0b); /* żółte */
+    z-index: 1;
+}
+/*     ---------------------------------   animacja      */
+.bookSearchLayout {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.bookSearchForm {
+    width: 260px;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: all 0.35s ease;
+    pointer-events: none;
+}
+
+.bookSearchForm.visible {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+}
+
+.book-filterToggleBtn {
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+    .bookSearchLayout {
+        flex-direction: column;
+    }
+    .bookSearchForm {
+        width: 100%;
+    }
+}
+

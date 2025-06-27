@@ -36,6 +36,13 @@ class LibraryController extends AbstractController
         $user = $this->getUser();
         $relation = $relationRepo->findOneBy(['book' => $book, 'owner' => $user]);
         $avg = $this->reviewService->avgRating($book->getId());
+        foreach ($book->getReviews() as $review) {
+            if ($user && $review->getAuthor() === $user) {
+                $userReview = $review;
+            } else {
+                $otherReviews[] = $review;
+            }
+        }
         if (!$relation) {
             $relation = new UserBookRelation();
             $relation->setBook($book);
@@ -45,6 +52,8 @@ class LibraryController extends AbstractController
         $form = $this->createForm(UserBookRelationType::class, $relation);
         $form->handleRequest($request);
 
+        $userReview = null;
+        $otherReviews = [];
         if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($relation);
             $em->flush();
@@ -56,8 +65,10 @@ class LibraryController extends AbstractController
 
         return $this->render('library/add.html.twig', [
         'book' => $book,
-        'form' => $form->createView(), 'avg' => $avg,
-        'formVisible' => true
+        'form' => $form->createView(),
+            'avg' => $avg,
+        'formVisible' => true, 'hasUserReview' => $userReview !== null, 'otherReviews' => $otherReviews,
+            'inLibrary' => true,
         ]);
     }
 

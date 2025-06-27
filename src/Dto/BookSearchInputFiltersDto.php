@@ -16,14 +16,15 @@ class BookSearchInputFiltersDto
      * @param int|null    $minRating           Minimalna średnia ocena
      */
     public function __construct(
-        public ?int $tagId = null,
+
+        public ?array $tagId = [],
         public string $bookStatus = 'PUBLIC',
         public ?string $titlePattern = null,
         public ?string $descriptionPattern = null,
         public ?string $sortBy = null,
         public ?string $author = null,
         public ?int $minRating = null,
-        public ?int $reviewTagId = null,
+        public ?array $reviewTagId = [],
     ) {
     }
 }

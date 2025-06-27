@@ -10,6 +10,7 @@ use App\Form\Type\BookCoverType;
 use App\Form\Type\BookEditType;
 use App\Form\Type\BookType;
 use App\Form\Type\SearchBookType;
+use App\Repository\UserBookRelationRepository;
 use App\Resolver\BookListInputFiltersDtoResolver;
 use App\Resolver\BookSearchInputFiltersDtoResolver;
 use App\Service\BookServiceInterface;
@@ -36,7 +37,8 @@ class BookController extends AbstractController
         private readonly BookServiceInterface $bookService,
         private readonly TagServiceInterface $tagService,
         private readonly TranslatorInterface $translator,
-        private readonly ReviewServiceInterface $reviewService
+        private readonly ReviewServiceInterface $reviewService,
+        private readonly UserBookRelationRepository $relationRepo
     ) {
     }
 
@@ -267,6 +269,7 @@ class BookController extends AbstractController
                 $otherReviews[] = $review;
             }
         }
+        $inlibrary = (bool) $this->relationRepo->findOneBy(['book' => $book, 'owner' => $user]);
 
         return $this->render('book/show.html.twig', [
             'book' => $book,
@@ -274,6 +277,7 @@ class BookController extends AbstractController
             'hasUserReview' => $userReview !== null,
             'userReview' => $userReview,
             'otherReviews' => $otherReviews,
+            'inLibrary' => $inlibrary,
         ]);
     }
 }

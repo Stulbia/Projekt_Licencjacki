@@ -81,6 +81,19 @@ class TagService implements TagServiceInterface
     {
         return $this->tagRepository->findOneById($id);
     }
+    public function findManyById(array $ids): array
+    {
+        if (empty($ids)) {
+            return [];
+        }
+
+        return $this->tagRepository->createQueryBuilder('t')
+            ->where('t.id IN (:ids)')
+            ->setParameter('ids', $ids)
+            ->getQuery()
+            ->getResult();
+    }
+
 
     /**
      * Save entity.

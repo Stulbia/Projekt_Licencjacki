@@ -9,6 +9,7 @@ use App\Entity\User;
 use App\Form\Type\ReviewSearchFiltersType;
 use App\Form\Type\ReviewType;
 use App\Repository\BookRepository;
+use App\Repository\UserBookRelationRepository;
 use App\Service\ReviewServiceInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -27,15 +28,23 @@ class ReviewController extends AbstractController
 {
     public function __construct(
         private readonly ReviewServiceInterface $reviewService,
-        private readonly TranslatorInterface $translator
+        private readonly TranslatorInterface $translator,
+        private readonly UserBookRelationRepository $relationRepo
     ) {
     }
 
     #[Route(name: 'review_index', methods: 'GET')]
     public function index(Request $request): Response
     {
-        $pagination = $this->reviewService->getPaginatedList($request->query->getInt('page', 1));
+        $user = $this->getUser();
+        $page = $request->query->getInt('page', 1);
 
+//        $pagination = $this->reviewService->getPaginatedList($request->query->getInt('page', 1));
+        if ($user) {
+            $pagination = $this->reviewService->getPaginatedUserList($page, $user);
+        } else {
+            return $this->redirectToRoute('login');
+        }
         return $this->render('review/my_reviews.html.twig', [
             'pagination' => $pagination,
         ]);
@@ -67,7 +76,8 @@ class ReviewController extends AbstractController
 
             return $this->redirectToRoute('book_show', ['slug' => $book->getSlug()]);
         }
-
+        $user = $this->getUser();
+        $inlibrary = (bool) $this->relationRepo->findOneBy(['book' => $book, 'owner' => $user]);
         return $this->render('review/create.html.twig', [
             'form' => $form->createView(),
             'book' => $book,
@@ -76,6 +86,7 @@ class ReviewController extends AbstractController
             'hasUserReview' => false,
             'userReview' => null,
             'otherReviews' => $book->getReviews(),
+            'inLibrary' => $inlibrary,
         ]);
     }
 
@@ -111,15 +122,19 @@ class ReviewController extends AbstractController
 
             return $this->redirectToRoute('book_show', ['slug' => $review->getBook()->getSlug()]);
         }
+        $user = $this->getUser();
+        $book  = $review->getBook();
+        $inlibrary = (bool) $this->relationRepo->findOneBy(['book' => $book, 'owner' => $user]);
 
         return $this->render('review/edit.html.twig', [
             'form' => $form->createView(),
-            'book' => $review->getBook(),
+            'book' => $book,
             'avg' => $this->reviewService->avgRating($review->getBook()->getId()),
             'formVisibleReview' => true,
             'hasUserReview' => true,
             'review' => $review,
             'otherReviews' => $review->getBook()->getReviews()->filter(fn(Review $r) => $r !== $review),
+            'inLibrary' => $inlibrary,
         ]);
     }
 
@@ -141,6 +156,9 @@ class ReviewController extends AbstractController
             return $this->redirectToRoute('book_show', ['slug' => $review->getBook()->getSlug()]);
         }
 
+        $user = $this->getUser();
+        $book  = $review->getBook();
+        $inlibrary = (bool) $this->relationRepo->findOneBy(['book' => $book, 'owner' => $user]);
         return $this->render('review/delete.html.twig', [
             'form' => $form->createView(),
             'book' => $review->getBook(),
@@ -149,7 +167,8 @@ class ReviewController extends AbstractController
             'hasUserReview' => true,
             'review' => $review,
             'otherReviews' => $review->getBook()->getReviews()->filter(fn(Review $r) => $r !== $review),
-        ]);
+            'inLibrary' => $inlibrary,
+            ]);
     }
 
     #[Route('/search', name: 'review_search')]

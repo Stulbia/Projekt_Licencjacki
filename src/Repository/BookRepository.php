@@ -90,16 +90,15 @@ class BookRepository extends ServiceEntityRepository
             ->addGroupBy('tags.id');
 
         // --- REVIEW TAGS PERCENTAGE FILTER ---
-        if ($filters->reviewTagIds && count($filters->reviewTagIds) > 0) {
-            // Dołącz tagi recenzji tylko, jeśli filtrujemy po nich
-            $qb
-                ->leftJoin('r.tagAssignments', 'rta')
-                ->leftJoin('rta.tag', 'reviewTag');
-
-            // Policz wszystkie recenzje i te z wybranymi tagami
-            $qb->addSelect('COUNT(DISTINCT r.id) AS HIDDEN total_reviews')
-                ->addSelect('COUNT(DISTINCT CASE WHEN reviewTag.id IN (:tagIds) THEN r.id END) AS HIDDEN tagged_reviews')
-                ->having('(COUNT(DISTINCT CASE WHEN reviewTag.id IN (:tagIds) THEN r.id END) * 1.0 / NULLIF(COUNT(DISTINCT r.id), 0)) >= :minRatio')
+        if (!empty($filters->reviewTagIds)) {
+            $qb->leftJoin('r.tagAssignments', 'rta')
+                ->leftJoin('rta.tag', 'reviewTag')
+                ->addSelect('SUM(CASE WHEN reviewTag.id IN (:tagIds) THEN 1 ELSE 0 END) AS HIDDEN tagged_reviews')
+                ->addSelect('COUNT(DISTINCT r.id) AS HIDDEN total_reviews')
+                ->having('(
+                SUM(CASE WHEN reviewTag.id IN (:tagIds) THEN 1 ELSE 0 END) * 1.0 /
+                NULLIF(COUNT(DISTINCT r.id), 0)
+            ) >= :minRatio')
                 ->setParameter('tagIds', $filters->reviewTagIds)
                 ->setParameter('minRatio', 0.4);
         }
@@ -118,15 +117,15 @@ class BookRepository extends ServiceEntityRepository
 
         // --- RATING FILTER ---
         if ($filters->minRating !== null) {
-            $qb->addSelect('AVG(r.rating) AS HIDDEN avgRating');
-            $qb->andHaving('COALESCE(AVG(r.rating), -1) >= :minRating')
+            $qb->addSelect('AVG(r.rating) AS HIDDEN avgRating')
+                ->andHaving('COALESCE(AVG(r.rating), -1) >= :minRating')
                 ->setParameter('minRating', $filters->minRating);
         }
 
-        // --- INNE FILTRY (np. status książki, rok, itp.) ---
+        // --- ADDITIONAL FILTERS ---
         $qb = $this->applyFiltersToSearchList($qb, $filters);
 
-        // --- SORTOWANIE ---
+        // --- SORTING ---
         switch ($filters->sortBy) {
             case 'rating':
                 $qb->addOrderBy('avgRating', 'DESC');

@@ -16,11 +16,14 @@ class BookSearchInputFiltersDtoResolver implements ValueResolverInterface
             return [];
         }
 
-        $tagId = $request->query->get('tagId');
-        $tagId = is_numeric($tagId) ? (int) $tagId : null;
+//        $tagId = $request->query->get('tagId');
+//        $tagId = is_numeric($tagId) ? (int) $tagId : null;
 
-        $reviewTagId = $request->query->get('reviewTagId');
-        $reviewTagId = is_numeric($reviewTagId) ? (int) $reviewTagId : null;
+//        $reviewTagId = $request->query->get('reviewTagId');
+//        $reviewTagId = is_numeric($reviewTagId) ? (int) $reviewTagId : null;
+
+        $tagId       = array_map('intval', $request->query->all('tag'));
+        $reviewTagId = array_map('intval', $request->query->all('reviewTags'));
 
         $statusRaw = $request->query->get('statusId');
         $bookStatus = null;
@@ -29,7 +32,7 @@ class BookSearchInputFiltersDtoResolver implements ValueResolverInterface
             try {
                 $bookStatus = BookStatus::from($statusRaw);
             } catch (\ValueError) {
-                $bookStatus = null; // lub zostaw błąd, jak wolisz
+                $bookStatus = null;
             }
         }
 
@@ -49,7 +52,7 @@ class BookSearchInputFiltersDtoResolver implements ValueResolverInterface
             descriptionPattern: $descriptionPattern,
             sortBy: $sortBy ?: null,
             minRating: $minRating ?: null,
-            reviewTagId: $tagId,
+            reviewTagId: $reviewTagId,
             author: $author
         );
     }

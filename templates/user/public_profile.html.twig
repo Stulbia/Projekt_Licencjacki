@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil {{ user.name }}{% endblock %}
+
+{% block body %}
+    <section class="profile-page">
+        <h1 class="profile-title">Profil użytkownika</h1>
+
+        <div class="profile-container">
+            {# ---------- Avatar ---------- #}
+            <div class="profile-avatar">
+                {% if user.avatarFilename %}
+                    <img src="{{ asset('uploads/avatars/' ~ user.avatarFilename) }}" alt="Avatar użytkownika {{ user.name }}" class="profile-avatar__img">
+                {% else %}
+                    <div class="profile-avatar__placeholder" aria-label="Brak avatara">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="profile-avatar__icon">
+                            <path fill-rule="evenodd" d="M12 2a6 6 0 100 12 6 6 0 000-12zm-9 18a9 9 0 1118 0H3z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                {% endif %}
+            </div>
+
+            {# ---------- Info ---------- #}
+            <div class="profile-info">
+                <dl class="profile-dl">
+                    <dt>Imię</dt>
+                    <dd>{{ user.name }}</dd>
+
+                    <dt>Email</dt>
+                    <dd>{{ user.email }}</dd>
+                </dl>
+
+                {% if user.accounts is defined and user.accounts|length > 0 %}
+                    <div class="profile-social">
+                        <h3>Profile społecznościowe</h3>
+                        <ul class="profile-social__list">
+                            {% for account in user.accounts %}
+                                <li class="profile-social__item">
+                                    <span class="profile-social__platform">{{ account.portalSpolecznosciowy }}</span>
+                                    <a class="profile-social__link" href="{{ account.link }}" target="_blank" rel="noopener noreferrer">{{ account.link }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+{% endblock %}
