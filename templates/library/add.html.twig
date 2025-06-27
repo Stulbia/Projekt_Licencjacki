@@ -1,10 +1,10 @@
-{% extends 'base.html.twig' %}
+{% extends 'book/show.html.twig' %}
 
-{% block body %}
-    <h1>Dodaj do biblioteczki: {{ book.title }}</h1>
-
+{% block add %}
     {{ form_start(form) }}
     {{ form_row(form.status) }}
     <button class="btn btnPrimary">Zapisz</button>
     {{ form_end(form) }}
 {% endblock %}
+
+{% set formVisible = true %}

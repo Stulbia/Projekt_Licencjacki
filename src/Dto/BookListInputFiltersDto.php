@@ -19,7 +19,7 @@ namespace App\Dto;
 //     */
 //    public function __construct(
 //        public readonly ?int $tagId = null,
-//        public readonly string $statusId = 'PUBLIC'
+//        public readonly string $statusId = 'PUBLI'
 //    ) {
 //    }
 //}

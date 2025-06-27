@@ -39,5 +39,11 @@
         <button class="btn btnLg btnPrimary" type="submit">
             {{ 'action.sign_in'|trans }}
         </button>
+
+        <hr>
+        <p>Lub zaloguj się przez:</p>
+        <a class="btn btnLg btnGoogle" href="{{ path('connect_google_start') }}">
+            🔓 Google
+        </a>
     </form>
 {% endblock %}

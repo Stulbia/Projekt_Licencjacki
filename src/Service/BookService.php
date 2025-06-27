@@ -31,10 +31,17 @@ class BookService implements BookServiceInterface
         private readonly Filesystem $filesystem,
         private readonly PaginatorInterface $paginator,
         private readonly TagServiceInterface $tagService,
-        private readonly AuthorServiceInterface $authorService
+        private readonly AuthorServiceInterface $authorService,
+        private readonly ReviewTagServiceInterface $reviewTagService
     ) {
     }
 
+    /**
+     * @param int $page
+     * @param UserInterface $author
+     * @param BookListInputFiltersDto $filters
+     * @return PaginationInterface
+     */
     public function getPaginatedUserList(int $page, UserInterface $author, BookListInputFiltersDto $filters): PaginationInterface
     {
         $parsedFilters = $this->prepareFilters($filters);
@@ -59,20 +66,15 @@ class BookService implements BookServiceInterface
     public function getSearchList(int $page, BookSearchInputFiltersDto $filters, int $items): PaginationInterface
     {
         $parsedFilters = $this->prepareSearchFilters($filters);
-
-//        return $this->paginator->paginate(
-//            $this->bookRepository->querySearch($parsedFilters),
-//            $page,
-//            self::PAGINATOR_ITEMS_PER_PAGE
-//        );
-
+//       dump($parsedFilters); die;
+    //    dump($this->bookRepository->querySearch($parsedFilters)); die;
         return $this->paginator->paginate(
             $this->bookRepository->querySearch($parsedFilters),
             $page,
             $items,
             [
                 'wrap-queries' => true,
-                'useOutputWalkers' => true, // ← to jest kluczowe
+                'useOutputWalkers' => true,
             ]
         );
     }
@@ -80,8 +82,7 @@ class BookService implements BookServiceInterface
     public function save(Book $book, UploadedFile $uploadedFile, UserInterface $user): void
     {
         $bookFilename = $this->fileUploadService->upload($uploadedFile);
-        //$book->setAuthor($user);
-        $book->setFilename($bookFilename);
+        $book->setCoverFilename($bookFilename);
 
         try {
             $this->bookRepository->save($book);
@@ -131,7 +132,8 @@ class BookService implements BookServiceInterface
             descriptionPattern: $filters->descriptionPattern,
             sortBy: $filters->sortBy ?? null,
             minRating: $filters->minRating ?? null,
-            author: $filters->author ? $this->authorService->findOneById($filters->author) : null,
+            author: $filters->author ??  null,
+            reviewTagIds: $filters->reviewTagId ? $this->reviewTagService->findOneById($filters->reviewTagId) : null
         );
     }
     public function findOneWithTags(string $slug): ?Book
@@ -139,17 +141,13 @@ class BookService implements BookServiceInterface
         return $this->bookRepository->findOneBySlugWithTags($slug);
     }
 
-//    public function getUserBooksList(int $page, UserInterface $user, BookSearchInputFiltersDto $filters): PaginationInterface
-//    {
-//        $parsedFilters = $this->prepareSearchFilters($filters);
-//
-//        return $this->paginator->paginate(
-//            $this->bookRepository->queryForUserBooks($user->getId(), $parsedFilters),
-//            $page,
-//            self::PAGINATOR_ITEMS_PER_PAGE
-//        );
-//    }
 
+    /**
+     * @param int $page
+     * @param UserInterface $user
+     * @param BookSearchInputFiltersDto $filters
+     * @return PaginationInterface
+     */
     public function getUserBooksList(int $page, UserInterface $user, BookSearchInputFiltersDto $filters): PaginationInterface
     {
         $parsedFilters = $this->prepareSearchFilters($filters);
@@ -167,7 +165,7 @@ class BookService implements BookServiceInterface
     public function findMostPopularBooks(int $page): PaginationInterface
     {
          return $this->paginator->paginate(
-             $this->bookRepository->QueryForMostPopularBooks(),
+             $this->bookRepository->FindMostPopularBooks(),
              $page,
              5,
              [

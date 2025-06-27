@@ -19,6 +19,9 @@ class BookSearchInputFiltersDtoResolver implements ValueResolverInterface
         $tagId = $request->query->get('tagId');
         $tagId = is_numeric($tagId) ? (int) $tagId : null;
 
+        $reviewTagId = $request->query->get('reviewTagId');
+        $reviewTagId = is_numeric($reviewTagId) ? (int) $reviewTagId : null;
+
         $statusRaw = $request->query->get('statusId');
         $bookStatus = null;
 
@@ -34,18 +37,19 @@ class BookSearchInputFiltersDtoResolver implements ValueResolverInterface
         $descriptionPattern = $request->query->get('description');
         $sortBy = $request->query->get('sortBy'); // np. 'rating', 'title'
         $minRating = $request->query->getInt('minRating');
-        $author = $request->query->get('author');
+        $author = $request->query->get('authorTerm');
 
-        $authorId = $request->query->get('author');
-        $authorId = is_numeric($authorId) ? (int) $authorId : null;
+        //$authorId = $request->query->get('author');
+        //$authorId = is_numeric($authorId) ? (int) $authorId : null;
 
         yield new BookSearchInputFiltersDto(
             tagId: $tagId,
-            bookStatus: $bookStatus = "dupa",
+            bookStatus: $bookStatus = "",
             titlePattern: $titlePattern,
             descriptionPattern: $descriptionPattern,
             sortBy: $sortBy ?: null,
             minRating: $minRating ?: null,
+            reviewTagId: $tagId,
             author: $author
         );
     }

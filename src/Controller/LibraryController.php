@@ -9,6 +9,7 @@ use App\Form\Type\SearchBookType;
 use App\Form\Type\UserBookRelationType;
 use App\Repository\UserBookRelationRepository;
 use App\Resolver\BookSearchInputFiltersDtoResolver;
+use App\Service\ReviewServiceInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,6 +22,10 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/library')]
 class LibraryController extends AbstractController
 {
+    public function __construct(
+        private readonly ReviewServiceInterface $reviewService
+    ) {
+    }
     #[Route('/add/{id}', name: 'library_add', methods: ['GET', 'POST'])]
     public function addToLibrary(
         Book $book,
@@ -30,7 +35,7 @@ class LibraryController extends AbstractController
     ): Response {
         $user = $this->getUser();
         $relation = $relationRepo->findOneBy(['book' => $book, 'owner' => $user]);
-
+        $avg = $this->reviewService->avgRating($book->getId());
         if (!$relation) {
             $relation = new UserBookRelation();
             $relation->setBook($book);
@@ -45,12 +50,14 @@ class LibraryController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', 'Dodano do Twojej biblioteczki!');
-            return $this->redirectToRoute('book_show', ['slug' => $book->getSlug()]);
+
+            return $this->redirectToRoute('book_show', ['slug' => $book->getSlug(), 'avg' => $avg]);
         }
 
         return $this->render('library/add.html.twig', [
         'book' => $book,
-        'form' => $form->createView(),
+        'form' => $form->createView(), 'avg' => $avg,
+        'formVisible' => true
         ]);
     }
 
@@ -75,11 +82,7 @@ class LibraryController extends AbstractController
         $form = $this->createForm(SearchBookType::class, [
             'action' => $this->generateUrl('library_index'),
         ]);
-
-        // Query
         $query = $relationRepo->getBooksByUserWithFilters($user, $filters);
-
-        // Pagination
         $pagination = $paginator->paginate($query, $page, 8);
 
         return $this->render('library/index.html.twig', [

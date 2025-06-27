@@ -65,7 +65,7 @@ class Book
     private Collection $userBookRelations;
 
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $coverFilename;
 
 
@@ -149,6 +149,7 @@ class Book
     {
         return $this->tags;
     }
+
 
     public function addTag(Tag $tag): void
     {

@@ -5,55 +5,77 @@ namespace App\Form\Type;
 use App\Entity\Book;
 use App\Entity\Review;
 use App\Entity\ReviewTag;
-use App\Entity\ReviewTagAssignment;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\RangeType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class ReviewType.
+ * Class ReviewType
  */
 class ReviewType extends AbstractType
 {
     /**
      * Builds the form.
      *
-     * @param FormBuilderInterface $builder The form builder
+     * @param FormBuilderInterface     $builder The form builder
      * @param array<string, mixed> $options Form options
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder
-            ->add('book', EntityType::class, [
-                'class' => Book::class,
-                'choice_label' => 'title',
-                'label' => 'label.book',
+        /** @var Book|null $book */
+        $book = $options['book'];
+
+        if ($book instanceof Book) {
+            // ukryte pole z ID, bo książka przyszła z URL-a (np. /book/{slug}/review/new)
+            $builder->add('book', HiddenType::class, [
+                'data'   => $book->getId(),
+                'mapped' => false,
+            ]);
+
+            // listener mapujący ID → encja
+            $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($book): void {
+                $review = $event->getData();
+                if ($review instanceof Review) {
+                    $review->setBook($book);
+                }
+            });
+        } else {
+            // brak książki w kontekście – pokaż <select>
+            $builder->add('book', EntityType::class, [
+                'class'       => Book::class,
+                'choice_label'=> 'title',
                 'placeholder' => 'label.select_book',
-                'required' => true,
-            ])
-            ->add('rating', IntegerType::class, [
-                'label' => 'label.rating',
-                'attr' => ['min' => 1, 'max' => 10],
+                'label'       => 'label.book',
+                'required'    => true,
+            ]);
+        }
+        $builder
+            ->add('rating', RangeType::class, [
+                'label'    => 'label.rating',
+                'attr'     => ['min' => 1, 'max' => 10],
                 'required' => true,
             ])
             ->add('comment', TextareaType::class, [
-                'label' => 'label.comment',
+                'label'    => 'label.comment',
                 'required' => true,
-                'attr' => ['rows' => 5],
+                'attr'     => ['rows' => 5],
             ])
             ->add('reviewTags', EntityType::class, [
-                'class' => ReviewTag::class,
+                'class'        => ReviewTag::class,
                 'choice_label' => 'name',
-                'label' => 'label.review_tags',
-                'required' => false,
-                'multiple' => true,
-                'expanded' => true,
-                'mapped' => false, // <- ważne! nie powiązane bezpośrednio z encją Review
+                'label'        => 'label.review_tags',
+                'required'     => false,
+                'multiple'     => true,
+                'expanded'     => true,
+                'mapped'       => false, // nie jest bezpośrednio na encji Review
             ]);
-
     }
 
     /**
@@ -61,7 +83,10 @@ class ReviewType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(['data_class' => Review::class]);
+        $resolver->setDefaults([
+            'data_class' => Review::class,
+            'book'       => null, // custom opcja – przekazujesz Book z kontrolera, gdy dostępna
+        ]);
     }
 
     /**

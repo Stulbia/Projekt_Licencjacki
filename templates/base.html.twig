@@ -4,12 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}App{% endblock %}</title>
+    <link rel="stylesheet" href="{{ asset('css/1_core.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/2_components.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/3_layout.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/4_forms.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/5_utilities.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/6_book.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/7_footer.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/8_reviews.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/9_profile.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/10_review_form.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/11_author.css') }}">
 {#    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">#}
-{#    <link rel="stylesheet" href="{{ asset('css/_variables.css') }}">#}
-{#    <link rel="stylesheet" href="{{ asset('css/_base.css') }}">#}
-{#    <link rel="stylesheet" href="{{ asset('css/_forms.css') }}">#}
-{#    <link rel="stylesheet" href="{{ asset('css/_buttons.css') }}">#}
-    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,7 +25,7 @@
     <script src="{{ asset('js/theme-switcher.js') }}"></script>
 
     {# Choices.js styles #}
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+{#    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />#}
 
     {% block stylesheets %}{% endblock %}
 </head>
@@ -37,23 +44,9 @@
     {% block body %}{% endblock %}
 </main>
 
-{# Choices.js script #}
-<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const tagSelect = document.querySelector('.js-tag-select');
-        if (tagSelect) {
-            new Choices(tagSelect, {
-                removeItemButton: true,
-                placeholder: true,
-                placeholderValue: 'Wybierz tagi',
-                noResultsText: 'Brak wyników',
-                itemSelectText: 'Wybierz'
-            });
-        }
-    });
-</script>
+
 
 {% block javascripts %}{% endblock %}
+{% include 'footer.html.twig' %}
 </body>
 </html>

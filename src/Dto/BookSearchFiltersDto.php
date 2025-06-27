@@ -18,7 +18,8 @@ class BookSearchFiltersDto
         public readonly ?string $descriptionPattern,
         public readonly ?string $sortBy,
         public readonly ?int $minRating,
-        public readonly ?Author $author
+        public readonly ?string $author,
+        public ?array $reviewTagIds ,
     ) {
     }
 }

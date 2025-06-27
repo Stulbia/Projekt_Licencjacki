@@ -843,3 +843,129 @@ body.lightMode input[type="password"] {
 
 
 /*/////////////////*/
+.choices {
+    max-width: 100%;
+    font-family: inherit;
+}
+
+.choices__item--selectable .choices__button {
+    background: none;
+    border: none;
+    color: white;
+    margin-left: 0.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.choices__item--selectable .choices__button:hover {
+    color: #ddd;
+}
+
+.choices__input {
+    border: none !important;
+    outline: none !important;
+    min-width: 150px;
+    padding: 0.4rem;
+    font-size: 0.85rem;
+    background-color: transparent;
+    color: inherit;
+}
+
+.choices__button {
+    font-size: 1rem;
+    line-height: 1;
+    padding: 0 0.4rem;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    position: relative;
+}
+
+/* Usuwa tekst "Remove item" i wstawia × */
+.choices__button::before {
+    content: '×';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Ukrywa oryginalny tekst */
+.choices__button {
+    color: transparent;
+}
+
+
+.recommendations {
+    flex: 3;
+    min-width: 0;
+    padding-bottom: 4rem;
+}
+
+.recommendations-wrap {
+    padding: 5%;
+}
+.user-details-container {
+    display: flex;
+
+    align-items: flex-start;
+
+    padding:10%;
+    padding-top: 5%;
+}
+
+.user-avatar {
+    flex: 0 0 150px;
+}
+
+.avatar-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ccc;
+}
+
+.avatar-placeholder {
+    width: 150px;
+    height: 150px;
+    background-color: #eee;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-style: italic;
+    color: #777;
+}
+
+.user-info {
+    flex: 1;
+}
+
+.status-active {
+    color: green;
+    font-weight: bold;
+}
+
+.status-banned {
+    color: #B0413E;
+    font-weight: bold;
+}
+
+.user-actions {
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.btnGoogle {
+    background-color: #db4437;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 1rem;
+}

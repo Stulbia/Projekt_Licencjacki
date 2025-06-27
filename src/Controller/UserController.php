@@ -2,10 +2,6 @@
 
 declare(strict_types=1);
 
-/**
- * User controller.
- */
-
 namespace App\Controller;
 
 use App\Dto\BookListInputFiltersDto;
@@ -31,7 +27,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  * Class UserController.
  */
 #[Route('/user')]
-
 class UserController extends AbstractController
 {
     public function __construct(
@@ -42,7 +37,7 @@ class UserController extends AbstractController
 
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[Route(name: 'user_index', methods: ['GET'])]
-    public function index(#[MapQueryParameter] int $page = 1): Response
+    public function index(): Response
     {
         $user = $this->getUser();
 
@@ -73,32 +68,22 @@ class UserController extends AbstractController
         return $this->render('user/register.html.twig', ['form' => $form->createView()]);
     }
 
-    #[Route('/list', name: 'user_list', methods: ['GET'])]
-    #[IsGranted('ROLE_ADMIN')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function list(#[MapQueryParameter] int $page = 1): Response
+    #[Route('/profile', name: 'user_show', methods: ['GET'])]
+    public function show(): Response
     {
-        $pagination = $this->userManager->getPaginatedList($page);
-
-        return $this->render('user/list.html.twig', ['pagination' => $pagination]);
+        return $this->render('user/show.html.twig', ['user' => $this->getUser()]);
     }
 
-    #[Route('/{id}', name: 'user_show', requirements: ['id' => '[1-9]\d*'], methods: ['GET'])]
-    #[IsGranted('VIEW', subject: 'user')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function show(User $user): Response
+    #[Route('/edit', name: 'user_edit', methods: ['GET', 'PUT'])]
+    public function edit(Request $request): Response
     {
-        return $this->render('user/show.html.twig', ['user' => $user]);
-    }
+        $user = $this->getUser();
 
-    #[Route('/{id}/edit', name: 'user_edit', requirements: ['id' => '[1-9]\d*'], methods: ['GET', 'PUT'])]
-    #[IsGranted('EDIT', subject: 'user')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function edit(Request $request, User $user): Response
-    {
         $form = $this->createForm(UserUpdateType::class, $user, [
             'method' => 'PUT',
-            'action' => $this->generateUrl('user_edit', ['id' => $user->getId()]),
+            'action' => $this->generateUrl('user_edit'),
         ]);
         $form->handleRequest($request);
 
@@ -106,7 +91,7 @@ class UserController extends AbstractController
             $this->userManager->save($user);
             $this->addFlash('success', $this->translator->trans('message.updated_successfully'));
 
-            return $this->redirectToRoute('user_list');
+            return $this->redirectToRoute('user_show');
         }
 
         return $this->render('user/edit.html.twig', [
@@ -115,46 +100,15 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit/admin', name: 'user_edit_admin', requirements: ['id' => '[1-9]\d*'], methods: ['GET', 'PUT'])]
-    #[IsGranted('ROLE_ADMIN')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function editAdmin(Request $request, User $user): Response
+    #[Route('/password', name: 'user_password', methods: ['GET', 'PUT'])]
+    public function changePassword(Request $request): Response
     {
-        if ($this->getUser()?->getUserIdentifier() === $user->getUserIdentifier()) {
-            if (!$this->userManager->canBeDowngraded()) {
-                $this->addFlash('warning', $this->translator->trans('message.this_is_last_admin'));
-                return $this->redirectToRoute('user_index');
-            }
-        }
+        $user = $this->getUser();
 
-        $form = $this->createForm(UserTypeForAdmin::class, $user, [
-            'method' => 'PUT',
-            'action' => $this->generateUrl('user_edit_admin', ['id' => $user->getId()]),
-        ]);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->userManager->ifBanAdmin($user);
-            $this->userManager->save($user);
-            $this->addFlash('success', $this->translator->trans('message.updated_successfully'));
-
-            return $this->redirectToRoute('user_list');
-        }
-
-        return $this->render('user/edit.html.twig', [
-            'form' => $form->createView(),
-            'user' => $user,
-        ]);
-    }
-
-    #[Route('/{id}/password', name: 'user_password', requirements: ['id' => '[1-9]\d*'], methods: ['GET', 'PUT'])]
-    #[IsGranted('EDIT', subject: 'user')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function changePassword(Request $request, User $user): Response
-    {
         $form = $this->createForm(ChangePasswordType::class, $user, [
             'method' => 'PUT',
-            'action' => $this->generateUrl('user_password', ['id' => $user->getId()]),
+            'action' => $this->generateUrl('user_password'),
         ]);
         $form->handleRequest($request);
 
@@ -169,9 +123,9 @@ class UserController extends AbstractController
                     $this->userManager->upgradePassword($user, $newPassword);
                     $this->addFlash('success', 'message.Password_updated_successfully.');
 
-                    return $this->redirectToRoute('user_show', ['id' => $user->getId()]);
+                    return $this->redirectToRoute('user_show');
                 } catch (\Exception $e) {
-                    $this->addFlash('error', 'message.error: '.$e->getMessage());
+                    $this->addFlash('error', 'message.error: ' . $e->getMessage());
                 }
             }
         }
@@ -179,6 +133,7 @@ class UserController extends AbstractController
         return $this->render('user/edit.html.twig', [
             'form' => $form->createView(),
             'user' => $user,
+            'back_to_list_path' => 'user_index'
         ]);
     }
 }

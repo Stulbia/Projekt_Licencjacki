@@ -22,6 +22,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (themeToggle) {
         themeToggle.addEventListener('click', () => {
             body.classList.toggle('lightMode');
+            let butt = document.getElementById('themeToggle');
+            butt.textContent = body.classList.contains('lightMode') ? '☀️' : '🌙';
             localStorage.setItem('theme', body.classList.contains('lightMode') ? 'light' : 'dark');
         });
     }
@@ -36,12 +38,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    const hamburger = document.getElementById('hamburger');
+
+    const burger   = document.getElementById('hamburger');
     const navLinks = document.getElementById('navLinks');
 
-    if (hamburger && navLinks) {
-        hamburger.addEventListener('click', () => {
-            navLinks.classList.toggle('open');
-        });
-    }
+    burger.addEventListener('click', () => {
+        const open = navLinks.classList.toggle('open');
+        burger.classList.toggle('open', open);
+        navLinks.classList.toggle('open',open);
+        document.body.classList.toggle('menu-open', open);
+        burger.setAttribute('aria-expanded', open);
+    });
+
 });
+

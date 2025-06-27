@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ 'action.add_social_profile'|trans }}{% endblock %}
+{% block body %}
+    <h1>{{ 'action.add_social_profile'|trans }}</h1>
+    {{ form_start(form) }}
+    {{ form_row(form.portalSpolecznosciowy) }}
+    {{ form_row(form.link) }}
+    <button class="btn btnPrimary">{{ 'action.save'|trans }}</button>
+    {{ form_end(form) }}
+{% endblock %}

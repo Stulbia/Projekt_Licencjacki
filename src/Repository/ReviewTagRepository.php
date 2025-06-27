@@ -15,34 +15,43 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ReviewTagRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, ReviewTag::class);
-    }
-
-    public function save(ReviewTag $tag): void
-    {
-        assert($this->_em instanceof EntityManager);
-        $this->_em->persist($tag);
-        $this->_em->flush();
-    }
-
-    public function delete(ReviewTag $tag): void
-    {
-        assert($this->_em instanceof EntityManager);
-        $this->_em->remove($tag);
-        $this->_em->flush();
-    }
-
-    public function queryAll(): QueryBuilder
-    {
-        return $this->getOrCreateQueryBuilder()
-            ->select('partial reviewTag.{id, name}')
-            ->orderBy('reviewTag.name', 'ASC');
-    }
-
-    private function getOrCreateQueryBuilder(?QueryBuilder $qb = null): QueryBuilder
-    {
-        return $qb ?? $this->createQueryBuilder('reviewTag');
-    }
+public function __construct(ManagerRegistry $registry)
+{
+    parent::__construct($registry, ReviewTag::class);
 }
+
+public function save(ReviewTag $tag): void
+{
+    assert($this->_em instanceof EntityManager);
+    $this->_em->persist($tag);
+    $this->_em->flush();
+}
+
+public function delete(ReviewTag $tag): void
+{
+    assert($this->_em instanceof EntityManager);
+    $this->_em->remove($tag);
+    $this->_em->flush();
+}
+
+public function queryAll(): QueryBuilder
+{
+    return $this->getOrCreateQueryBuilder()
+        ->select('partial reviewTag.{id, name}')
+        ->orderBy('reviewTag.name', 'ASC');
+}
+
+private function getOrCreateQueryBuilder(?QueryBuilder $qb = null): QueryBuilder
+{
+    return $qb ?? $this->createQueryBuilder('reviewTag');
+}
+
+public function findOneById(int $id): ?ReviewTag{
+         return $this->createQueryBuilder('reviewTag')
+            ->where('reviewTag.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getResult();
+    {
+
+    }}}

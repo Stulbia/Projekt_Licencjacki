@@ -1,40 +1,49 @@
+{# templates/review/index.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block title %}My Reviews{% endblock %}
+{% block title %}Moje recenzje{% endblock %}
 
 {% block body %}
-    <h1>My Reviews</h1>
-
-    <a href="{{ path('review_create') }}">Write a new review</a>
-
-    {% if pagination.items is not empty %}
-        <ul>
-            {% for review in pagination.items %}
-                <li>
-                    <strong>Book:</strong> {{ review.book.title }}<br>
-                    <strong>Rating:</strong> {{ review.rating }}/10<br>
-                    <strong>Comment:</strong> {{ review.comment|nl2br }}<br>
-                    <a href="{{ path('review_edit', {id: review.id}) }}">Edit</a> |
-                    <a href="{{ path('review_delete', {id: review.id}) }}">Delete</a>
-                </li>
-                <hr>
-            {% endfor %}
-        </ul>
-
-        <div>
-            Page {{ pagination.currentPageNumber }} of {{ pagination.pageCount }}
+    <section class="reviews-page">
+        <div class="reviews-header">
+            <h1 class="reviews-title">Moje recenzje</h1>
+            <a href="{{ path('review_create') }}" class="btn btnPrimary reviews-new-btn">+ Napisz nową</a>
         </div>
 
-        {% if pagination.previousPageNumber is defined %}
-            <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all | merge({'page': pagination.previousPageNumber})) }}">Previous</a>
-        {% endif %}
-        {% if pagination.nextPageNumber is defined %}
-            <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all | merge({'page': pagination.nextPageNumber})) }}">Next</a>
-        {% endif %}
+        {% if pagination.items is not empty %}
+            <table class="reviews-list">
+                <thead>
+                <tr class="review-card review-card__header">
+                    <th>{{ knp_pagination_sortable(pagination, 'Tytuł książki', 'b.title') }}</th>
+                    <th>{{ knp_pagination_sortable(pagination, 'Ocena', 'r.rating') }}</th>
+                    <th>Komentarz</th>
+                    <th>Akcje</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for review in pagination.items %}
+                    <tr class="review-card">
+                        <td class="review-card__book">
+                            <a href="{{ path('book_show', { slug: review.book.slug }) }}">
+                                {{ review.book.title }}
+                            </a>
+                        </td>
+                        <td class="review-card__rating">{{ review.rating }}/10</td>
+                        <td class="review-card__comment">{{ review.comment|nl2br }}</td>
+                        <td class="review-card__actions">
+                            <a href="{{ path('review_edit', { id: review.id }) }}" class="btn btnSecondary">Edytuj</a>
+                            <a href="{{ path('review_delete', { id: review.id }) }}" class="btn btnDanger">Usuń</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
 
-        {# Lub zamiast tego: {{ knp_pagination_render(pagination) }} #}
-
-    {% else %}
-        <p>You haven't written any reviews yet.</p>
-    {% endif %}
+            <nav class="pagination reviews-pagination">
+                {{ knp_pagination_render(pagination) }}
+            </nav>
+        {% else %}
+            <p class="reviews-empty">Nie napisałeś jeszcze żadnych recenzji.</p>
+        {% endif %}
+    </section>
 {% endblock %}

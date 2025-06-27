@@ -1,35 +1,44 @@
-<nav class="navbar">
-    <div class="logo"> <a href="{{ path('homepage') }}">Book Library </a> </div>
+<nav class="navBar">
+    {# ---------- Logo po lewej ---------- #}
+    {# ---------- Hamburger po prawej ---------- #}
 
-    <div class="navHamburger" id="hamburger">
+    <div class="navLogo">
+        <a href="{{ path('homepage') }}">Book&nbsp;Library</a>
 
-        <span></span>
-        <span></span>
-        <span></span>
+
+        <button id="hamburger"
+                class="navHamburger"
+                aria-label="Menu"
+                aria-expanded="false">
+            <span></span><span></span><span></span>
+        </button>
+
     </div>
 
-    <div class="navLinks" id="navLinks">
+
+
+    {# ---------- Linki (zwijane na mobile) ---------- #}
+    <div id="navLinks" class="navLinks">
+        <a class="navLink" href="{{ path('homepage') }}">Home</a>
+        <a class="navLink" href="{{ path('for_you_index') }}">Rekomendacje</a>
         <a class="navLink" href="{{ path('book_search') }}">Books</a>
-        <a class="navLink" href="{{ path('my_books') }}">Library</a>
-        <a class="navLink" href="{{ path('review_index') }}">Reviews</a>
 
         {% if app.user %}
-            <a class="navLink" href="{{ path('user_index') }}">My Profile</a>
+            <a class="navLink" href="{{ path('library_index') }}">Library</a>
+            <a class="navLink" href="{{ path('review_index') }}">Twoje&nbsp;Recenzje</a>
+            <a class="navLink" href="{{ path('user_index') }}">Twój&nbsp;profil</a>
             <a class="navLink loginBtn" href="{{ path('app_logout') }}">Logout</a>
         {% else %}
             <a class="navLink" href="{{ path('app_login') }}">Login</a>
             <a class="navLink loginBtn" href="{{ path('user_register') }}">Register</a>
         {% endif %}
-{#        <button id="themeToggle" class="navButton">Toggle Theme</button>#}
+
 
         <div class="themeControls">
-            <button id="themeToggle" class="navButton btnPrimary" title="Przełącz motyw">🌙</button>
-
-            <select id="accentSelect" class="navButton btnPrimary" title="Wybierz kolor">
-                <option value="green">🟢 Green</option>
-                <option value="orange">🟠 Orange</option>
-            </select>
+            <button id="themeToggle"
+                    class="navButton btnPrimary"
+                    title="Przełącz motyw">🌙</button>
         </div>
-
     </div>
+
 </nav>

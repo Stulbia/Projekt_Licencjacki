@@ -29,14 +29,13 @@
                 <tr>
                     <td>
 {#                    <a href="{{ url('avatar_index', {id: user.id}) }}">#}
-                        {% if user.avatar.filename is defined and user.avatar.filename|length %}
-                        <img class="navProfileImg" src="{{ asset(avatars_directory~user.avatar.filename) }}" alt="avatar" style="width: 50px; height: 50px;" >
+                        {% if book.coverFilename %}
+                            <img src="{{ asset('uploads/covers/' ~ book.coverFilename) }}" alt="Okładka książki {{ book.title }}">
                         {% else %}
-                            <img class="navProfileImg" src="{{ asset('uploads/default.png') }}"
-                                 alt="avatar" style="width: 50px; height: 50px;" >
+                            <img src="{{ asset('uploads/defaultCover.svg') }}" alt="Domyślna okładka książki {{ book.title }}">
                         {% endif %}
 
-                    </a>
+{#                    </a>#}
                     </td>
                     <td>{{ user.id }}</td>
                     <td>{{ user.email }}</td>

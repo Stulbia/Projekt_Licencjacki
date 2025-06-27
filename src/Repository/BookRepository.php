@@ -9,6 +9,7 @@ use App\Entity\Enum\BookStatus;
 use App\Entity\Tag;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Exception\ORMException;
@@ -28,16 +29,7 @@ class BookRepository extends ServiceEntityRepository
         parent::__construct($registry, Book::class);
     }
 
-//    public function queryAll(BookListFiltersDto $filters): QueryBuilder
-//    {
-//        $qb = $this->getOrCreateQueryBuilder()
-//            ->select('partial book.{id, createdAt, updatedAt, title, description, filename, slug}')
-//            ->leftJoin('book.tags', 'tags')
-//            ->addSelect('partial tags.{id, title}')
-//            ->orderBy('book.updatedAt', 'DESC');
-//
-//        return $this->applyFiltersToList($qb, $filters);
-//    }
+
 
     public function queryAll(BookListFiltersDto $filters): QueryBuilder
     {
@@ -61,48 +53,25 @@ class BookRepository extends ServiceEntityRepository
     }
 
 
-//    public function querySearch(BookSearchFiltersDto $filters): QueryBuilder
-//    {
-//        $qb = $this->getOrCreateQueryBuilder()
-//            ->select('partial book.{id, createdAt, updatedAt, title, description, filename, slug}')
-//            ->leftJoin('book.tags', 'tags')
-//            ->addSelect('partial tags.{id, title}')
-//            ->orderBy('book.updatedAt', 'DESC');
-//
-//        return $this->applyFiltersToSearchList($qb, $filters);
-//    }
 
 //    public function querySearch(BookSearchFiltersDto $filters): QueryBuilder
 //    {
 //        $qb = $this->getOrCreateQueryBuilder()
-//            ->select('partial book.{id, createdAt, updatedAt, title, description, filename, slug}')
+//            ->select('partial book.{id, createdAt, updatedAt, title, description, coverFilename, slug}')
 //            ->leftJoin('book.tags', 'tags')
+//            ->leftJoin()
 //            ->addSelect('partial tags.{id, title}');
-//
-//        // Czy trzeba dołączyć recenzje (dla ratingu lub minRating)
-//        $needsRating = $filters->sortBy === 'rating' || $filters->minRating !== null;
-//
-//        if ($needsRating) {
+//        if ($filters->minRating !== null) {
 //            $qb->leftJoin('book.reviews', 'r')
-//                ->addSelect('COALESCE(AVG(r.rating), 0) AS HIDDEN avgRating')
+//                ->addSelect('AVG(r.rating) AS HIDDEN avgRating')
 //                ->groupBy('book.id, tags.id');
 //        }
 //
-//        // HAVING tylko jeśli potrzebne
+//        // HAVING dla minimalnej oceny
 //        if ($filters->minRating !== null) {
-//            $qb->having('avgRating >= :minRating')
+//            $qb->having('COALESCE(AVG(r.rating), -1) >= :minRating')
 //                ->setParameter('minRating', $filters->minRating);
 //        }
-//
-//        // Sortowanie
-//        if ($filters->sortBy === 'rating') {
-//            $qb->orderBy('avgRating', 'DESC');
-//        } elseif ($filters->sortBy === 'title') {
-//            $qb->orderBy('book.title', 'ASC');
-//        } else {
-//            $qb->orderBy('book.updatedAt', 'DESC');
-//        }
-//
 //        return $this->applyFiltersToSearchList($qb, $filters);
 //    }
 
@@ -110,30 +79,77 @@ class BookRepository extends ServiceEntityRepository
     public function querySearch(BookSearchFiltersDto $filters): QueryBuilder
     {
         $qb = $this->getOrCreateQueryBuilder()
-            ->select('partial book.{id, createdAt, updatedAt, title, description, coverFilename, slug}')
+            ->select('book')
             ->leftJoin('book.tags', 'tags')
-            ->addSelect('partial tags.{id, title}');
+            ->addSelect('partial tags.{id, title}')
+            ->leftJoin('book.author', 'a')
+            ->addSelect('partial a.{id, firstName, name, pseudonym}')
+            ->leftJoin('book.reviews', 'r')
+            ->groupBy('book.id')
+            ->addGroupBy('a.id')
+            ->addGroupBy('tags.id');
 
-        // Jeśli potrzebujemy oceny (sortBy lub minRating), robimy join z reviews i liczymy średnią
-        if ($filters->minRating !== null) {
-            $qb->leftJoin('book.reviews', 'r')
-                ->addSelect('AVG(r.rating) AS HIDDEN avgRating')
-                ->groupBy('book.id, tags.id');
+        // --- REVIEW TAGS PERCENTAGE FILTER ---
+        if ($filters->reviewTagIds && count($filters->reviewTagIds) > 0) {
+            // Dołącz tagi recenzji tylko, jeśli filtrujemy po nich
+            $qb
+                ->leftJoin('r.tagAssignments', 'rta')
+                ->leftJoin('rta.tag', 'reviewTag');
+
+            // Policz wszystkie recenzje i te z wybranymi tagami
+            $qb->addSelect('COUNT(DISTINCT r.id) AS HIDDEN total_reviews')
+                ->addSelect('COUNT(DISTINCT CASE WHEN reviewTag.id IN (:tagIds) THEN r.id END) AS HIDDEN tagged_reviews')
+                ->having('(COUNT(DISTINCT CASE WHEN reviewTag.id IN (:tagIds) THEN r.id END) * 1.0 / NULLIF(COUNT(DISTINCT r.id), 0)) >= :minRatio')
+                ->setParameter('tagIds', $filters->reviewTagIds)
+                ->setParameter('minRatio', 0.4);
         }
 
-        // HAVING dla minimalnej oceny
+        // --- AUTHOR FILTER ---
+        if ($filters->author) {
+            $term = '%' . mb_strtolower(trim($filters->author)) . '%';
+            $qb->andWhere(
+                $qb->expr()->orX(
+                    'LOWER(a.firstName) LIKE :term',
+                    'LOWER(a.name) LIKE :term',
+                    'LOWER(a.pseudonym) LIKE :term'
+                )
+            )->setParameter('term', $term);
+        }
+
+        // --- RATING FILTER ---
         if ($filters->minRating !== null) {
-            $qb->having('COALESCE(AVG(r.rating), -1) >= :minRating')
+            $qb->addSelect('AVG(r.rating) AS HIDDEN avgRating');
+            $qb->andHaving('COALESCE(AVG(r.rating), -1) >= :minRating')
                 ->setParameter('minRating', $filters->minRating);
         }
-        return $this->applyFiltersToSearchList($qb, $filters);
+
+        // --- INNE FILTRY (np. status książki, rok, itp.) ---
+        $qb = $this->applyFiltersToSearchList($qb, $filters);
+
+        // --- SORTOWANIE ---
+        switch ($filters->sortBy) {
+            case 'rating':
+                $qb->addOrderBy('avgRating', 'DESC');
+                break;
+            case 'title':
+                $qb->addOrderBy('book.title', 'ASC');
+                break;
+            default:
+                $qb->addOrderBy('book.updatedAt', 'DESC');
+        }
+
+        return $qb;
     }
+
+
+
 
 
     public function queryByAuthor(User $user, BookListFiltersDto $filters): QueryBuilder
     {
         $qb = $this->queryAll($filters);
-        $qb->andWhere('book.author = :author')
+//        $qb->andWhere('book.author = :author')
+        $qb->andWhere($qb->expr()->in('book.author', ':author'))
             ->setParameter('author', $user);
 
         return $qb;
@@ -190,10 +206,12 @@ class BookRepository extends ServiceEntityRepository
             $qb->andWhere('tags IN (:tag)')
                 ->setParameter('tag', $filters->tag);
         }
-        if (null !== $filters->author) {
-            $qb->andWhere('book.author = :author')
-                ->setParameter('author', $filters->author);
-        }
+//        if (null !== $filters->author) {
+//            $qb->andWhere($qb->expr()->in('book.author', ':author'))
+//                ->setParameter('author', $filters->author);
+//        }
+
+
 
         if ($filters->bookStatus instanceof BookStatus) {
             $qb->andWhere('book.status = :status')
@@ -267,37 +285,6 @@ class BookRepository extends ServiceEntityRepository
 
 
 
-
-
-
-//
-//    public function findOneBySlugWithTags(string $slug): ?Book
-//    {
-//        return $this->createQueryBuilder('b')
-//            ->leftJoin('b.tags', 't')
-//            ->addSelect('t')
-//            ->where('b.slug = :slug')
-//            ->setParameter('slug', $slug)
-//            ->getQuery()
-//            ->getOneOrNullResult();
-//    }
-
-//    public function findOneBySlugWithTags(string $slug): ?Book
-//    {
-//        return $this->createQueryBuilder('b')
-//            ->leftJoin('b.tags', 't')
-//            ->addSelect('t')
-//            ->leftJoin('b.reviews', 'r')
-//            ->addSelect('r')
-//            ->leftJoin('r.tagAssignments', 'ra')
-//            ->addSelect('ra')
-//            ->leftJoin('ra.tag', 'rt')
-//            ->addSelect('rt')
-//            ->where('b.slug = :slug')
-//            ->setParameter('slug', $slug)
-//            ->getQuery()
-//            ->getOneOrNullResult();
-//    }
     public function findOneBySlugWithTags(string $slug): ?Book
     {
         return $this->createQueryBuilder('b')
@@ -315,12 +302,13 @@ class BookRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
-    public function queryForMostPopularBooks(int $limit = 6): array
+    public function findMostPopularBooks(int $limit = 6): array
     {
         return $this->createQueryBuilder('b')
             ->leftJoin('b.reviews', 'r')
             ->addSelect('AVG(r.rating) AS HIDDEN avg_rating')
             ->groupBy('b.id')
+            ->having('COUNT(r.id) > 0')
             ->orderBy('avg_rating', 'DESC')
             ->setMaxResults($limit)
             ->getQuery()
@@ -347,7 +335,4 @@ class BookRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-
-
-
 }

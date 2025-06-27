@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/for-you')]
-#[IsGranted('IS_AUTHENTICATED_FULLY')]
+//#[IsGranted('IS_AUTHENTICATED_FULLY')]
 class ForYouController extends AbstractController
 {
     public function __construct(

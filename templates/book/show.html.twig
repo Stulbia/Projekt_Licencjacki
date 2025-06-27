@@ -1,24 +1,39 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}{{ book.title }}{% endblock %}
+
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/_book.css') }}">
 {% endblock %}
 
 {% block body %}
+    {% set formVisible = formVisible|default(false) %}
+    {% set formVisibleReview = formVisibleReview|default(false) %}
+
     <div class="book-show">
         <section class="book-detail-layout">
             <div class="book-cover">
                 {% if book.coverFilename %}
-                    <img src="{{ asset('uploads/' ~ book.coverFilename) }}" alt="Okładka książki {{ book.title }}">
+                    <img src="{{ asset('uploads/covers/' ~ book.coverFilename) }}" alt="Okładka książki {{ book.title }}">
+                {% else %}
+                    <img src="{{ asset('uploads/defaultCover.svg') }}" alt="Domyślna okładka książki {{ book.title }}">
                 {% endif %}
             </div>
 
             <div class="book-info">
                 <h1>{{ book.title }}</h1>
-                <p class="book-author"><strong>Autor:</strong> {{ book.author.name ?? 'Nieznany autor' }}</p>
+                <p class="book-author">
+                    <strong>Autor:</strong>
+                    {% if book.author %}
+                        <a href="{{ path('author_show', { id: book.author.id }) }}">{{ book.author }}</a>
+                    {% else %}
+                        Nieznany autor
+                    {% endif %}
+                </p>
+
                 <p class="book-description">{{ book.description }}</p>
+                <p class="book-rating"><strong>Średnia ocen:</strong> {{ avg }}/10</p>
 
                 {% if book.tags|length > 0 %}
                     <div class="book-tags">
@@ -28,17 +43,67 @@
                     </div>
                 {% endif %}
 
-                <a href="{{ path('review_create', {bookId: book.id}) }}" class="btn btnPrimary mt2">➕ Dodaj recenzję</a>
+                {% block add_buttons %}
+                    {% if not formVisible %}
+                        <a href="{{ path('library_add', {id: book.id}) }}" class="btn btnPrimary mt2">➕ Dodaj do biblioteczki</a>
+                    {% endif %}
+
+                    {% if not formVisibleReview and not hasUserReview %}
+                        <a href="{{ path('review_create', {bookId: book.id}) }}" class="btn btnPrimary mt2">➕ Dodaj recenzję</a>
+                    {% endif %}
+                {% endblock %}
+
+                {% block add %}{% endblock %}
             </div>
         </section>
+
+        {% block add_review %}{% endblock %}
 
         <section class="book-reviews">
             <h2>Recenzje</h2>
 
-            {% if book.reviews|length > 0 %}
-                {% for review in book.reviews %}
+            {% if userReview is defined and userReview %}
+                <div class="review-comment review-user-own">
+                    <p>
+                        <img src="{{ asset(userReview.author.avatarFilename
+                            ? 'uploads/avatars/' ~ userReview.author.avatarFilename
+                            : 'uploads/defaultAvatar.svg') }}"
+                             alt="Avatar"
+                             class="avatar-review">
+                        <strong>{{ userReview.author.name }}</strong>
+                        — Ocena: {{ userReview.rating }}/10
+                    </p>
+
+                    <p>{{ userReview.comment }}</p>
+
+                    {% if userReview.tagAssignments|length > 0 %}
+                        <div class="review-tags">
+                            {% for assignment in userReview.tagAssignments %}
+                                <span class="badge bgSecondary">{{ assignment.tag.name }}</span>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <div class="review-actions">
+                        <a href="{{ path('review_edit', { id: userReview.id }) }}" class="btn btnSmall btnOutlinePrimary">✏️ Edytuj</a>
+                        <a href="{{ path('review_delete', { id: userReview.id }) }}" class="btn btnSmall btnDanger">🗑️ Usuń</a>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if otherReviews|length > 0 %}
+                {% for review in otherReviews %}
                     <div class="review-comment">
-                        <p><strong>{{ review.author.name ?? 'Nieznany użytkownik' }}</strong> — Ocena: {{ review.rating }}/10</p>
+                        <p>
+                            <img src="{{ asset(review.author.avatarFilename
+                                ? 'uploads/avatars/' ~ review.author.avatarFilename
+                                : 'uploads/defaultAvatar.svg') }}"
+                                 alt="Avatar"
+                                 class="avatar-review">
+                            <strong>{{ review.author.name ?? 'Nieznany użytkownik' }}</strong>
+                            — Ocena: {{ review.rating }}/10
+                        </p>
+
                         <p>{{ review.comment }}</p>
 
                         {% if review.tagAssignments|length > 0 %}
@@ -51,7 +116,7 @@
                     </div>
                 {% endfor %}
             {% else %}
-                <p><em>Brak recenzji dla tej książki.</em></p>
+                <p><em>Brak innych recenzji dla tej książki.</em></p>
             {% endif %}
         </section>
     </div>

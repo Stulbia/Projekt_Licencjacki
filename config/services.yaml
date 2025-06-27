@@ -1,5 +1,8 @@
 parameters:
     files_directory: '%kernel.project_dir%/public/uploads'
+    avatarsDir: '%kernel.project_dir%/public/uploads/avatars'
+    authorsDir: '%kernel.project_dir%/public/uploads/authors'
+    coversDir: '%kernel.project_dir%/public/uploads/covers'
 
 
 services:
@@ -17,6 +20,19 @@ services:
     App\Service\FileUploadService:
         arguments:
             $targetDirectory: '%files_directory%'
+
+    App\Service\AvatarService:
+        arguments:
+            $avatarsDir: '%avatarsDir%'
+
+    App\Service\AuthorService:
+        arguments:
+            $authorsDir: '%authorsDir%'
+
+
+    App\Controller\BookEditController:
+        arguments:
+            $coversDir: '%coversDir%'
 
 
 

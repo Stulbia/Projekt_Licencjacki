@@ -5,6 +5,9 @@ namespace App\Repository;
 use App\Entity\Author;
 use App\Entity\Book;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Exception\ORMException;
+use Doctrine\ORM\OptimisticLockException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -48,5 +51,32 @@ class AuthorRepository extends ServiceEntityRepository
             ->orderBy('b.updatedAt', 'DESC')
             ->getQuery()
             ->getResult();
+    }
+
+    public function findByName(string $name): array
+    {
+        $qb = $this->createQueryBuilder('a');
+        $qb->where(
+            $qb->expr()->orX(
+                'LOWER(a.firstName)  LIKE :name',
+                'LOWER(a.name)       LIKE :name',
+                'LOWER(a.pseudonym)  LIKE :name'
+            )
+        )
+            ->setParameter('name', '%' . mb_strtolower($name) . '%')
+            ->orderBy('a.name', 'ASC');
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @throws OptimisticLockException
+     * @throws ORMException
+     */
+    public function save(Author $author): void
+    {
+        assert($this->_em instanceof EntityManager);
+        $this->_em->persist($author);
+        $this->_em->flush();
     }
 }

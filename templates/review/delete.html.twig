@@ -1,20 +1,16 @@
-{% extends 'base.html.twig' %}
 
-{% block title %}Delete Review{% endblock %}
 
-{% block body %}
-    <h1>Delete Review</h1>
+{# templates/review/delete.html.twig #}
+{% extends 'book/show.html.twig' %}
 
-    <p>Are you sure you want to delete your review for <strong>{{ review.book.title }}</strong>?</p>
+{% block add_review %}
+    <section class="review-form-section">
+        <h2>Czy na pewno chcesz usunąć recenzję tej książki?</h2>
 
-    <blockquote>
-        <strong>Rating:</strong> {{ review.rating }}/10<br>
-        <strong>Comment:</strong> {{ review.comment|nl2br }}
-    </blockquote>
+        {{ form_start(form) }}
+        <button type="submit" class="btn btnDanger">Usuń recenzję</button>
+        {{ form_end(form) }}
 
-    {{ form_start(form) }}
-    <button type="submit">Yes, delete</button>
-    {{ form_end(form) }}
-
-    <a href="{{ path('review_index') }}">Cancel</a>
+        <a href="{{ path('book_show', { slug: review.book.slug }) }}" class="btn btnSecondary mt-2">Anuluj</a>
+    </section>
 {% endblock %}

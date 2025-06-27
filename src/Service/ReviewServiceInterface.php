@@ -59,4 +59,10 @@ interface ReviewServiceInterface
      * @return QueryBuilder
      */
     public function queryByFilters(ReviewSearchFiltersDto $filters): QueryBuilder;
+
+    /**
+     * @param int $book_id
+     * @return float
+     */
+    public function avgRating(int $book_id): float;
 }

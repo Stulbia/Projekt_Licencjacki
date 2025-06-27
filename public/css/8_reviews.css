@@ -1,0 +1,148 @@
+/* reviews.css – dedykowane style tylko dla widoku z recenzjami */
+
+.reviews-page {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+/* ---------- nagłówek ---------- */
+.reviews-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.reviews-title {
+    font-size: 1.875rem; /* 30 px */
+    font-weight: 700;
+    margin: 0;
+}
+
+.reviews-new-btn {
+    white-space: nowrap;
+}
+
+/* ---------- lista kart ---------- */
+.reviews-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.review-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb; /* neutral‑200 */
+    border-radius: 0.75rem; /* 12 px */
+    padding: 1.25rem 1.5rem;
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.05);
+}
+
+/* header */
+.review-card__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+}
+
+.review-card__book {
+    font-size: 1.125rem; /* 18 px */
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.3;
+}
+
+.review-card__book a {
+    color: #1f2937; /* neutral‑800 */
+    text-decoration: none;
+}
+
+.review-card__book a:hover {
+    text-decoration: underline;
+}
+
+/* rating badge */
+.review-card__rating {
+    font-size: 0.875rem;
+    font-weight: 600;
+    padding: 0.25rem 0.625rem;
+    border-radius: 0.5rem;
+    background: #fcd34d; /* amber‑300 */
+    color: #1f2937; /* neutral‑800 */
+    flex-shrink: 0;
+}
+
+/* comment */
+.review-card__comment {
+    margin: 0 0 0.75rem;
+    color: #374151; /* neutral‑700 */
+    line-height: 1.45;
+    white-space: pre-line;
+}
+
+/* actions */
+.review-card__actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Utility buttons inherit global .btn styles – nadpisujemy tylko kolory tam gdzie trzeba */
+.btnDanger {
+    background: #dc2626; /* red‑600 */
+    color: #fff;
+}
+
+.btnDanger:hover {
+    background: #b91c1c; /* red‑700 */
+}
+
+/* ---------- paginacja ---------- */
+.reviews-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
+.reviews-pagination a {
+    color: #2563eb; /* blue‑600 */
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.reviews-pagination a:hover {
+    text-decoration: underline;
+}
+
+.pagination-info {
+    font-size: 0.875rem;
+    color: #4b5563; /* neutral‑600 */
+}
+
+/* ---------- pusta lista ---------- */
+.reviews-empty {
+    text-align: center;
+    font-size: 1rem;
+    color: #4b5563; /* neutral‑600 */
+    margin-top: 2rem;
+}
+
+.avatar-review {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;         /* okrągły */
+    object-fit: cover;          /* przycina proporcjonalnie */
+    margin-right: 0.5rem;       /* odstęp od tekstu */
+    vertical-align: middle;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);  /* lekki cień */
+}

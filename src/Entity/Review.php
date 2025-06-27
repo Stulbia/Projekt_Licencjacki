@@ -112,6 +112,11 @@ class Review
         return $this->tagAssignments;
     }
 
+//    public function getTags(): array
+//    {
+//        return $this->tagAssignments->map(fn($assignment) => $assignment->getTag()) ->toArray();
+//    }
+
     public function addTagAssignment(ReviewTagAssignment $assignment): static
     {
         if (!$this->tagAssignments->contains($assignment)) {

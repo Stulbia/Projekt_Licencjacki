@@ -133,5 +133,13 @@ class ReviewRepository extends ServiceEntityRepository
         return $qb->orderBy('r.rating', 'DESC');
     }
 
-
+    public function avgRating(int $book_id): float
+    {
+        return $this->createQueryBuilder('r')
+            ->select('AVG(r.rating)')
+            ->where('r.book = :book_id')
+            ->setParameter('book_id', $book_id)
+            ->getQuery()
+            ->getSingleScalarResult() ?? 0.0;
+    }
 }

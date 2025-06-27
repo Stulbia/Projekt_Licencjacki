@@ -33,24 +33,30 @@ class UserBookRelationRepository extends ServiceEntityRepository
             ->addSelect('b')
             ->where('ubr.owner = :user')
             ->setParameter('user', $user);
+//        var_dump($filters);
+//        var_dump($qb->getDql());
 
         if ($filters->bookStatus) {
             $qb->andWhere('ubr.status = :status')
                 ->setParameter('status', $filters->bookStatus);
         }
 
-        if ($filters->bookStatus) {
+        if ($filters->titlePattern) {
             $qb->andWhere('b.title LIKE :search')
                 ->setParameter('search', '%' . $filters->titlePattern . '%');
         }
 
+
         if ($filters->minRating !== null || $filters->sortBy === 'rating') {
-            $qb->leftJoin('book.reviews', 'r')
+            $qb->leftJoin('b.reviews', 'r')
                 ->addSelect('AVG(r.rating) AS HIDDEN avgRating')
-                ->groupBy('book.id, tags.id');
+                ->groupBy('ubr.id, b.id');
         }
 
-        // Sorting (add more if needed)
+        if ($filters->minRating !== null) {
+            $qb->having('AVG(r.rating) >= :minRating')
+                ->setParameter('minRating', $filters->minRating);
+        }
         if ($filters->sortBy) {
             switch ($filters->sortBy) {
                 case 'title':

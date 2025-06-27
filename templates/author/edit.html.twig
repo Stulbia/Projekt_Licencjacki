@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edytuj autora{% endblock %}
+
+{% block body %}
+    <section class="author-edit-page">
+        <h1>Edytuj autora: {{ author }}</h1>
+
+        {{ form_start(form) }}
+        {{ form_row(form.firstName) }}
+        {{ form_row(form.name) }}
+        {{ form_row(form.pseudonym) }}
+        {{ form_row(form.description) }}
+        {{ form_row(form.photo) }}
+
+        <button class="btn btnPrimary" type="submit">Zapisz zmiany</button>
+        <a href="{{ path('author_show', { id: author.id }) }}" class="btn">Anuluj</a>
+        {{ form_end(form) }}
+    </section>
+{% endblock %}

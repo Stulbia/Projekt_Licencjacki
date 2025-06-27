@@ -76,4 +76,13 @@ class ReviewService implements ReviewServiceInterface
     {
         return $this->reviewRepository->queryByFilters($filters);
     }
+
+    /**
+     * @param int $book_id
+     * @return float
+     */
+    public function avgRating(int $book_id): float
+    {
+        return  $this->reviewRepository->avgRating($book_id);
+    }
 }

@@ -14,6 +14,7 @@ use App\Resolver\BookListInputFiltersDtoResolver;
 use App\Resolver\BookSearchInputFiltersDtoResolver;
 use App\Service\BookServiceInterface;
 use App\Service\FileUploadService;
+use App\Service\ReviewServiceInterface;
 use App\Service\TagServiceInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use phpDocumentor\Reflection\DocBlock\Tags\Author;
@@ -34,7 +35,8 @@ class BookController extends AbstractController
     public function __construct(
         private readonly BookServiceInterface $bookService,
         private readonly TagServiceInterface $tagService,
-        private readonly TranslatorInterface $translator
+        private readonly TranslatorInterface $translator,
+        private readonly ReviewServiceInterface $reviewService
     ) {
     }
 
@@ -83,32 +85,32 @@ class BookController extends AbstractController
             'sortBy' => $filters->sortBy,
         ]);
     }
-
-    #[Route('/create', name: 'book_create', methods: ['GET', 'POST'])]
-    #[IsGranted('ROLE_USER')]
-    public function create(Request $request): Response
-    {
-        $user = $this->getUser();
-        $book = new Book();
-        $form = $this->createForm(BookType::class, $book, [
-            'method' => 'POST',
-            'action' => $this->generateUrl('book_create'),
-        ]);
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $file = $form->get('file')->getData();
-            $this->bookService->save($book, $file, $user);
-            $this->addFlash('success', $this->translator->trans('message.created_successfully'));
-
-            return $this->redirectToRoute('book_index');
-        }
-
-        return $this->render('book/create.html.twig', [
-            'form' => $form->createView(),
-        ]);
-    }
+//
+//    #[Route('/create', name: 'book_create', methods: ['GET', 'POST'])]
+//    #[IsGranted('ROLE_USER')]
+//    public function create(Request $request): Response
+//    {
+//        $user = $this->getUser();
+//        $book = new Book();
+//        $form = $this->createForm(BookType::class, $book, [
+//            'method' => 'POST',
+//            'action' => $this->generateUrl('book_create'),
+//        ]);
+//
+//        $form->handleRequest($request);
+//
+//        if ($form->isSubmitted() && $form->isValid()) {
+//            $file = $form->get('file')->getData();
+//            $this->bookService->save($book, $file, $user);
+//            $this->addFlash('success', $this->translator->trans('message.created_successfully'));
+//
+//            return $this->redirectToRoute('book_index');
+//        }
+//
+//        return $this->render('book/create.html.twig', [
+//            'form' => $form->createView(),
+//        ]);
+//    }
 
 
 //    #[Route('/my_books', name: 'book_my_books', methods: ['GET'])]
@@ -163,31 +165,31 @@ class BookController extends AbstractController
 
 
 
-
-
-    #[Route('/{id}/edit', name: 'book_edit', requirements: ['id' => '\d+'], methods: ['GET', 'PUT'])]
-    #[IsGranted('EDIT', subject: 'book')]
-    public function edit(Request $request, Book $book): Response
-    {
-        $form = $this->createForm(BookEditType::class, $book, [
-            'method' => 'PUT',
-            'action' => $this->generateUrl('book_edit', ['id' => $book->getId()]),
-        ]);
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->bookService->edit($book);
-            $this->addFlash('success', $this->translator->trans('message.updated_successfully'));
-
-            return $this->redirectToRoute('book_index');
-        }
-
-        return $this->render('book/edit.html.twig', [
-            'form' => $form->createView(),
-            'book' => $book,
-        ]);
-    }
+//
+//
+//    #[Route('/{id}/edit', name: 'book_edit', requirements: ['id' => '\d+'], methods: ['GET', 'PUT'])]
+//    #[IsGranted('EDIT', subject: 'book')]
+//    public function edit(Request $request, Book $book): Response
+//    {
+//        $form = $this->createForm(BookEditType::class, $book, [
+//            'method' => 'PUT',
+//            'action' => $this->generateUrl('book_edit', ['id' => $book->getId()]),
+//        ]);
+//
+//        $form->handleRequest($request);
+//
+//        if ($form->isSubmitted() && $form->isValid()) {
+//            $this->bookService->edit($book);
+//            $this->addFlash('success', $this->translator->trans('message.updated_successfully'));
+//
+//            return $this->redirectToRoute('book_index');
+//        }
+//
+//        return $this->render('book/edit.html.twig', [
+//            'form' => $form->createView(),
+//            'book' => $book,
+//        ]);
+//    }
 
     /**
      * @param Book $book
@@ -249,11 +251,29 @@ class BookController extends AbstractController
         $book = $this->bookService->findOneWithTags($slug);
 
         if (!$book) {
-            throw $this->createNotFoundException();
+            throw $this->createNotFoundException('Book not found');
+        }
+
+        $avg = $this->reviewService->avgRating($book->getId());
+        $user = $this->getUser();
+
+        $userReview = null;
+        $otherReviews = [];
+
+        foreach ($book->getReviews() as $review) {
+            if ($user && $review->getAuthor() === $user) {
+                $userReview = $review;
+            } else {
+                $otherReviews[] = $review;
+            }
         }
 
         return $this->render('book/show.html.twig', [
             'book' => $book,
+            'avg' => $avg,
+            'hasUserReview' => $userReview !== null,
+            'userReview' => $userReview,
+            'otherReviews' => $otherReviews,
         ]);
     }
 }

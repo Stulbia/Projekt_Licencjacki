@@ -48,25 +48,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'owner', targetEntity: UserBookRelation::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $bookRelations;
 
-
     #[ORM\Column(nullable: true)]
     private ?string $avatarFilename = null;
 
-    public function getAvatarFilename(): ?string
-    {
-        return $this->avatarFilename;
-    }
-
-    public function setAvatarFilename(?string $avatarFilename): self
-    {
-        $this->avatarFilename = $avatarFilename;
-        return $this;
-    }
+    #[ORM\Column(type: 'text', nullable: true)]
+    #[Assert\Type('string')]
+    private ?string $opis = null;
 
     public function __construct()
     {
         $this->reviews = new ArrayCollection();
         $this->bookRelations = new ArrayCollection();
+        $this->accounts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -147,8 +140,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->banned = $banned;
     }
 
-
-
     /**
      * @return Collection<int, Review>
      */
@@ -203,12 +194,41 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getAvatarFilename(): ?string
+    {
+        return $this->avatarFilename;
+    }
+
+
+    public function setAvatarFilename(?string $avatarFilename): self
+    {
+        $this->avatarFilename = $avatarFilename;
+        return $this;
+    }
+
+    public function getOpis(): ?string
+    {
+        return $this->opis;
+    }
+
+    public function setOpis(?string $opis): self
+    {
+        $this->opis = $opis;
+        return $this;
+    }
+
     public function __toString(): string
     {
         return $this->getName();
     }
 
     private ?string $plainPassword = null;
+
+    /**
+     * @var Collection<int, Account>
+     */
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Account::class, orphanRemoval: true)]
+    private Collection $accounts;
 
     public function getPlainPassword(): ?string
     {
@@ -218,6 +238,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPlainPassword(?string $plainPassword): self
     {
         $this->plainPassword = $plainPassword;
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Account>
+     */
+    public function getAccounts(): Collection
+    {
+        return $this->accounts;
+    }
+
+    public function addAccount(Account $account): static
+    {
+        if (!$this->accounts->contains($account)) {
+            $this->accounts->add($account);
+            $account->setProfile($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAccount(Account $account): static
+    {
+        if ($this->accounts->removeElement($account)) {
+            // set the owning side to null (unless already changed)
+            if ($account->getProfile() === $this) {
+                $account->setProfile(null);
+            }
+        }
+
         return $this;
     }
 }
