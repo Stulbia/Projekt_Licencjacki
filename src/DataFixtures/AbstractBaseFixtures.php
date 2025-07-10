@@ -137,4 +137,20 @@ abstract class AbstractBaseFixtures extends Fixture
 
         return $references;
     }
+
+    protected function getReferencesByGroup(string $group): array
+    {
+        $references = [];
+
+        for ($i = 0; $i < 1000; ++$i) {
+            $key = sprintf('%s_%d', $group, $i);
+            if (!$this->hasReference($key)) {
+                break;
+            }
+            $references[] = $key;
+        }
+
+        return $references;
+    }
+
 }

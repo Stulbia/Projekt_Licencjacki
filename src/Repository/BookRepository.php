@@ -217,10 +217,20 @@ class BookRepository extends ServiceEntityRepository
                 ->setParameter('status', $filters->bookStatus->value, Types::STRING);
         }
 
-        if (null !== $filters->titlePattern) {
-            $qb->andWhere('book.title LIKE :titlePattern')
-                ->setParameter('titlePattern', '%' . $filters->titlePattern . '%');
+
+        if ($filters->titlePattern) {
+            $term = '%' . mb_strtolower(trim($filters->titlePattern)) . '%';
+            $qb->andWhere(
+                $qb->expr()->orX(
+                    'LOWER(book.title) LIKE :term',
+                )
+            )->setParameter('term', $term);
         }
+
+//        if (null !== $filters->titlePattern) {
+//            $qb->andWhere('book.title LIKE :titlePattern')
+//                ->setParameter('titlePattern', '%' . $filters->titlePattern . '%');
+//        }
 
         if (null !== $filters->descriptionPattern) {
             $qb->andWhere('book.description LIKE :descriptionPattern')

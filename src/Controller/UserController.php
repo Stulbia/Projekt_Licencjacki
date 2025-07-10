@@ -141,32 +141,4 @@ class UserController extends AbstractController
             'back_to_list_path' => 'user_index'
         ]);
     }
-
-    #[Route('/profile/{slug}', name: 'user_public_profile', methods: ['GET'])]
-    public function showPublic(string $slug, $request): Response
-    {
-        $user = $this->userManager->findOneBySlug($slug);
-
-        if (!$user) {
-            throw $this->createNotFoundException('Nie znaleziono użytkownika.');
-        }
-
-
-
-//        BIBLIOTECZKA UZYTKOWNIKA
-        $page = $request->query->getInt('page', 1);
-
-        $paginationR = $this->reviewService->getPaginatedUserList($request->query->getInt('page', 1), $user);
-        if ($user) {
-            $paginationB = $this->bookService->getPaginatedUserList($page, $user); //przepisac metode na bez filtrow
-        } else {
-            return $this->redirectToRoute('login');
-        }
-
-        return $this->render('user/public_profile.html.twig', [
-            'user' => $user,
-            'paginationR' => $paginationR,
-            'paginationB' => $paginationB,
-        ]);
-    }
 }

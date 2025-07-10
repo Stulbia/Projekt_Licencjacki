@@ -1,4 +1,3 @@
-{# templates/review/index.html.twig #}
 {% extends 'base.html.twig' %}
 
 {% block title %}Moje recenzje{% endblock %}
@@ -11,33 +10,27 @@
         </div>
 
         {% if pagination.items is not empty %}
-            <table class="reviews-list">
-                <thead>
-                <tr class="review-card review-card__header">
-                    <th>{{ knp_pagination_sortable(pagination, 'Tytuł książki', 'b.title') }}</th>
-                    <th>{{ knp_pagination_sortable(pagination, 'Ocena', 'r.rating') }}</th>
-                    <th>Komentarz</th>
-                    <th>Akcje</th>
-                </tr>
-                </thead>
-                <tbody>
+            <ul class="reviews-list">
                 {% for review in pagination.items %}
-                    <tr class="review-card">
-                        <td class="review-card__book">
-                            <a href="{{ path('book_show', { slug: review.book.slug }) }}">
-                                {{ review.book.title }}
-                            </a>
-                        </td>
-                        <td class="review-card__rating">{{ review.rating }}/10</td>
-                        <td class="review-card__comment">{{ review.comment|nl2br }}</td>
-                        <td class="review-card__actions">
+                    <li class="review-card">
+                        <header class="review-card__header">
+                            <h2 class="review-card__book">
+                                <a href="{{ path('book_show', { slug: review.book.slug }) }}">
+                                    {{ review.book.title }}
+                                </a>
+                            </h2>
+                            <span class="review-card__rating">{{ review.rating }}/10</span>
+                        </header>
+
+                        <p class="review-card__comment">{{ review.comment|nl2br }}</p>
+
+                        <div class="review-card__actions">
                             <a href="{{ path('review_edit', { id: review.id }) }}" class="btn btnSecondary">Edytuj</a>
                             <a href="{{ path('review_delete', { id: review.id }) }}" class="btn btnDanger">Usuń</a>
-                        </td>
-                    </tr>
+                        </div>
+                    </li>
                 {% endfor %}
-                </tbody>
-            </table>
+            </ul>
 
             <nav class="pagination reviews-pagination">
                 {{ knp_pagination_render(pagination) }}
