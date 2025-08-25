@@ -2,237 +2,14 @@
 
 {% block title %}Biblioteka{% endblock %}
 
-{% block stylesheets %}
-    <style>
-            .library-container {
-                display: flex;
-                flex-direction: row;
-            }
-
-            .generatedForm {
-                height: 0;
-                width: 0;
-            }
-
-            .library-main {
-                display: flex;
-                flex-direction: column;
-                width: 70%;
-                padding-top: 5px;
-                transition: all 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
-            }
-
-            .library-sidebar {
-                position: relative;
-                padding: 5%;
-                width: 25%;
-            }
-
-            .library-main__header {
-                display: flex;
-                justify-content: center;
-                align-items: flex-start;
-                flex-direction: column;
-                margin-bottom: 2rem;
-                padding-left: 10%;
-                padding-top: 5%;
-            }
-
-            .library-main__content {
-                max-width: 800px;
-            }
-
-            .library-main__content .searchResults .bookCard {
-                max-width: 140px;
-            }
-
-            .library-main__content .book-card {
-                height: 220px;
-                display: flex;
-                gap: 1rem;
-                padding: 0.75rem;
-                align-items: center;
-                background-color: #ffffff;
-                color: #1f2937;
-                border-radius: 0.5rem;
-                overflow: hidden;
-                transition: transform 0.2s ease, box-shadow 0.2s ease;
-            }
-
-            .library-main__content .book-card:hover,
-            .library-main__content .feature-card:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-            }
-
-            .library-main__content .book-card h3 {
-                font-size: 1rem;
-                font-weight: 600;
-                margin: 0 0 0.3rem;
-                color: #1f2937;
-            }
-
-            .library-main__content .book-card p {
-                font-size: 0.85rem;
-                color: #4b5563;
-                margin: 0;
-            }
-
-            .library-main__content .book-cover {
-                max-height: 150px;
-                object-fit: scale-down;
-                object-position: center;
-                border-radius: 0.25rem;
-                background-color: #ffffff;
-                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-                flex-shrink: 0;
-            }
-
-            .bookshelf {
-                /*background: rgba(217, 197, 168, 0.09);*/
-                border: solid rgba(117, 166, 141, 0.16);
-                padding: 2rem;
-                align-self: center;
-                margin-bottom: 3rem;
-                border-radius: 1rem;
-                margin-left: 4rem;
-                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-            }
-
-            .bookshelf h2 {
-                font-size: 1.5rem;
-                margin-bottom: 1rem;
-                border-left: 4px solid var(--color-accent-green, #34d399);
-                padding-left: 0.75rem;
-            }
-
-            .book-shelf-row {
-                display: grid;
-                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-                gap: 1.5rem;
-            }
-
-            .bookCard {
-                text-align: center;
-                background-color: white;
-                border-radius: 0.75rem;
-                box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-                padding: 1rem;
-                transition: all 0.2s ease-in-out;
-            }
-
-            .bookCard:hover {
-                transform: scale(1.02);
-                box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-            }
-
-            .bookCard h3 {
-                margin-top: 0.75rem;
-                font-size: 1rem;
-            }
-
-            .shelf-toggle .arrow {
-                display: inline-block;
-                transition: transform 0.3s ease;
-            }
-
-            .shelf-toggle.open .arrow {
-                transform: rotate(180deg);
-                transition: transform 0.3s ease;
-            }
-
-            .bookCard .author {
-                font-size: 0.85rem;
-                color: #6b7280;
-            }
-
-
-            .bookshelf h2 {
-                margin-top: 2rem;
-            }
-
-
-
-            /* Dark mode */
-            body:not(.lightMode) .library-main__content .book-card {
-                background-color: #1a1a1a;
-                border: 1px solid #333;
-                color: #f0f0f0;
-            }
-
-            body:not(.lightMode) .library-main__content .book-card h3,
-            body:not(.lightMode) .library-main__content .book-card .author {
-                color: #f0f0f0;
-            }
-
-            body:not(.lightMode) .library-main__content .book-card a {
-                color: var(--color-accent-green);
-            }
-
-            body:not(.lightMode) .library-main__content .book-card a:hover {
-                text-decoration: underline;
-            }
-
-            .shelf-content {
-                transition: max-height 0.4s ease, opacity 0.3s ease;
-                overflow: hidden;
-                max-height: 1000px;
-                opacity: 1;
-            }
-            .shelf-content.collapsed {
-                max-height: 0;
-                opacity: 0;
-                pointer-events: none;
-                transition: max-height 0.4s ease, opacity 0.3s ease;
-            }
-            .shelf-toggle {
-                cursor: pointer;
-                user-select: none;
-                transition: color 0.2s ease;
-            }
-            .shelf-toggle:hover {
-                color: var(--color-accent-green, #34d399);
-            }
-
-
-            @media (max-width: 768px) {
-                .library-container {
-                    flex-direction: column;
-                }
-
-                .library-sidebar {
-                    order: 0;
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    width: 100%;
-                    transform: translateY(-100%);
-                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                }
-
-                .library-main {
-                    padding-top: 4rem;
-                    /*padding-left: 10px;*/
-                    /*order: 1;*/
-                    align-items: center;
-                    padding: 3rem;
-                }
-            }
-        </style>
-
-{% endblock %}
-
 {% block body %}
-    <div class="library-container">
+    <div>
 
-        <div class="library-main">
-            <div class="library-main__header">
-                <h1>Biblioteczka</h1>
-            </div>
-            <div class="library-main__content">
-                <section class="searchResults">
-{#                    <h2>Wyniki</h2>#}
+
+            <h1>Biblioteczka</h1>
+
+
+                <section >
 
                     {% if pagination.items is not empty %}
 
@@ -252,44 +29,26 @@
                         {% endfor %}
 
 
-                        <section class="bookshelf">
-                            <h2 class="shelf-toggle">
-                                <span class="arrow">▼</span> Do przeczytania
+                        <section >
+                            <h2 >
+                                Do przeczytania
                             </h2>
-                           <div class = "shelf-content"> <div class = "book-shelf-row" >
+                           <div >
                                 {% for relation in toRead %}
                                     {% set book = relation.book  %}
 
-                                    <div class="bookCard">
-                                        {% if book.coverFilename %}
-                                            <img src="{{ asset('uploads/covers/' ~ book.coverFilename) }}" class="book-cover"
-                                                 alt="Okładka: {{ book.title }}">
-                                        {% else %}
-                                            <img src="{{ asset('uploads/defaultCover.svg') }}" alt="Okładka {{ book.title }}">
-                                        {% endif %}
-                                        <h3><a href="{{ path('book_show', {slug: book.slug}) }}">{{ book.title }}</a></h3>
-                                        <p class="author">{{ book.author ? book.author : 'Nieznany autor' }}</p>
-                                    </div>
+                                    {% include 'book_card.html.twig' %}
 
                                 {% endfor %}
-                            </div> </div>
+                            </div>
                         </section>
 
-                        <section class="bookshelf">
-                            <h2 class="shelf-toggle">  <span class="arrow">▼</span> Czytam</h2>
+                        <section>
+                            <h2 >Czytam</h2>
                             <div class = "shelf-content">     <div class="book-shelf-row">
                                 {% for relation in reading %}
                                     {% set book = relation.book  %}
-                                    <div class="bookCard">
-                                        {% if book.coverFilename %}
-                                            <img src="{{ asset('uploads/covers/' ~ book.coverFilename) }}" class="book-cover"
-                                                 alt="Okładka: {{ book.title }}">
-                                        {% else %}
-                                            <img src="{{ asset('uploads/defaultCover.svg') }}" alt="Okładka {{ book.title }}">
-                                        {% endif %}
-                                        <h3><a href="{{ path('book_show', {slug: book.slug}) }}">{{ book.title }}</a></h3>
-                                        <p class="author">{{ book.author ? book.author : 'Nieznany autor' }}</p>
-                                    </div>
+                                    {% include 'book_card.html.twig' %}
 
                                 {% endfor %}
                             </div>
@@ -297,20 +56,13 @@
                         </section>
 
                         <section class="bookshelf">
-                            <h2 class="shelf-toggle">  <span class="arrow">▼</span> Przeczytane</h2>
+                            <h2>  Przeczytane</h2>
                             <div class = "shelf-content"><div class="book-shelf-row">
                                 {% for relation in read %}
                                     {% set book = relation.book  %}
-                                    <div class="bookCard">
-                                        {% if book.coverFilename %}
-                                            <img src="{{ asset('uploads/covers/' ~ book.coverFilename) }}" class="book-cover"
-                                                 alt="Okładka: {{ book.title }}">
-                                        {% else %}
-                                            <img src="{{ asset('uploads/defaultCover.svg') }}" alt="Okładka {{ book.title }}">
-                                        {% endif %}
-                                        <h3><a href="{{ path('book_show', {slug: book.slug}) }}">{{ book.title }}</a></h3>
-                                        <p class="author">{{ book.author ? book.author : 'Nieznany autor' }}</p>
-                                    </div>
+
+                                    {% include 'book_card.html.twig' %}
+
 
                                 {% endfor %}
                             </div>
@@ -318,23 +70,6 @@
                         </section>
 
                         {{ knp_pagination_render(pagination) }}
-
-
-                        {#                            {% for relation in pagination.items %}#}
-{#                            {% set book = relation.book %}#}
-{#                                <div class="bookCard">#}
-{#                                    {% if book.coverFilename %}#}
-{#                                        <img src="{{ asset('uploads/covers/' ~ book.coverFilename) }}" class="book-cover"#}
-{#                                             alt="Okładka: {{ book.title }}">#}
-{#                                    {% else %}#}
-{#                                        <img src="{{ asset('uploads/defaultCover.svg') }}" alt="Okładka {{ book.title }}">#}
-{#                                    {% endif %}#}
-{#                                    <h3><a href="{{ path('book_show', {slug: book.slug}) }}">{{ book.title }}</a></h3>#}
-{#                                    <p class="author">{{ book.author ? book.author : 'Nieznany autor' }}</p>#}
-{#                                </div>#}
-{#                            {% endfor %}#}
-
-{#                        {{ knp_pagination_render(pagination) }}#}
                     {% else %}
                         <p>Brak wyników wyszukiwania.</p>
                     {% endif %}
@@ -342,220 +77,109 @@
                 </section>
             </div>
 
-      <script>
-        /**
-         * Skrypt obsługujący pola wyboru tagów (zarówno książek, jak i recenzji).
-         * Działa dla dowolnej liczby bloków .tagFilter, bo każdy blok działa w swojej
-         * własnej, zamkniętej przestrzeni – nie ma już konfliktu identyfikatorów.
-         */
-        document.addEventListener('DOMContentLoaded', () => {
 
-
-            // document.querySelectorAll('.shelf-toggle').forEach(toggle => {
-            //     toggle.addEventListener('click', () => {
-            //         const shelf = toggle.nextElementSibling;
-            //         shelf.classList.toggle('collapsed');
-            //     });
-            // });
-
-            document.querySelectorAll('.shelf-toggle').forEach(toggle => {
-                const shelf = toggle.nextElementSibling;
-
-                // Dodaj klasę open na start jeśli nie ma collapsed
-                if (!shelf.classList.contains('collapsed')) {
-                    toggle.classList.add('open');
-                }
-
-                toggle.addEventListener('click', () => {
-                    shelf.classList.toggle('collapsed');
-                    toggle.classList.toggle('open');
-
-                    // Można też dynamicznie podmieniać znak, ale dzięki rotate nie trzeba
-                    // const arrow = toggle.querySelector('.arrow');
-                    // arrow.textContent = shelf.classList.contains('collapsed') ? '▼' : '▲';
-                });
-            });
-
-            /**
-             * Dla każdego kontenera .tagFilter podpinamy niezależny zestaw listenerów.
-             */
-            document.querySelectorAll('.tagFilter').forEach(filter => {
-                /* --- referencje --- */
-                const toggleBtn    = filter.querySelector('.tagToggle');
-                const dropdown     = filter.querySelector('.tagDropdown');
-                const pillsBox     = filter.querySelector('.tagPills');
-                const hiddenSelect = filter.querySelector('.hidden-tag-select');
-
-                /* --- helper: renderuje pigułki z zaznaczonymi tagami --- */
-                const renderPills = () => {
-                    pillsBox.innerHTML = '';
-                    Array.from(hiddenSelect.selectedOptions).forEach(opt => {
-                        const pill = document.createElement('span');
-                        pill.className = 'tagPill';
-                        pill.innerHTML = `${opt.text} <span class="remove" data-value="${opt.value}">×</span>`;
-                        pillsBox.appendChild(pill);
-                    });
-                };
-
-                /* --- toggle dropdown --- */
-                toggleBtn.addEventListener('click', () => {
-                    dropdown.classList.toggle('open');
-                    const expanded = dropdown.classList.contains('open');
-                    toggleBtn.setAttribute('aria-expanded', expanded);
-                });
-
-                /* --- klik w checkbox --- */
-                dropdown.addEventListener('change', e => {
-                    const box   = e.target;
-                    if (box.tagName !== 'INPUT') return; // bezpieczeństwo
-                    const value = box.value;
-
-                    /* synchronizuj ukryty <select> */
-                    Array.from(hiddenSelect.options).forEach(opt => {
-                        if (opt.value === value) opt.selected = box.checked;
-                    });
-
-                    renderPills();
-                });
-
-                /* --- usuwanie tagu z pigułki --- */
-                pillsBox.addEventListener('click', e => {
-                    if (!e.target.classList.contains('remove')) return;
-                    const value = e.target.dataset.value;
-
-                    /* odznacz checkbox + <select> */
-                    dropdown.querySelector(`input[value="${value}"]`).checked = false;
-                    Array.from(hiddenSelect.options).find(opt => opt.value === value).selected = false;
-
-                    renderPills();
-                });
-
-                /* --- klik poza dropdown → zamknij --- */
-                document.addEventListener('click', e => {
-                    if (!filter.contains(e.target)) {
-                        dropdown.classList.remove('open');
-                        toggleBtn.setAttribute('aria-expanded', 'false');
-                    }
-                });
-
-                /* --- inicjalizacja z już-wybranymi (np. po powrocie z wyników) --- */
-                renderPills();
-
-
-            });
-            const ratingInput = document.getElementById('minRatingRange');
-            const ratingPreview = document.getElementById('ratingPreview');
-
-            if (ratingInput && ratingPreview) {
-                ratingInput.addEventListener('input', () => {
-                    ratingPreview.textContent = ratingInput.value;
-                });
-            }
-        });
-    </script>
-
-        </div>
-
-    <div class="library-sidebar">
-        {# ——— FORMULARZ ——— #}
-        <div class="generatedForm">
-            {{ form_start(form, {
-                method: 'get',
-                action: path(app.request.attributes.get('_route')),
-                attr: {class: 'filter-form'}
-            }) }}
-        </div>
-
-        <h2 class="filterHeading">Filtry</h2>
-
-        {# — przyciski — #}
-        <div class="formActions">
-            <button type="submit" class="btn btnPrimary">🔍︎ Szukaj</button>
-        </div>
-
-        <div class="formGroup">
-            {{ form_label(form.title, null, {label_attr: {class: 'formLabel'}}) }}
-            {{ form_widget(form.title, {
-                attr: {class: 'textInput', placeholder: 'Wichrowe wzgorza...'}
-            }) }}
-        </div>
-        {# — AUTOR — #}
-        <div class="formGroup">
-            {{ form_label(form.authorTerm, null, {label_attr: {class: 'formLabel'}}) }}
-            {{ form_widget(form.authorTerm, {
-                attr: {class: 'textInput', placeholder: 'Brandon / King …'}
-            }) }}
-        </div>
-
-        {# — TAGI KSIĄŻKI — #}
-        <div class="formGroup tagFilter" data-filter="bookTags">
-            {{ form_widget(form.tag, {attr: {class: 'hidden-tag-select'}}) }}
-
-            <button type="button" class="btnPrimary tagToggle" aria-expanded="false">
-                Wybierz tagi
-            </button>
-
-            <div class="tagPills"></div>
-
-            <div class="tagDropdown">
-                {% for choice in form.tag.vars.choices %}
-                    <label class="tagOption">
-                        <input type="checkbox" value="{{ choice.value }}" data-label="{{ choice.label }}">
-                        {{ choice.label }}
-                    </label>
-                {% endfor %}
-            </div>
-        </div>
-
-        {# — MINIMALNA OCENA — #}
-        <div class="formGroup">
-            <label class="formLabel" for="minRatingRange">
-                Minimalna ocena:
-                <span id="ratingPreview">{{ app.request.get('minRating') ?: 1 }}</span>/10
-            </label>
-            <input id="minRatingRange" name="minRating" type="range"
-                   min="1" max="10" step="1"
-                   value="{{ app.request.get('minRating') ?: 1 }}"
-                   class="rangeInput">
-        </div>
-
-        {# — TAGI RECENZJI — #}
-        <div class="formGroup tagFilter" data-filter="reviewTags">
-            {{ form_widget(form.reviewTags, {attr: {class: 'hidden-tag-select'}}) }}
-
-            <button type="button" class="btnPrimary tagToggle" aria-expanded="false">
-                Wybierz tagi recenzji
-            </button>
-
-            <div class="tagPills"></div>
-
-            <div class="tagDropdown">
-                <div class="tagDropdownInner">
-                    <div class="tagOptions">
-                        {% for choice in form.reviewTags.vars.choices %}
-                            <label class="tagOption">
-                                <input type="checkbox" value="{{ choice.value }}" data-label="{{ choice.label }}">
-                                <span class="tagLabel">{{ choice.label }}</span>
-                            </label>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        {# — SORTOWANIE — #}
-        <div class="formGroup">
-            <label class="formLabel" for="sortBy">Sortuj według</label>
-            <select id="sortBy" name="sortBy" class="customSelect">
-                <option value="">Domyślnie</option>
-                <option value="rating"    {{ app.request.get('sortBy') == 'rating'    ? 'selected' }}>Średnia ocena</option>
-                <option value="title"     {{ app.request.get('sortBy') == 'title'     ? 'selected' }}>Tytuł</option>
-            </select>
-        </div>
-
-        {{ form_rest(form) }} {# CSRF & ukryte pola #}
-        {{ form_end(form, {render_rest: false}) }}
+    <div class="search-form">
+        <h1><b style="color: #fa0000"> /debilu wstaw tutaj szablon forms </b> </h1>
     </div>
+{#    <div class="library-sidebar">#}
+
+{#        invisible settings #}
+{#        <div class="generatedForm">#}
+{#            {{ form_start(form, {#}
+{#                method: 'get',#}
+{#                action: path(app.request.attributes.get('_route')),#}
+{#                attr: {class: 'filter-form'}#}
+{#            }) }}#}
+{#        </div>#}
+
+
+{#        <h2 class="filterHeading">Filtry</h2>#}
+
+{#            <button type="submit" class="btn btnPrimary">🔍︎ Szukaj</button>#}
+
+
+
+{#            {{ form_label(form.title, null, {label_attr: {class: 'formLabel'}}) }}#}
+{#            {{ form_widget(form.title, {#}
+{#                attr: {class: 'textInput', placeholder: 'Wichrowe wzgorza...'}#}
+{#            }) }}#}
+
+{#        #}{# — AUTOR — #}
+
+{#            {{ form_label(form.authorTerm, null, {label_attr: {class: 'formLabel'}}) }}#}
+{#            {{ form_widget(form.authorTerm, {#}
+{#                attr: {class: 'textInput', placeholder: 'Brandon / King …'}#}
+{#            }) }}#}
+
+
+{#        #}{# — TAGI KSIĄŻKI — #}
+
+{#            {{ form_widget(form.tag, {attr: {class: 'hidden-tag-select'}}) }}#}
+
+{#            <button type="button" class="btnPrimary tagToggle" aria-expanded="false">#}
+{#                Wybierz tagi#}
+{#            </button>#}
+
+{#            <div class="tagPills"></div>#}
+
+{#            <div class="tagDropdown">#}
+{#                {% for choice in form.tag.vars.choices %}#}
+{#                    <label class="tagOption">#}
+{#                        <input type="checkbox" value="{{ choice.value }}" data-label="{{ choice.label }}">#}
+{#                        {{ choice.label }}#}
+{#                    </label>#}
+{#                {% endfor %}#}
+{#            </div>#}
+
+{#        #}{# — MINIMALNA OCENA — #}
+{#        <div class="formGroup">#}
+{#            <label class="formLabel" for="minRatingRange">#}
+{#                Minimalna ocena:#}
+{#                <span id="ratingPreview">{{ app.request.get('minRating') ?: 1 }}</span>/10#}
+{#            </label>#}
+{#            <input id="minRatingRange" name="minRating" type="range"#}
+{#                   min="1" max="10" step="1"#}
+{#                   value="{{ app.request.get('minRating') ?: 1 }}"#}
+{#                   class="rangeInput">#}
+{#        </div>#}
+
+{#        #}{# — TAGI RECENZJI — #}
+{#        <div class="formGroup tagFilter" data-filter="reviewTags">#}
+{#            {{ form_widget(form.reviewTags, {attr: {class: 'hidden-tag-select'}}) }}#}
+
+{#            <button type="button" class="btnPrimary tagToggle" aria-expanded="false">#}
+{#                Wybierz tagi recenzji#}
+{#            </button>#}
+
+{#            <div class="tagPills"></div>#}
+
+{#            <div class="tagDropdown">#}
+{#                <div class="tagDropdownInner">#}
+{#                    <div class="tagOptions">#}
+{#                        {% for choice in form.reviewTags.vars.choices %}#}
+{#                            <label class="tagOption">#}
+{#                                <input type="checkbox" value="{{ choice.value }}" data-label="{{ choice.label }}">#}
+{#                                <span class="tagLabel">{{ choice.label }}</span>#}
+{#                            </label>#}
+{#                        {% endfor %}#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+
+{#        #}{# — SORTOWANIE — #}
+{#        <div class="formGroup">#}
+{#            <label class="formLabel" for="sortBy">Sortuj według</label>#}
+{#            <select id="sortBy" name="sortBy" class="customSelect">#}
+{#                <option value="">Domyślnie</option>#}
+{#                <option value="rating"    {{ app.request.get('sortBy') == 'rating'    ? 'selected' }}>Średnia ocena</option>#}
+{#                <option value="title"     {{ app.request.get('sortBy') == 'title'     ? 'selected' }}>Tytuł</option>#}
+{#            </select>#}
+{#        </div>#}
+
+{#        {{ form_rest(form) }} #}{# CSRF & ukryte pola #}
+{#        {{ form_end(form, {render_rest: false}) }}#}
+{#    </div>#}
 
 
 

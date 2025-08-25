@@ -1,0 +1,18 @@
+
+@use '../variables' as *;
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: 1.2;
+  color: $color-primary;
+}
+
+p {
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}

@@ -1,0 +1,36 @@
+<div class="review-card {{ isUserOwn ? 'review-user-own' : '' }}">
+    <p class="review-header">
+        <img src="{{ asset(review.author.avatarFilename
+            ? 'uploads/avatars/' ~ review.author.avatarFilename
+            : 'uploads/defaultAvatar.svg') }}"
+             alt="Avatar"
+             class="avatar-review">
+
+        <strong>{{ review.author.name ?? 'Nieznany użytkownik' }}</strong>
+        — Ocena: {{ review.rating }}/10
+    </p>
+
+    <p class="review-comment">
+        {{ review.comment }}
+    </p>
+
+    {% if review.tagAssignments|length > 0 %}
+    <div class="review-tags">
+        {% for assignment in review.tagAssignments %}
+            <span class="tag-badge">{{ assignment.tag.name }}</span>
+        {% endfor %}
+    </div>
+    {% elseif isUserOwn %}
+
+    {% endif %}
+
+    {% if isUserOwn %}
+        <div class="review-actions">
+            <a href="{{ path('review_edit', { id: review.id }) }}"
+               class="btn btn-small btn-outline-primary">✏️ Edytuj</a>
+
+            <a href="{{ path('review_delete', { id: review.id }) }}"
+               class="btn btn-small btn-danger">🗑️ Usuń</a>
+        </div>
+    {% endif %}
+</div>

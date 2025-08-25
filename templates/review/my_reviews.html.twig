@@ -12,23 +12,7 @@
         {% if pagination.items is not empty %}
             <ul class="reviews-list">
                 {% for review in pagination.items %}
-                    <li class="review-card">
-                        <header class="review-card__header">
-                            <h2 class="review-card__book">
-                                <a href="{{ path('book_show', { slug: review.book.slug }) }}">
-                                    {{ review.book.title }}
-                                </a>
-                            </h2>
-                            <span class="review-card__rating">{{ review.rating }}/10</span>
-                        </header>
-
-                        <p class="review-card__comment">{{ review.comment|nl2br }}</p>
-
-                        <div class="review-card__actions">
-                            <a href="{{ path('review_edit', { id: review.id }) }}" class="btn btnSecondary">Edytuj</a>
-                            <a href="{{ path('review_delete', { id: review.id }) }}" class="btn btnDanger">Usuń</a>
-                        </div>
-                    </li>
+                 {% include 'review/_card.html.twig' %}
                 {% endfor %}
             </ul>
 

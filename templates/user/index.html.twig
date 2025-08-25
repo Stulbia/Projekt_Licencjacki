@@ -6,8 +6,7 @@
     <section class="profile-page">
         <h1 class="profile-title">{{ 'title.my_profile'|trans }}</h1>
 
-        <div class="profile-container">
-            {# ---------- Avatar ---------- #}
+
             <div class="profile-avatar">
                 {% if user.avatarFilename %}
                     <img src="{{ asset('uploads/avatars/' ~ user.avatarFilename) }}" alt="Avatar użytkownika {{ user.name }}" class="profile-avatar__img">
@@ -24,7 +23,7 @@
                 </a>
             </div>
 
-            {# ---------- Info ---------- #}
+
             <div class="profile-info">
                 <dl class="profile-dl">
                     <dt>{{ 'label.name'|trans }}</dt>
@@ -43,7 +42,7 @@
                     </a>
                 </div>
 
-                {# ---------- Social accounts ---------- #}
+
                 <div class="profile-social">
                     <h3>{{ 'label.social_profiles'|trans }}</h3>
 
@@ -67,6 +66,6 @@
                     </a>
                 </div>
             </div>
-        </div>
+
     </section>
 {% endblock %}

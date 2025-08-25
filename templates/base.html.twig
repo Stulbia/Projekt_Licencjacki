@@ -4,30 +4,35 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}App{% endblock %}</title>
-    <link rel="stylesheet" href="{{ asset('css/1_core.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/2_components.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/3_layout.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/4_forms.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/5_utilities.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/6_book.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/7_footer.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/8_reviews.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/9_profile.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/10_review_form.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/11_author.css') }}">
-{#    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">#}
 
+    {{ encore_entry_link_tags('app') }}
+
+{#    <link rel="preconnect" href="https://fonts.googleapis.com">#}
+{#    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>#}
+{#    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">#}
+
+
+{#    #}{# Google Fonts Roboto #}
+{#    <link rel="preconnect" href="https://fonts.googleapis.com">#}
+{#    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>#}
+{#    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">#}
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@100..900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+    />
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="{{ asset('js/theme-switcher.js') }}"></script>
+
+
 
     {# Choices.js styles #}
 {#    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />#}
 
-    {% block stylesheets %}{% endblock %}
+    {% block stylesheets %} {% endblock %}
 </head>
 <body class="">
 {% include 'nav.html.twig' %}

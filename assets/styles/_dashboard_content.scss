@@ -1,0 +1,115 @@
+@use 'variables' as *;
+
+.dashboard-content {
+  display:flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+
+$hero-bg: $gradient-bg;
+
+
+$hero-text-color: $body-bg;
+$hero-btn-bg: $body-bg;
+$hero-btn-text: $color-accent-third;
+
+
+
+.hero {
+  padding: 4rem 2rem;
+  text-align: center;
+  background: $hero-bg;
+  color: $hero-text-color;
+  animation: fadeInUp 1.2s ease;
+  margin-bottom: 0.5rem;
+
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: $hero-text-color;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+  }
+
+  .register-btn {
+    display: inline-block;
+    padding: 0.8rem 1.6rem;
+    background: $hero-btn-bg;
+    color: $hero-btn-text;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.3s ease, transform 0.2s ease;
+
+    &:hover {
+      background: darken($hero-btn-bg, 10%);
+      transform: translateY(-2px);
+    }
+  }
+}
+
+/* simple fade-in animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2rem;
+  padding: 3rem 2rem;
+  background: $hero-bg; // optional – if you want the gradient background
+  color: #fff;
+
+  .feature-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 2rem 1.5rem;
+    border-radius: 1rem;
+    background: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+    &:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+    }
+
+    span.material-symbols-outlined {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      color: lighten($color-primary, 15%);
+    }
+
+    h3 {
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      font-size: 1rem;
+      opacity: 0.9;
+      line-height: 1.5;
+    }
+  }
+}
+

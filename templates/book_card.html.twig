@@ -1,0 +1,26 @@
+<div class="book-card">
+
+    {% if book.coverFilename %}
+        <img src="{{ asset('uploads/covers/' ~ book.coverFilename) }}"
+             alt="Okładka {{ book.title }}"
+             class="book-cover">
+    {% else %}
+        <img src="{{ asset('uploads/defaultCover.svg') }}"
+             alt="Domyślna okładka książki {{ book.title }}"
+             class="book-cover">
+    {% endif %}
+
+    <h3 class="book-title">
+        <a href="{{ path('book_show', { slug: book.slug }) }}">
+            {{ book.title }}
+        </a>
+    </h3>
+
+    {% if book.author %}
+        <a href="{{ path('author_show', { id: book.author.id }) }}" class="book-author">
+            {{ book.author }}
+        </a>
+    {% else %}
+        <span class="book-author">Nieznany autor</span>
+    {% endif %}
+</div>

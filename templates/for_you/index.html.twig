@@ -3,48 +3,23 @@
 {% block title %}Dla Ciebie{% endblock %}
 
 {% block body %}
-    <h1>Rekomendacje dla Ciebie</h1>
-    <div class="recommendations-wrap">
-
-
+    <h1>Polecane ksiazki</h1>
+    <div>
         {% if app.user %}
-            <h2 class="filterHeading">📚 Twoje rekomendacje</h2>
-            <p class="text-sm text-gray-600">Rekomendacje generowane są na podstawie Twoich ocen i preferencji. Przeczytaj więcej książek, aby otrzymywać lepsze propozycje!</p>
+            <p>Pozycje wybierane są na podstawie Twoich ocen. Przeczytaj więcej książek, aby otrzymywać lepsze propozycje!</p>
 
         {% else %}
-            <h2 class="filterHeading">📚 Polecane ksiazki</h2>
-           <p class="text-sm text-gray-600"> Zaloguj sie lub zarejestruj, aby otrzymywac spersonalizowane rekomendacje.</p>
+
+           <p > Zaloguj sie lub zarejestruj, aby otrzymywac propozycje wybrane specjalnie dla Ciebie.</p>
         {% endif %}
 
-        <section class="recommendations">
+        <section>
             <h2>Wyniki</h2>
 
             {% if books is not empty %}
-                <div class="bookGrid">
                     {% for book in books %}
-                        <div class="bookCard">
-                            {% if book.coverFilename %}
-                                <img src="{{ asset('uploads/covers/' ~ book.coverFilename) }}"
-                                     alt="Okładka książki {{ book.title }}"
-                                     class="book-cover">
-                            {% else %}
-                          }
-                                <img src="{{ asset('uploads/defaultCover.svg') }}" alt="Domyślna okładka książki {{ book.title }}">
-                            {% endif %}
-
-                            <h3>
-                                <a href="{{ path('book_show', { slug: book.slug }) }}">
-                                    {{ book.title }}
-                                </a>
-                            </h3>
-                            {% if book.author %}
-                                <a href="{{ path('author_show', { id: book.author.id }) }}" class="author">{{ book.author }}</a>
-                            {% else %}
-                                Nieznany autor
-                            {% endif %}
-                        </div>
-                    {% endfor %}
-                </div>
+                 {% include "book_card.html.twig" %}
+                {% endfor %}
             {% else %}
                 <p>Brak rekomendacji na ten moment. Przeczytaj kilka książek lub napisz recenzję, by zobaczyć propozycje!</p>
             {% endif %}
