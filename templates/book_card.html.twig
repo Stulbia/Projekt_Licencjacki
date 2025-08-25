@@ -1,0 +1,43 @@
+<div class="book-card">
+
+    {% if book.coverFilename %}
+        <div class="frame">
+        <img src="{{ asset('uploads/covers/' ~ book.coverFilename) }}"
+             alt="Okładka {{ book.title }}"
+             class="book-cover">
+    {% else %}
+        <img src="{{ asset('uploads/defaultCover.svg') }}"
+             alt="Domyślna okładka książki {{ book.title }}"
+             class="book-cover">
+    {% endif %}
+        </div>
+    <h3 class="book-title">
+        <a href="{{ path('book_show', { slug: book.slug }) }}">
+            {{ book.title }}
+        </a>
+    </h3>
+
+    {% if book.author %}
+        <a href="{{ path('author_show', { id: book.author.id }) }}" class="book-author">
+            {{ book.author }}
+        </a>
+    {% else %}
+        <span class="book-author">Nieznany autor</span>
+    {% endif %}
+
+
+    {# --- Rating (avg) --- #}
+    {% set avg = book.avgRating %}
+    {% if avg is not null %}
+        {% set avgRounded = avg|number_format(1, '.', '') %}
+        {% set pct = (avg / 10 * 100)|round %}
+        <div class="book-rating" aria-label="Średnia ocena: {{ avgRounded }} na 10">
+            <span class="material-symbols-outlined star-icon">star</span>
+            <span class="rating-number">{{ avgRounded }}</span>
+        </div>
+    {% else %}
+        <div class="book-rating book-rating--muted">Brak ocen</div>
+    {% endif %}
+
+
+</div>

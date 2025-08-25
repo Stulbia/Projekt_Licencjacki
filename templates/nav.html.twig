@@ -1,44 +1,65 @@
 <nav class="navBar">
-    {# ---------- Logo po lewej ---------- #}
-    {# ---------- Hamburger po prawej ---------- #}
-
     <div class="navLogo">
         <a href="{{ path('homepage') }}">Book&nbsp;Library</a>
-
-
-        <button id="hamburger"
-                class="navHamburger"
-                aria-label="Menu"
-                aria-expanded="false">
-            <span></span><span></span><span></span>
-        </button>
-
     </div>
 
+    {# Hamburger on the right #}
+    <button id="hamburger"
+            class="navHamburger"
+            aria-label="Menu"
+            aria-controls="navLinks"
+            aria-expanded="false">
+        <span class="ms-icon material-symbols-outlined" aria-hidden="true">menu</span>
+    </button>
 
 
-    {# ---------- Linki (zwijane na mobile) ---------- #}
-    <div id="navLinks" class="navLinks">
-        <a class="navLink" href="{{ path('homepage') }}">Home</a>
-        <a class="navLink" href="{{ path('for_you_index') }}">Rekomendacje</a>
-        <a class="navLink" href="{{ path('book_search') }}">Books</a>
+    {# Collapsible links #}
+    <div id="navLinks" class="navLinks" data-open="false">
+        <a class="navLink" href="{{ path('homepage') }}">Strona Głowna</a>
+        <a class="navLink" href="{{ path('for_you_index') }}">Polecane</a>
+        <a class="navLink" href="{{ path('book_search') }}">Szukaj</a>
 
         {% if app.user %}
-            <a class="navLink" href="{{ path('library_index') }}">Library</a>
-            <a class="navLink" href="{{ path('review_index') }}">Twoje&nbsp;Recenzje</a>
-            <a class="navLink" href="{{ path('user_index') }}">Twój&nbsp;profil</a>
-            <a class="navLink loginBtn" href="{{ path('app_logout') }}">Logout</a>
+            <a class="navLink" href="{{ path('library_index') }}">Biblioteczka</a>
+            <a class="navLink" href="{{ path('review_index') }}">Twoje Recenzje</a>
+            <a class="navLink" href="{{ path('user_index') }}">Twój profil</a>
+            <a class="navLink loginBtn" href="{{ path('app_logout') }}">Wyloguj</a>
         {% else %}
-            <a class="navLink" href="{{ path('app_login') }}">Login</a>
-            <a class="navLink loginBtn" href="{{ path('user_register') }}">Register</a>
+            <a class="navLink" href="{{ path('app_login') }}">Zaloguj</a>
+            <a class="navLink loginBtn" href="{{ path('user_register') }}">Zarejestruj</a>
         {% endif %}
-
-
-        <div class="themeControls">
-            <button id="themeToggle"
-                    class="navButton btnPrimary"
-                    title="Przełącz motyw">🌙</button>
-        </div>
     </div>
-
 </nav>
+
+<script>
+    (function () {
+        const btn = document.getElementById('hamburger');
+        const panel = document.getElementById('navLinks');
+        const icon = btn?.querySelector('.ms-icon');
+        if (!btn || !panel || !icon) return;
+
+        function setOpen(open) {
+            btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+            panel.setAttribute('data-open', open ? 'true' : 'false');
+            btn.setAttribute('aria-label', open ? 'Zamknij menu' : 'Menu');
+            icon.textContent = open ? 'close' : 'menu'; // 👈 switch icon
+        }
+
+        btn.addEventListener('click', () => {
+            const open = btn.getAttribute('aria-expanded') === 'true';
+            setOpen(!open);
+        });
+
+        panel.addEventListener('click', (e) => {
+            if (e.target.closest('a')) setOpen(false);
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') setOpen(false);
+        });
+
+        // Reset when switching to desktop
+        const mq = window.matchMedia('(min-width: 769px)');
+        mq.addEventListener('change', (ev) => { if (ev.matches) setOpen(false); });
+    })();
+</script>

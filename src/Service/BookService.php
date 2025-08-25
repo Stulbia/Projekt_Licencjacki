@@ -69,7 +69,8 @@ class BookService implements BookServiceInterface
 //       dump($parsedFilters); die;
     //    dump($this->bookRepository->querySearch($parsedFilters)); die;
         return $this->paginator->paginate(
-            $this->bookRepository->querySearch($parsedFilters),
+//            $this->bookRepository->querySearch($parsedFilters),
+            $this->bookRepository->searchWithAvgRating($parsedFilters),
             $page,
             $items,
             [

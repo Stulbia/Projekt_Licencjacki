@@ -1,0 +1,258 @@
+@use 'variables' as *;
+
+/* --- General container helper (optional) --- */
+.container {
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+/* --- HERO (kept, small polish) --- */
+$hero-bg: $gradient-bg;
+$hero-text-color: $body-bg;
+$hero-btn-bg: $body-bg;
+$hero-btn-text: $color-accent-third;
+
+.hero {
+  padding: clamp(2.5rem, 6vw, 5rem) 2rem;
+  text-align: center;
+  background: $hero-bg; /* gradient from your variables */
+  color: $hero-text-color;
+  animation: fadeInUp 1.2s ease;
+  margin-bottom: 0.75rem;
+  position: relative;
+  overflow: clip;
+
+  /* subtle dark overlay for text contrast (80% opacity of $body-bg) */
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    /* If $body-bg is light, you may prefer rgba(0,0,0,0.2) instead. */
+    //background: rgba($body-bg, 0.2);
+    pointer-events: none;
+  }
+
+  h1 {
+    position: relative;
+    z-index: 1;
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    font-weight: 800;
+    color: $hero-text-color;
+    margin-bottom: 1rem;
+    letter-spacing: 0.2px;
+  }
+
+  p {
+    position: relative;
+    z-index: 1;
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    opacity: 0.92;
+  }
+
+  .register-btn {
+    position: relative;
+    z-index: 1;
+    display: inline-block;
+    padding: 0.85rem 1.6rem;
+    background: $hero-btn-bg;
+    color: $hero-btn-text;
+    border-radius: 0.65rem;
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.18);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 22px rgba(0,0,0,0.26);
+      background: darken($hero-btn-bg, 8%);
+    }
+  }
+}
+
+/* --- Animation (unchanged) --- */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(-20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Popular books: GRID version with featured first card --- */
+.popular {
+  animation: fadeInUp 1.2s ease;
+  @extend .container;
+  margin-top: 0.5rem;
+
+  h2 {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    margin: 1rem 0 0.25rem;
+  }
+}
+
+.popularGrid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(12, 1fr);
+  align-items: stretch;
+}
+
+/* Every card wrapper (so we don't need to change your partial) */
+.popularItem {
+  grid-column: span 6; /* two per row on desktop */
+  display: grid;
+
+  /* make inner book-card stretch nicely */
+  > * { display: grid; }
+
+  /* mobile-first fixes */
+  @media (max-width: 900px) {
+    grid-column: span 12; /* single column on tablets/phones */
+  }
+}
+
+/* First item highlighted (bigger) */
+.popularItem--featured {
+  grid-column: span 12; /* full width row */
+  @media (min-width: 901px) {
+    grid-column: span 12; /* keep full width on desktop */
+  }
+
+  /* OPTIONAL: scale the inner card visuals a bit larger if needed */
+  .book-card {
+    /* these classes depend on your book_card.html.twig; if you have .book-card image/title selectors, you can tweak here */
+    transform: translateZ(0);
+    transition: transform 0.25s ease;
+  }
+
+  &:hover .book-card {
+    transform: translateY(-2px);
+  }
+}
+
+/* If you want the first item to look visually “heroic”, add a subtle accent */
+.popularItem--featured .book-card {
+  border-radius: 1rem;
+  box-shadow: 0 10px 26px rgba(0,0,0,0.18);
+  outline: 1px solid rgba($color-accent-second, 0.25);
+}
+
+/* --- “Features” section (your version + small polish) --- */
+.features {
+  animation: fadeInUp 1.2s ease;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.25rem;
+  padding: 5%;
+  background: $hero-bg;
+  width: 100%;
+
+  .feature-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1.75rem 1.25rem;
+    border-radius: 1rem;
+    background: $body-bg;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.14);
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+    &:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.28);
+    }
+
+    .material-symbols-outlined {
+      font-size: 2.75rem;
+      margin-bottom: 0.85rem;
+      color: $color-accent-second;
+    }
+
+    h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.35rem;
+    }
+
+    p {
+      font-size: 0.98rem;
+      opacity: 0.92;
+      line-height: 1.55;
+    }
+  }
+}
+
+/* --- ABOUT (text only) --- */
+.about {
+  padding: 5% 10%;
+  animation: fadeInUp 1.2s ease;
+  line-height: 1.7;
+
+  h2 {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    margin-bottom: 0.75rem;
+  }
+
+  p {
+    margin-bottom: 0.8rem;
+    opacity: 0.95;
+  }
+
+  .muted {
+    opacity: 0.8;
+    font-size: 0.95rem;
+  }
+}
+
+/* Accessibility: reduce motion if user prefers */
+@media (prefers-reduced-motion: reduce) {
+  .hero { animation: none; }
+  .feature-card,
+  .popularItem--featured .book-card {
+    transition: none;
+  }
+}
+.myPopularCarousel {
+  position: relative;    /* anchor arrows */
+  overflow: visible;     /* let them stick out */
+  --swiper-theme-color: #{$color-primary};
+
+  .swiper-slide { height: auto; }
+
+  .swiper-pagination {
+    margin-top: 1rem;
+    position: relative;
+  }
+
+  /* Arrows: size, stacking, and outside placement */
+  .swiper-button-prev,
+  .swiper-button-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 32px;
+    z-index: 5;          /* <<< make sure they’re above cards */
+    color: currentColor; /* or set a color explicitly e.g. #333 */
+    &::after { font-size: 20px; }
+  }
+
+  .swiper-button-prev { left: -10px; }  /* push outside */
+  .swiper-button-next { right: -10px; } /* push outside */
+
+  /* Don’t let “disabled” state hide an arrow at the ends */
+  .swiper-button-disabled {
+    display: block !important;  /* some themes set display:none; override it */
+    opacity: .35;
+    pointer-events: none;
+  }
+
+  /* Hide arrows only on phones */
+  @media (max-width: 640px) {
+    .swiper-button-prev,
+    .swiper-button-next { display: none; }
+  }
+}

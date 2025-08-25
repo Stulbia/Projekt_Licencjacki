@@ -69,6 +69,18 @@ class Book
     private ?string $coverFilename;
 
 
+//    just for display
+    private ?float $avgRating = null;
+
+    public function getAvgRating(): ?float
+    {
+        return $this->avgRating;
+    }
+
+    public function setAvgRating(?float $avgRating): void
+    {
+        $this->avgRating = $avgRating;
+    }
 
 
     public function __construct()

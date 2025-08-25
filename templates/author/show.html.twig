@@ -2,150 +2,46 @@
 
 {% block title %}{{ author }}{% endblock %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
-    <style>
-        /* --------------------------------------------------------------
-           1. Swiper theme colour (arrows + active bullet)
-              Switch to #fff for white if needed.
-        -------------------------------------------------------------- */
-        :root {
-            --swiper-theme-color: #000;
-        }
-
-        /* 2. Pagination bullets – keep inactive bullets visible */
-        .swiper-pagination-bullet {
-            background: rgba(0, 0, 0, 0.25);
-            opacity: 1;
-        }
-        .swiper-pagination-bullet-active {
-            background: var(--swiper-theme-color);
-        }
-
-        /* 3. FLEX wrapper so arrows sit *next to* the carousel */
-        .carousel-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 1rem;          /* space between arrow ⇄ slider ⇄ arrow */
-        }
-        .carousel-wrapper .swiper {
-            flex: 1 1 0;        /* take remaining width */
-        }
-        /* Place arrows statically (no overlay) and give click area */
-        .carousel-wrapper .swiper-button-prev,
-        .carousel-wrapper .swiper-button-next {
-            position: static;   /* override Swiper absolute positioning */
-            width: 42px;
-            height: 42px;
-            cursor: pointer;
-        }
-    </style>
-{% endblock %}
 
 {% block body %}
-  {%dump(pagination) %}
-{#    <section class="author-profile">#}
-    <section class="hero animate-fadeInUp">
-        <div class="author-page">
-            <div class="author-header">
-                <div class="author-avatar">
-                    {% if author.photoFilename %}
-                        <img src="{{ asset('uploads/authors/' ~ author.photoFilename) }}"
-                             alt="Zdjęcie {{ author }}"
-{#                             class="author-avatar__img" />#}
-class="profile-avatar__img"/>
-                    {% else %}
-                        <div class="author-avatar__placeholder" aria-label="Brak zdjęcia">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                 fill="currentColor" class="author-avatar__icon"><path fill-rule="evenodd" d="M12 2a6 6 0 100 12 6 6 0 000-12zm-9 18a9 9 0 1118 0H3z" clip-rule="evenodd"/></svg>
-                        </div>
-                    {% endif %}
+
+
+    <div class="author">
+    <section class="banner">
+
+
+        <div class="author-avatar">
+            {% if  author.photoFilename %}
+                <img src="{{ asset('uploads/authors/' ~ author.photoFilename) }}"
+                     alt="Zdjęcie {{ author }}"
+                     class="profile-avatar__img"
+                     onerror="this.outerHTML='<div class=&quot;author-avatar__placeholder&quot;><span class=&quot;material-symbols-outlined&quot;>question_mark</span></div>'"/>
+            {% else %}
+                <div class="author-avatar__placeholder" aria-label="Brak zdjęcia">
+                    <span class="material-symbols-outlined">question_mark</span>
                 </div>
+            {% endif %}
+        </div>
+
                 <div class="author-info">
                     <h1 class="author-name">{{ author }}</h1>
                     {% if author.description %}
                         <p class="author-bio">{{ author.description|nl2br }}</p>
                     {% endif %}
                 </div>
-            </div>
 
-            <h2 class="author-books-heading">Książki autora</h2>
-
-        </div>
     </section>
-<section class="dashboard-content animate-fadeInUp">
-    <h2>Ksiazki tego autora</h2>
-
-{# {% dump( pagination is not empty) %}#}
-{#  {% dump('author') %}#}
-    {% if pagination is not empty %}
-
-        <div class="carousel-wrapper">
-            <div class="swiper-button-prev" tabindex="0" role="button" aria-label="Poprzednia książka"></div>
-
-            <div class="swiper myBooksCarousel">
-                <div class="swiper-wrapper">
+        <section class="publications">
+            <h2>Publikacje:</h2>
+            {% if pagination is not empty %}
+                <div class="publications__grid">
                     {% for book in pagination %}
-                        <div class="swiper-slide">
-                            <div class="book-card animate-fadeInUp" style="animation-delay: {{ loop.index0 * 0.1 }}s">
-                                {% if book.coverFilename %}
-                                    <img src="{{ asset('uploads/covers/' ~ book.coverFilename) }}"
-                                         alt="Okładka {{ book.title }}"
-                                         class="book-cover">
-                            {% else %}
-                                <img src="{{ asset('uploads/defaultCover.svg') }}" alt="Okladka {{ book.title }}">
-                            {% endif %}
-                                <h3>
-                                    <a href="{{ path('book_show', { slug: book.slug }) }}">
-                                        {{ book.title }}
-                                    </a>
-                                </h3>
-                                <p class="author">{{ book.author ?? 'Nieznany autor' }}</p>
-                            </div>
-                        </div>
+                        {% include 'book_card.html.twig' %}
                     {% endfor %}
                 </div>
-            </div>
+                <div class="swiper-pagination"></div>
+            {% endif %}
+        </section>
 
-            <div class="swiper-button-next" tabindex="0" role="button" aria-label="Następna książka"></div>
-        </div>
-
-        {# Pagination bullets below the whole wrapper #}
-        <div class="swiper-pagination"></div>
-    {% endif %}
-</section>
-
-<section class="features animate-fadeInUp">
+    </div>
 {% endblock %}
-
-    {% block javascripts %}
-        {{ parent() }}
-        {# Swiper core JS #}
-        <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                new Swiper('.myBooksCarousel', {
-                    slidesPerView: 1,
-                    spaceBetween: 20,
-                    loop: true,
-                    pagination: {
-                        el: '.swiper-pagination',
-                        clickable: true,
-                    },
-                    navigation: {
-                        nextEl: '.swiper-button-next',
-                        prevEl: '.swiper-button-prev',
-                    },
-                    breakpoints: {
-                        640: {
-                            slidesPerView: 2,
-                        },
-                        1024: {
-                            slidesPerView: 4,
-                        }
-                    }
-                });
-            });
-        </script>
-    {% endblock %}

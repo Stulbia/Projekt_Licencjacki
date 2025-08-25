@@ -2,172 +2,164 @@
 
 {% block title %}Witamy w Bibliotece!{% endblock %}
 
-{# --- Asset blocks ------------------------------------------------------ #}
+{# --- Styles: include Swiper + a tiny carousel tweak stylesheet --- #}
 {% block stylesheets %}
     {{ parent() }}
-    {# Swiper core CSS – adds minimal extra weight and plays nicely with existing styles #}
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
 
-    <style>
-        /* --------------------------------------------------------------
-           1. Swiper theme colour (arrows + active bullet)
-              Switch to #fff for white if needed.
-        -------------------------------------------------------------- */
-        :root {
-            --swiper-theme-color: #000;
-        }
-
-        /* 2. Pagination bullets – keep inactive bullets visible */
-        .swiper-pagination-bullet {
-            background: rgba(0, 0, 0, 0.25);
-            opacity: 1;
-        }
-        .swiper-pagination-bullet-active {
-            background: var(--swiper-theme-color);
-        }
-
-        /* 3. FLEX wrapper so arrows sit *next to* the carousel */
-        .carousel-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 1rem;          /* space between arrow ⇄ slider ⇄ arrow */
-        }
-        .carousel-wrapper .swiper {
-            flex: 1 1 0;        /* take remaining width */
-        }
-        /* Place arrows statically (no overlay) and give click area */
-        .carousel-wrapper .swiper-button-prev,
-        .carousel-wrapper .swiper-button-next {
-            position: static;   /* override Swiper absolute positioning */
-            width: 42px;
-            height: 42px;
-            cursor: pointer;
-        }
-    </style>
 {% endblock %}
 
-{# ----------------------------------------------------------------------- #}
 {% block body %}
 
-    <section class="hero animate-fadeInUp">
-
+    {# ---------------- HERO ---------------- #}
+    <section class="hero">
         <h1>Odkrywaj, oceniaj i dziel się książkami</h1>
 
-        {% if app.user %}
-        <p>Dołącz do naszej społeczności i odkrywaj najlepsze lektury!</p>
-        <a href="{{ path('user_register') }}" class="register-btn">Załóż konto</a>
+        {% if not app.user %}
+            <p>Dołącz do naszej społeczności i odkrywaj najlepsze lektury!</p>
+            <a href="{{ path('user_register') }}" class="register-btn">Załóż konto</a>
         {% else %}
-        <p>Znajdz nowe pozycje,wybrane specjalnie dla ciebiey!</p>
-        <a href="{{ path('for_you_index') }}" class="register-btn">Załóż konto</a>
-    {% endif %}
-    </section>
-
-    <section class="dashboard-content animate-fadeInUp">
-        <h2>Najpopularniejsze książki</h2>
-
-        {% if popularBooks is not empty %}
-            {# -------------------------------------------------------------------
-               FLEX wrapper: arrows « slider » arrows
-            ------------------------------------------------------------------- #}
-            <div class="carousel-wrapper">
-                <div class="swiper-button-prev" tabindex="0" role="button" aria-label="Poprzednia książka"></div>
-
-                <div class="swiper myBooksCarousel">
-                    <div class="swiper-wrapper">
-                        {% for book in popularBooks %}
-                            <div class="swiper-slide">
-                                <div class="book-card animate-fadeInUp" style="animation-delay: {{ loop.index0 * 0.1 }}s">
-                                    {% if book.coverFilename %}
-                                        <img src="{{ asset('uploads/covers/' ~ book.coverFilename) }}"
-                                             alt="Okładka {{ book.title }}"
-                                             class="book-cover">
-                                    {% else%}
-                                        <img src="{{ asset('uploads/defaultCover.svg') }}" alt="Domyślna okładka książki {{ book.title }}">
-                                    {% endif %}
-
-
-                                    <h3>
-                                        <a href="{{ path('book_show', { slug: book.slug }) }}">
-                                            {{ book.title }}
-                                        </a>
-                                    </h3>
-                                    {% if book.author %}
-                                        <a href="{{ path('author_show', { id: book.author.id }) }}" class="author">{{ book.author }}</a>
-                                    {% else %}
-                                        Nieznany autor
-                                    {% endif %}
-                                </div>
-                            </div>
-                        {% endfor %}
-                    </div>
-                </div>
-
-                <div class="swiper-button-next" tabindex="0" role="button" aria-label="Następna książka"></div>
-            </div>
-
-            {# Pagination bullets below the whole wrapper #}
-            <div class="swiper-pagination"></div>
+            <p>Znajdź nowe pozycje, wybrane specjalnie dla Ciebie!</p>
+            <a href="{{ path('for_you_index') }}" class="register-btn">Przeglądaj…</a>
         {% endif %}
     </section>
 
-    <section class="features animate-fadeInUp">
-        <a href="{{ path('book_search') }}" class="feature-card">
-            <span class="icon">📚</span>
-            <h3>Setki książek</h3>
-            <p>Przeglądaj naszą stale rosnącą kolekcję książek z recenzjami użytkowników.</p>
-        </a>
+    {# ---------------- POPULAR (Swiper carousel with mobile “peek”) ---------------- #}
+    <section class="popular container">
+        <h2>Najpopularniejsze książki</h2>
 
-        <a href="{{ path('book_search') }}" class="feature-card">
-            <span class="icon">⭐</span>
-            <h3>Recenzje i oceny</h3>
-            <p>Sprawdzaj opinie innych czytelników i dziel się swoimi wrażeniami.</p>
-        </a>
+        {% if popularBooks is not empty %}
+            <div class="swiper myPopularCarousel" aria-label="Karuzela popularnych książek">
+                <div class="swiper-wrapper">
+                    {% for book in popularBooks %}
+                        <div class="swiper-slide">
+                            {% include 'book_card.html.twig' with { book: book } %}
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="swiper-button-prev" aria-label="Poprzednia książka"></div>
+                <div class="swiper-button-next" aria-label="Następna książka"></div>
+                <div class="swiper-pagination" aria-hidden="true"></div>
+            </div>
 
-        {% if app.user %}
-        <a href="{{ path('user_index') }}" class="feature-card">
-            <span class="icon">👤</span>
-            <h3>Twoje konto</h3>
-            <p>Zobacz szczegóły swojego konta.</p>
-        </a>
-            {% else %}
-            <a href="{{ path('user_register') }}" class="feature-card">
-                <span class="icon">👤</span>
-                <h3>Dołącz do społeczności</h3>
-                <p>Załóż darmowe konto i bądź częścią książkowej społeczności online.</p>
-            </a>
-                {% endif %}
-
+            <noscript>
+                <div class="popularGrid">
+                    {% for book in popularBooks %}
+                        <div class="popularItem">
+                            {% include 'book_card.html.twig' with { book: book } %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </noscript>
+        {% else %}
+            <p class="muted">Brak danych o popularnych książkach — dodaj kilka pozycji lub recenzji, aby zobaczyć rekomendacje.</p>
+        {% endif %}
     </section>
+
+    {# ---------------- FEATURES ---------------- #}
+    {% set features = [
+        {
+            path: path('book_search'),
+            icon: 'newsstand',
+            title: 'Setki książek',
+            text: 'Przeglądaj naszą stale rosnącą kolekcję książek z recenzjami użytkowników.'
+        },
+        {
+            path: path('book_search'),
+            icon: 'star',
+            title: 'Recenzje i oceny',
+            text: 'Sprawdzaj opinie innych czytelników i dziel się swoimi wrażeniami.'
+        },
+        app.user
+        ? {
+            path: path('user_index'),
+            icon: 'account_circle',
+            title: 'Twoje konto',
+            text: 'Zobacz szczegóły swojego konta.'
+        }
+        : {
+            path: path('user_register'),
+            icon: 'account_circle',
+            title: 'Dołącz do społeczności',
+            text: 'Załóż darmowe konto i bądź częścią książkowej społeczności online.'
+        }
+    ] %}
+
+    <section class="features">
+        {% for feature in features %}
+            <a href="{{ feature.path }}" class="feature-card">
+                <span class="material-symbols-outlined">{{ feature.icon }}</span>
+                <h3>{{ feature.title }}</h3>
+                <p>{{ feature.text }}</p>
+            </a>
+        {% endfor %}
+    </section>
+
+    {# ---------------- ABOUT ---------------- #}
+    <section class="about">
+        <h2>O projekcie</h2>
+        <p>
+            Biblioteka to miejsce dla czytelników, którzy chcą odkrywać nowe tytuły, dzielić się opiniami i
+            budować własną listę lektur. Korzystamy z recenzji społeczności oraz Twoich ocen, aby proponować
+            trafniejsze rekomendacje.
+        </p>
+        <p>
+            Przeglądaj popularne pozycje, wyszukuj po tagach i autorach, a potem dodawaj książki do swojej
+            biblioteki z oznaczeniem statusu czytania.
+        </p>
+        <p class="muted">
+            Masz pomysł na nową funkcję albo znalazłeś błąd? Daj nam znać — razem ulepszamy doświadczenie czytelnicze.
+        </p>
+    </section>
+
 {% endblock %}
 
-{# ----------------------------------------------------------------------- #}
 {% block javascripts %}
     {{ parent() }}
-    {# Swiper core JS #}
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            new Swiper('.myBooksCarousel', {
-                slidesPerView: 1,
-                spaceBetween: 20,
-                loop: true,
-                pagination: {
-                    el: '.swiper-pagination',
-                    clickable: true,
+        (function () {
+            const slidesCount = {{ popularBooks|length|default(0) }};
+            const per2 = Math.min(2, slidesCount || 1);
+            const per3 = Math.min(3, slidesCount || 1);
+            const per4 = Math.min(4, slidesCount || 1);
+
+            new Swiper('.myPopularCarousel', {
+                // only loop if we actually have something to loop
+                loop: slidesCount > 1,
+
+                // mobile-first “peek”
+                slidesPerView: Math.min(1.1, slidesCount || 1),
+                centeredSlides: true,
+                spaceBetween: 12,
+                slidesOffsetBefore: 16,
+                slidesOffsetAfter: 16,
+
+                breakpoints: {
+                    640:  {
+                        slidesPerView: per2,
+                        centeredSlides: false,
+                        slidesOffsetBefore: 0,
+                        slidesOffsetAfter: 0,
+                        spaceBetween: 16
+                    },
+                    900:  { slidesPerView: per3, spaceBetween: 16, centeredSlides: false },
+                    1200: { slidesPerView: per4, spaceBetween: 16, centeredSlides: false }
                 },
+
+                // keep controls active even if slides == slidesPerView
+                watchOverflow: false,
+                allowTouchMove: slidesCount > 1,
+
                 navigation: {
                     nextEl: '.swiper-button-next',
-                    prevEl: '.swiper-button-prev',
+                    prevEl: '.swiper-button-prev'
                 },
-                breakpoints: {
-                    640: {
-                        slidesPerView: 2,
-                    },
-                    1024: {
-                        slidesPerView: 4,
-                    }
-                }
+                pagination: { el: '.swiper-pagination', clickable: true },
+                grabCursor: true,
+                autoHeight: true
             });
-        });
+        })();
     </script>
 {% endblock %}
+

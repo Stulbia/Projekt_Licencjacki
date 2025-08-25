@@ -1,0 +1,139 @@
+@use '../variables' as *;
+
+/* Optional: global tuning for Material Symbols */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 600, 'GRAD' 0, 'opsz' 24;
+}
+
+/* -------- NAVBAR -------- */
+.navBar {
+  --nav-text: #{$text-color};
+  --nav-bg:   #{$body-bg};
+
+  position: sticky;
+  top: 0;
+  z-index: 2000;
+  display: flex;
+  gap: 1rem;
+  padding: 0.75rem 1.5rem;
+  background: var(--nav-bg);
+  color: var(--nav-text);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: background 0.3s, color 0.3s;
+
+  .navLogo a {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--nav-text);
+    text-decoration: none;
+    transition: color 0.2s;
+    &:hover { color: $color-primary; }
+  }
+
+  /* Icon hamburger (menu ⇄ close) */
+  .navHamburger {
+    margin-left: auto;
+    display: none;               /* shown on mobile via media query */
+    width: 2.25rem;
+    height: 2.25rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--nav-text);
+
+    .ms-icon {
+      font-size: 28px;
+      line-height: 1;
+      display: inline-block;
+      transition: transform .25s ease, opacity .2s ease, font-variation-settings .25s ease;
+    }
+
+    &[aria-expanded="true"] .ms-icon {
+      transform: rotate(180deg);
+      font-variation-settings: 'FILL' 1, 'wght' 700, 'GRAD' 0, 'opsz' 24;
+    }
+  }
+
+  /* LINKS (desktop inline) */
+  .navLinks {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    margin-left:auto;
+    .navLink {
+      color: var(--nav-text);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+      &:hover { color: $color-primary; }
+    }
+
+    .loginBtn {
+      padding: 0.4rem 0.9rem;
+      background: $color-primary;
+      color: $body-bg;
+      border-radius: $radius;
+      font-weight: 600;
+      transition: background 0.3s;
+      &:hover { background: darken($color-primary, 10%); color: $body-bg; }
+    }
+
+    .themeControls .navButton {
+      border: none; border-radius: $radius;
+      padding: 0.4rem 0.7rem; cursor: pointer;
+      background: transparent; font-size: 1.1rem;
+      transition: color 0.2s;
+      &:hover { color: $color-secondary; }
+    }
+  }
+
+  /* -------- RESPONSIVE -------- */
+  @media (max-width: 768px) {
+    .navHamburger { display: inline-flex; align-items: center; justify-content: center; }
+
+    /* turn links into a dropdown panel */
+    .navLinks {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 100%;
+      width: 100%;
+      background: var(--nav-bg);
+      z-index: 2100;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,.08);
+
+      /* collapsed */
+      max-height: 0;
+      padding-block: 0;
+      overflow: hidden;
+      transition: max-height .3s ease, padding .2s ease;
+
+      /* expanded */
+      &[data-open="true"] {
+        max-height: 80vh;
+        padding-block: .5rem;
+        overflow-y: auto;
+      }
+
+      .navLink,
+      .loginBtn {
+        display: block;
+        width: 100%;
+        padding: .6rem 1.5rem;
+        border-radius: 0;
+        border-top: 1px solid rgba(0,0,0,.06);
+        &:first-child { border-top: 0; }
+      }
+    }
+  }
+}
+
+/* Reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  .navBar .navHamburger .ms-icon,
+  .navBar .navLinks { transition: none; }
+}

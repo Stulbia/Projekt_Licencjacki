@@ -1,49 +1,70 @@
 {# templates/security/login.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}{{ 'title.login_title'|trans }}{% endblock %}
 
 {% block body %}
-    <form class="login-form" method="post">
-        {% if error %}
-            <div class="alert alertDanger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-        {% endif %}
+    <section class="login-page">
+        <div class="login-card">
+            {% if app.user %}
+                <div class="login-session">
+                    <p class="login-session__text">{{ 'label.logged_in_as'|trans }} {{ app.user.name }}</p>
+                    <a class="btn btn-primary btn-lg" href="{{ path('app_logout') }}">{{ 'action.logout'|trans }}</a>
+                </div>
+            {% endif %}
 
-        {% if app.user %}
-            <div class="mb3">
-                <p>{{ 'label.logged_in_as'|trans }} {{ app.user.name }}</p>
-                <a class="btn btnLg btnPrimary" href="{{ path('app_logout') }}">{{ 'action.logout'|trans }}</a>
-            </div>
-        {% endif %}
+            <h1 class="login-title">{{ 'title.login_title'|trans }}</h1>
 
-        <h1 class="h3 mb3 fontWeightNormal">{{ 'title.login_title'|trans }}</h1>
+            {% if error %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error.messageKey|trans(error.messageData, 'security') }}
+                </div>
+            {% endif %}
 
-        <div class="formGroup">
-            <label for="inputEmail">{{ 'label.email'|trans }}</label>
-            <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="formControl" autocomplete="email" required autofocus>
+            <form class="login-form" method="post" novalidate>
+                <div class="form-group">
+                    <label class="form-label" for="input-email">{{ 'label.email'|trans }}</label>
+                    <input
+                            type="email"
+                            value="{{ last_username }}"
+                            name="email"
+                            id="input-email"
+                            class="form-control"
+                            autocomplete="email"
+                            required
+                            autofocus
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="input-password">{{ 'label.password'|trans }}</label>
+                    <input
+                            type="password"
+                            name="password"
+                            id="input-password"
+                            class="form-control"
+                            autocomplete="current-password"
+                            required
+                    >
+                </div>
+
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                <div class="form-check">
+                    <input type="checkbox" id="remember-me" name="_remember_me" class="form-check__control">
+                    <label for="remember-me" class="form-check__label">{{ 'label.remember_me'|trans }}</label>
+                </div>
+
+                <button class="btn btn-primary btn-lg btn-block" type="submit">
+                    {{ 'action.sign_in'|trans }}
+                </button>
+
+                <div class="login-divider" role="separator" aria-label="or"></div>
+
+                <a class="btn btn-google btn-lg btn-block" href="{{ path('connect_google_start') }}">
+                    🔓 Google
+                </a>
+            </form>
         </div>
-
-        <div class="formGroup">
-            <label for="inputPassword">{{ 'label.password'|trans }}</label>
-            <input type="password" name="password" id="inputPassword" class="formControl" autocomplete="current-password" required>
-        </div>
-
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
-        <div class="checkbox mb3">
-            <label>
-                <input type="checkbox" name="_remember_me"> {{ 'label.remember_me'|trans }}
-            </label>
-        </div>
-
-        <button class="btn btnLg btnPrimary" type="submit">
-            {{ 'action.sign_in'|trans }}
-        </button>
-
-        <hr>
-        <p>Lub zaloguj się przez:</p>
-        <a class="btn btnLg btnGoogle" href="{{ path('connect_google_start') }}">
-            🔓 Google
-        </a>
-    </form>
+    </section>
 {% endblock %}

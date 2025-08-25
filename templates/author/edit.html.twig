@@ -3,7 +3,7 @@
 {% block title %}Edytuj autora{% endblock %}
 
 {% block body %}
-    <section class="author-edit-page">
+{#    <section class="author-edit-page">#}
         <h1>Edytuj autora: {{ author }}</h1>
 
         {{ form_start(form) }}
@@ -16,5 +16,5 @@
         <button class="btn btnPrimary" type="submit">Zapisz zmiany</button>
         <a href="{{ path('author_show', { id: author.id }) }}" class="btn">Anuluj</a>
         {{ form_end(form) }}
-    </section>
+{#    </section>#}
 {% endblock %}

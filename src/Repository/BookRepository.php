@@ -76,18 +76,116 @@ class BookRepository extends ServiceEntityRepository
 //    }
 
 
+    private function hasActiveFilters(BookSearchFiltersDto $f): bool
+    {
+        return
+            ($f->author && trim($f->author) !== '') ||
+            ($f->minRating !== null) ||
+            (!empty($f->reviewTagIds)) ||
+            // include anything your applyFiltersToSearchList might use:
+            (!empty($f->title)) ||
+            (!empty($f->tagIds)) ||
+            (!empty($f->status)) ||
+            // sorting by rating needs aggregates, so treat it as “filtered”
+            ($f->sortBy === 'rating');
+    }
+
+
+//    public function querySearch(BookSearchFiltersDto $filters): QueryBuilder
+//    {
+//
+//
+//        if (!$this->hasActiveFilters($filters)) {
+//            // SIMPLE PATH: all books, no filters
+//            return $this->getOrCreateQueryBuilder()
+//                ->select('book, a')                               // entity + related author
+//                ->addSelect('AVG(r.rating) AS avgRating')         // scalar alias (NOT HIDDEN)
+//                ->leftJoin('book.author', 'a')
+//                ->leftJoin('book.reviews', 'r')
+//                ->groupBy('book.id, a.id')                        // group by entity ids
+//                ->orderBy('book.id', 'DESC');
+//
+//        }
+//
+//
+//        $qb = $this->getOrCreateQueryBuilder()
+//            ->select('book')                          // root only
+//            ->leftJoin('book.tags', 'tags')           // keep joins for filters, but...
+//            ->leftJoin('book.author', 'a')            // ...do NOT addSelect on them
+//            ->leftJoin('book.reviews', 'r')
+//            ->groupBy('book.id');
+//
+//        // --- REVIEW TAGS PERCENTAGE FILTER ---
+//        if (!empty($filters->reviewTagIds)) {
+//            $qb->leftJoin('r.tagAssignments', 'rta')
+//                ->leftJoin('rta.tag', 'reviewTag')
+//                ->addSelect('SUM(CASE WHEN reviewTag.id IN (:tagIds) THEN 1 ELSE 0 END) AS HIDDEN tagged_reviews')
+//                ->addSelect('COUNT(DISTINCT r.id) AS HIDDEN total_reviews')
+//                ->having('(
+//                SUM(CASE WHEN reviewTag.id IN (:tagIds) THEN 1 ELSE 0 END) * 1.0 /
+//                NULLIF(COUNT(DISTINCT r.id), 0)
+//            ) >= :minRatio')
+//                ->setParameter('tagIds', $filters->reviewTagIds)
+//                ->setParameter('minRatio', 0.4);
+//        }
+//
+//        // --- AUTHOR FILTER ---
+//        if ($filters->author) {
+//            $term = '%' . mb_strtolower(trim($filters->author)) . '%';
+//            $qb->andWhere(
+//                $qb->expr()->orX(
+//                    'LOWER(a.firstName) LIKE :term',
+//                    'LOWER(a.name) LIKE :term',
+//                    'LOWER(a.pseudonym) LIKE :term'
+//                )
+//            )->setParameter('term', $term);
+//        }
+//
+//        // --- RATING FILTER ---
+//        if ($filters->minRating !== null) {
+//            $qb->addSelect('AVG(r.rating) AS HIDDEN avgRating')
+//                ->andHaving('COALESCE(AVG(r.rating), -1) >= :minRating')
+//                ->setParameter('minRating', $filters->minRating);
+//        }
+//
+//        // --- ADDITIONAL FILTERS ---
+//        $qb = $this->applyFiltersToSearchList($qb, $filters);
+//
+//        // --- SORTING ---
+//        switch ($filters->sortBy) {
+//            case 'rating':
+//                $qb->addOrderBy('avgRating', 'DESC');
+//                break;
+//            case 'title':
+//                $qb->addOrderBy('book.title', 'ASC');
+//                break;
+//            default:
+//                $qb->addOrderBy('book.updatedAt', 'DESC');
+//        }
+//
+//        return $qb;
+//    }
+
     public function querySearch(BookSearchFiltersDto $filters): QueryBuilder
     {
+        if (!$this->hasActiveFilters($filters)) {
+            // SIMPLE PATH: all books, no filters
+            return $this->getOrCreateQueryBuilder()
+                ->select('book, a')                                // entity + author
+                ->addSelect('AVG(r.rating) AS avgRating')         // visible scalar
+                ->leftJoin('book.author', 'a')
+                ->leftJoin('book.reviews', 'r')
+                ->groupBy('book.id, a.id')
+                ->orderBy('book.id', 'DESC');
+        }
+
         $qb = $this->getOrCreateQueryBuilder()
             ->select('book')
             ->leftJoin('book.tags', 'tags')
-            ->addSelect('partial tags.{id, title}')
             ->leftJoin('book.author', 'a')
-            ->addSelect('partial a.{id, firstName, name, pseudonym}')
             ->leftJoin('book.reviews', 'r')
-            ->groupBy('book.id')
-            ->addGroupBy('a.id')
-            ->addGroupBy('tags.id');
+            ->addSelect('AVG(r.rating) AS avgRating')            // always fetch for display
+            ->groupBy('book.id');                                // grouping by root id is enough
 
         // --- REVIEW TAGS PERCENTAGE FILTER ---
         if (!empty($filters->reviewTagIds)) {
@@ -117,8 +215,8 @@ class BookRepository extends ServiceEntityRepository
 
         // --- RATING FILTER ---
         if ($filters->minRating !== null) {
-            $qb->addSelect('AVG(r.rating) AS HIDDEN avgRating')
-                ->andHaving('COALESCE(AVG(r.rating), -1) >= :minRating')
+            // use the expression in HAVING (portable across platforms)
+            $qb->andHaving('COALESCE(AVG(r.rating), -1) >= :minRating')
                 ->setParameter('minRating', $filters->minRating);
         }
 
@@ -143,6 +241,27 @@ class BookRepository extends ServiceEntityRepository
 
 
 
+    public function searchWithAvgRating(BookSearchFiltersDto $filters): array
+    {
+        $rows = $this->querySearch($filters)->getQuery()->getResult();
+        return $this->hydrateAvgRatingIntoBooks($rows);
+    }
+
+    /**
+     * @param array<int, array{0:\App\Entity\Book, avgRating?: mixed}> $rows
+     * @return \App\Entity\Book[]
+     */
+    public function hydrateAvgRatingIntoBooks(array $rows): array
+    {
+        foreach ($rows as $i => $row) {
+            /** @var \App\Entity\Book $book */
+            $book = $row[0];
+            $book->setAvgRating(isset($row['avgRating']) ? (float)$row['avgRating'] : null);
+            $rows[$i] = $book;
+        }
+        return $rows;
+    }
+
 
     public function queryByAuthor(User $user, BookListFiltersDto $filters): QueryBuilder
     {
@@ -151,6 +270,7 @@ class BookRepository extends ServiceEntityRepository
         $qb->andWhere($qb->expr()->in('book.author', ':author'))
             ->setParameter('author', $user);
 
+//        $qb = $this->hydrateAvgRatingIntoBooks($qb);
         return $qb;
     }
 
@@ -311,18 +431,35 @@ class BookRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
+//    public function findMostPopularBooks(int $limit = 6): array
+//    {
+//        return $this->createQueryBuilder('b')
+//            ->leftJoin('b.reviews', 'r')
+//            ->addSelect('AVG(r.rating) AS HIDDEN avg_rating')
+//            ->groupBy('b.id')
+//            ->having('COUNT(r.id) > 0')
+//            ->orderBy('avg_rating', 'DESC')
+//            ->setMaxResults($limit)
+//            ->getQuery()
+//            ->getResult();
+//    }
+
     public function findMostPopularBooks(int $limit = 6): array
     {
-        return $this->createQueryBuilder('b')
+        $rows = $this->createQueryBuilder('b')
             ->leftJoin('b.reviews', 'r')
-            ->addSelect('AVG(r.rating) AS HIDDEN avg_rating')
+            ->addSelect('AVG(r.rating) AS avgRating')   // visible scalar
             ->groupBy('b.id')
             ->having('COUNT(r.id) > 0')
-            ->orderBy('avg_rating', 'DESC')
+            ->orderBy('avgRating', 'DESC')
+            ->addOrderBy('b.id', 'DESC')               // optional tie-breaker
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult();
+
+        return $this->hydrateAvgRatingIntoBooks($rows);
     }
+
 
 
     public function findBooksByTagIdsExcludingUserReviewed(array $tagIds, User $user, int $limit = 5): array

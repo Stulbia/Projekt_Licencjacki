@@ -1,24 +1,25 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}
-    {{ page_title }}
-{% endblock %}
+{% block title %}{{ page_title }}{% endblock %}
 
 {% block body %}
-    <div class="formWrapper">
-        <h1 class="formTitle">{{ page_title }}</h1>
+    <main class="auth-page">
+        <section class="auth-card register-card">
+            <h1 class="auth-title">{{ page_title }}</h1>
 
-        {{ form_start(form) }}
-        {{ form_widget(form) }}
+            {{ form_start(form, { attr: { class: 'auth-form' } }) }}
+            {{ form_widget(form) }}
 
-        <button class="btn btnLg btnPrimary mt-2" type="submit">
-            {{ submit_label }}
-        </button>
+            <div class="auth-actions">
+                <button class="btn btn-lg btn-primary" type="submit">
+                    {{ submit_label }}
+                </button>
 
-
-        <a href="{{ path(back_to_list_path) }}" class="btn btnSecondary mt-2">
-            ← {{ 'action.back_to_list'|trans }}
-        </a>
-    {{ form_end(form) }}
-    </div>
+                <a href="{{ path(back_to_list_path) }}" class="btn btn-secondary">
+                    ← {{ 'action.back_to_list'|trans }}
+                </a>
+            </div>
+            {{ form_end(form) }}
+        </section>
+    </main>
 {% endblock %}

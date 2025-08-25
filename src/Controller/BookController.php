@@ -69,9 +69,9 @@ class BookController extends AbstractController
 //    }
 
 
-
     #[Route('/search', name: 'book_search', methods: ['GET'])]
     public function search(
+        \Symfony\Component\HttpFoundation\Request $request ,
         #[MapQueryString(resolver: BookSearchInputFiltersDtoResolver::class)] BookSearchInputFiltersDto $filters,
         #[MapQueryParameter] int $page = 1
     ): Response {
@@ -79,12 +79,20 @@ class BookController extends AbstractController
             'action' => $this->generateUrl('book_search'),
         ]);
 
-        $pagination = $this->bookService->getSearchList($page, $filters, 10);
+
+        $session  = $request->getSession();
+        $perPage  = $request->query->getInt('pp', $session->get('pp', 4));
+        $perPage  = max(1, min(60, $perPage));
+        $session->set('pp', $perPage);
+
+
+        $pagination = $this->bookService->getSearchList($page, $filters, $perPage);
 
         return $this->render('book/search.html.twig', [
             'pagination' => $pagination,
             'form' => $form->createView(),
             'sortBy' => $filters->sortBy,
+            'perPage'    => $perPage,
         ]);
     }
 //
