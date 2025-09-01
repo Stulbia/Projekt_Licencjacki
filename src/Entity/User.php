@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -51,9 +52,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(nullable: true)]
     private ?string $avatarFilename = null;
-
-    #[ORM\Column(type: 'text', nullable: true)]
-    #[Assert\Type('string')]
+    #[ORM\Column(type: Types::TEXT, length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
     private ?string $opis = null;
 
     #[ORM\Column(length: 255, unique: true, nullable: false)]

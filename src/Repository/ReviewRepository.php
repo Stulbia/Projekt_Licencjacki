@@ -55,10 +55,43 @@ class ReviewRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('r')
             ->leftJoin('r.book', 'b')
+            ->leftJoin('b.author', 'a')
             ->addSelect('b')
             ->andWhere('r.author = :author')
             ->setParameter('author', $user)
-            ->orderBy('r.createdAt', 'DESC');
+            ->orderBy('r.rating', 'DESC');
+    }
+
+    public function topReviewsByAuthor(User $user): QueryBuilder
+    {
+        $qb = $this->queryByAuthor($user);
+        $qb->getQuery()
+            ->getResult();
+        return $qb;
+    }
+
+    public function findMostPopularBooksByTags(array $topReviewTags, int $limit = 10): array
+    {
+        $tagIds = $topReviewTags;
+
+        if (empty($tagIds)) {
+            return [];
+        }
+
+        return $this->createQueryBuilder('r')
+            ->select('b.id AS bookId')
+            ->innerJoin('r.book', 'b')
+            ->innerJoin('r.tagAssignments', 'ra')
+            ->innerJoin('ra.tag', 't')
+            ->where('t.id IN (:tagIds)')
+            ->setParameter('tagIds', $tagIds)
+            ->groupBy('b.id')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getScalarResult();
+
+
+
     }
 
 
@@ -135,11 +168,11 @@ class ReviewRepository extends ServiceEntityRepository
 
     public function avgRating(int $book_id): float
     {
-        return $this->createQueryBuilder('r')
+        return ($this->createQueryBuilder('r')
             ->select('AVG(r.rating)')
             ->where('r.book = :book_id')
             ->setParameter('book_id', $book_id)
             ->getQuery()
-            ->getSingleScalarResult() ?? 0.0;
+            ->getSingleScalarResult() ?? 0.0);
     }
 }

@@ -4,13 +4,20 @@
 {% extends 'book/show.html.twig' %}
 
 {% block add_review %}
+    <div class="delete review-form-container ">
     <section class="review-form-section">
-        <h2>Czy na pewno chcesz usunąć recenzję tej książki?</h2>
-
+        <h3>Czy na pewno chcesz usunąć tę recenzję?</h3>
+        {% set isUserOwn = false  %}
+        {% include 'review/_card.html.twig' %}
         {{ form_start(form) }}
-        <button type="submit" class="btn btnDanger">Usuń recenzję</button>
+        <div class="review-actions">
+            <a href="{{ path('book_show', { slug: review.book.slug }) }}" class="btn btn-outline-primary mt-2">Anuluj</a>
+        <button type="submit" class="btn  btn-danger">Usuń</button>
         {{ form_end(form) }}
 
-        <a href="{{ path('book_show', { slug: review.book.slug }) }}" class="btn btnSecondary mt-2">Anuluj</a>
+
+        </div>
     </section>
+    </div>
+
 {% endblock %}

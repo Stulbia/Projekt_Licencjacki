@@ -564,6 +564,35 @@
         <source>message.incorrect_gallery</source>
         <target>Gallery inaccessible.</target>
       </trans-unit>
+
+
+
+
+            <trans-unit id="message.avatar_updated"><source>message.avatar_updated</source><target>Avatar has been updated.</target></trans-unit>
+            <trans-unit id="message.avatar_upload_error"><source>message.avatar_upload_error</source><target>An error occurred while uploading the avatar.</target></trans-unit>
+            <trans-unit id="message.csrf_invalid"><source>message.csrf_invalid</source><target>Invalid security token. Please try again.</target></trans-unit>
+            <trans-unit id="message.avatar_deleted"><source>message.avatar_deleted</source><target>Avatar has been deleted.</target></trans-unit>
+            <trans-unit id="label.my_books"><source>label.my_books</source><target>My books</target></trans-unit>
+            <trans-unit id="label.details"><source>label.details</source><target>Details</target></trans-unit>
+            <trans-unit id="label.no_books_found"><source>label.no_books_found</source><target>No books found.</target></trans-unit>
+            <trans-unit id="action.add_social_profile"><source>action.add_social_profile</source><target>Add social profile</target></trans-unit>
+            <trans-unit id="action.edit_social_profile"><source>action.edit_social_profile</source><target>Edit social profile</target></trans-unit>
+            <trans-unit id="title.change_avatar"><source>title.change_avatar</source><target>Change avatar</target></trans-unit>
+            <trans-unit id="action.delete_avatar"><source>action.delete_avatar</source><target>Delete current avatar</target></trans-unit>
+            <trans-unit id="title.my_profile"><source>title.my_profile</source><target>My profile</target></trans-unit>
+            <trans-unit id="message.no_avatar"><source>message.no_avatar</source><target>No avatar</target></trans-unit>
+            <trans-unit id="action.change_avatar"><source>action.change_avatar</source><target>Change avatar</target></trans-unit>
+            <trans-unit id="action.edit_profile"><source>action.edit_profile</source><target>Edit profile</target></trans-unit>
+            <trans-unit id="action.change_password"><source>action.change_password</source><target>Change password</target></trans-unit>
+            <trans-unit id="action.show_profile"><source>action.show_profile</source><target>Show profile</target></trans-unit>
+            <trans-unit id="message.no_social_profiles"><source>message.no_social_profiles</source><target>No social profiles added.</target></trans-unit>
+
+             <trans-unit id="form.avatar.label"><source>form.avatar.label</source><target>Change Avatar</target></trans-unit>
+
+
+
+
+
     </body>
   </file>
 </xliff>

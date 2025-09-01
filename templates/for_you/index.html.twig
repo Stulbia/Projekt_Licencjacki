@@ -1,32 +1,3 @@
-{#{% extends 'base.html.twig' %}#}
-
-{#{% block title %}Dla Ciebie{% endblock %}#}
-
-{#{% block body %}#}
-{#    <h1>Polecane ksiazki</h1>#}
-{#    <div>#}
-{#        {% if app.user %}#}
-{#            <p>Pozycje wybierane są na podstawie Twoich ocen. Przeczytaj więcej książek, aby otrzymywać lepsze propozycje!</p>#}
-
-{#        {% else %}#}
-
-{#           <p > Zaloguj sie lub zarejestruj, aby otrzymywac propozycje wybrane specjalnie dla Ciebie.</p>#}
-{#        {% endif %}#}
-
-{#        <section>#}
-{#            <h2>Wyniki</h2>#}
-
-{#            {% if books is not empty %}#}
-{#                    {% for book in books %}#}
-{#                 {% include "book_card.html.twig" %}#}
-{#                {% endfor %}#}
-{#            {% else %}#}
-{#                <p>Brak rekomendacji na ten moment. Przeczytaj kilka książek lub napisz recenzję, by zobaczyć propozycje!</p>#}
-{#            {% endif %}#}
-{#        </section>#}
-{#    </div>#}
-{#{% endblock %}#}
-
 
 {% extends 'base.html.twig' %}
 
@@ -63,15 +34,16 @@
 
         <div class="forYouContent">
             {# --------- Sekcja: Na podstawie Twoich ocen (główna) --------- #}
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
             <section class="recommendSection">
                 <div class="sectionHeader">
                     <h2 class="sectionTitle">Dopasowane do Ciebie</h2>
                 </div>
 
-                {% if books is not empty %}
+                {% if yourBooks is not empty %}
                     <div class="swiper forYouCarousel" data-carousel="forYou">
                         <div class="swiper-wrapper">
-                            {% for book in books %}
+                            {% for book in yourBooks %}
                                 <div class="swiper-slide">
                                     {% include 'book_card.html.twig' with { book: book } %}
                                 </div>
@@ -87,8 +59,8 @@
                     </p>
                 {% endif %}
             </section>
-
-            {% set popularBooks = books %}
+        {% endif %}
+{#            {% set popularBooks = books %}#}
 
             {% if popularBooks is defined and popularBooks is not empty %}
                 <section class="recommendSection">
@@ -110,6 +82,30 @@
                     </div>
                 </section>
             {% endif %}
+
+            {% if topBooks is defined and popularBooks is not empty %}
+                <section class="recommendSection">
+                    <div class="sectionHeader">
+                        <h2 class="sectionTitle">Najwyżej oceniane</h2>
+                    </div>
+
+                    <div class="swiper forYouCarousel" data-carousel="popular">
+                        <div class="swiper-wrapper">
+                            {% for book in topBooks %}
+                                <div class="swiper-slide">
+                                    {% include 'book_card.html.twig' with { book: book } %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="swiper-button-prev"></div>
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-pagination"></div>
+                    </div>
+                </section>
+            {% endif %}
+
+
+
         </div>
     </section>
 {% endblock %}
@@ -120,6 +116,7 @@
     <script>
         document.querySelectorAll('.forYouCarousel').forEach((el) => {
             new Swiper(el, {
+                loop: true,
                 slidesPerView: 1.2,
                 spaceBetween: 16,
                 centeredSlidesBounds: true,

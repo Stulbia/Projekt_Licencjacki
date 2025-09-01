@@ -13,6 +13,7 @@ use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Exception\ORMException;
+use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\OptimisticLockException;
@@ -175,6 +176,7 @@ class BookRepository extends ServiceEntityRepository
                 ->addSelect('AVG(r.rating) AS avgRating')         // visible scalar
                 ->leftJoin('book.author', 'a')
                 ->leftJoin('book.reviews', 'r')
+                ->leftJoin('book.tags', 'tags')
                 ->groupBy('book.id, a.id')
                 ->orderBy('book.id', 'DESC');
         }
@@ -247,6 +249,22 @@ class BookRepository extends ServiceEntityRepository
         return $this->hydrateAvgRatingIntoBooks($rows);
     }
 
+    public function searchTopWithAvgRating($ids): array
+    {
+        $rows = $this->getOrCreateQueryBuilder()
+            ->select('book, a')                                // entity + author
+            ->addSelect('AVG(r.rating) AS avgRating')         // visible scalar
+            ->leftJoin('book.author', 'a')
+            ->leftJoin('book.reviews', 'r')
+            ->groupBy('book.id, a.id')
+            ->andWhere('book.id IN (:ids)')
+            ->setParameter('ids', $ids)
+            ->orderBy('avgRating', 'DESC')
+            ->getQuery()
+            ->getResult();
+        return $this->hydrateAvgRatingIntoBooks($rows);
+    }
+
     /**
      * @param array<int, array{0:\App\Entity\Book, avgRating?: mixed}> $rows
      * @return \App\Entity\Book[]
@@ -295,6 +313,16 @@ class BookRepository extends ServiceEntityRepository
             ->innerJoin('book.tags', 't')
             ->andWhere('t IN (:tags)')
             ->setParameter('tags', $tags);
+
+        return $qb->getQuery()->getResult();
+    }
+    public function findById(int $id): array
+    {
+        $qb = $this->createQueryBuilder('book')
+            ->distinct()
+            ->innerJoin('book.tags', 't')
+            ->andWhere('book.id  =   (:id)')
+            ->setParameter('id', $id);
 
         return $qb->getQuery()->getResult();
     }
@@ -444,7 +472,25 @@ class BookRepository extends ServiceEntityRepository
 //            ->getResult();
 //    }
 
-    public function findMostPopularBooks(int $limit = 6): array
+    public function findMostPopularBooks(int $limit = 10): array
+    {
+        $rows = $this->createQueryBuilder('b')
+            ->leftJoin('b.reviews', 'r')
+            ->addSelect('AVG(r.rating) AS avgRating')              // do hydratacji avg
+            ->addSelect('COUNT(r.id) AS HIDDEN reviews_count')     // tylko do sortowania
+            ->groupBy('b.id')
+            ->having('COUNT(r.id) > 0')
+            ->orderBy('reviews_count', 'DESC')                     // najwięcej recenzji
+            ->addOrderBy('b.id', 'DESC')                           // tie-breaker opcjonalny
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+
+        return $this->hydrateAvgRatingIntoBooks($rows);
+    }
+
+
+    public function findHighestRatedBooks(int $limit = 6): array
     {
         $rows = $this->createQueryBuilder('b')
             ->leftJoin('b.reviews', 'r')
@@ -462,23 +508,40 @@ class BookRepository extends ServiceEntityRepository
 
 
 
-    public function findBooksByTagIdsExcludingUserReviewed(array $tagIds, User $user, int $limit = 5): array
-    {
+    public function findBooksByTagIdsExcludingUserReviewed(
+        array $tagIds,
+        User $user,
+        int $limit = 10
+    ): array {
         return $this->createQueryBuilder('b')
-            ->distinct()
-            ->join('b.reviews', 'r2')
-            ->join('r2.tagAssignments', 'ta')
-            ->join('ta.tag', 't')
+            ->select('b.id AS bookId')
+            ->addSelect('AVG(r.rating) AS avgRating')
+            ->join('b.tags', 't')
             ->where('t.id IN (:tagIds)')
             ->andWhere('b NOT IN (
             SELECT b2 FROM App\Entity\Book b2
             JOIN b2.reviews r3
             WHERE r3.author = :user
         )')
+            ->leftJoin('b.reviews', 'r')
+            ->groupBy('b.id')
+            ->orderBy('avgRating', 'DESC')
             ->setParameter('tagIds', $tagIds)
             ->setParameter('user', $user)
             ->setMaxResults($limit)
             ->getQuery()
-            ->getResult();
+            ->getScalarResult();
     }
+
+
+
+
+
+
+
+
+
+
+
+
 }

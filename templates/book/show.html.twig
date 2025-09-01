@@ -31,69 +31,110 @@
 
     </div>
         <div class="bookDetail">
+            {% if avg and avg >= 1 %}
+                <div class="book-rating">
+    <span class="rating-stars">
+      {% for i in 1..10 %}
+          {% if i <= avg|round(0, 'floor') %}
+              <span class="material-symbols-outlined star full">star</span>
+        {% elseif i - avg < 1 %}
+              <span class="material-symbols-outlined star half">star_half</span>
+        {% else %}
+              <span class="material-symbols-outlined star empty">star</span>
+          {% endif %}
+      {% endfor %}
+    </span>
+                    <span class="rating-number">{{ avg|number_format(1, '.', '') }}/10</span>
+                </div>
+            {% else %}
+                <div class="book-rating is-muted">
+                    <span class="material-symbols-outlined star empty">star</span>
+                    <span class="rating-number">Brak ocen</span>
+                </div>
+            {% endif %}
 
-                {% if avg and avg >= 1 %}
-                    <div class="bookRating">
-                        <strong>Średnia ocen:</strong>
 
-                                               <span class="ratingNumber">{{ avg }}/10</span>
-                    </div>
-
-                {% else %}
-                    <p class="noReviews">Ta książka nie posiada jeszcze ocen.</p>
-                {% endif %}
-
-{#                    ///////////////////////////////////////////////////                   #}
-
-
+            {# --- Tags --- #}
             {% if book.tags|length > 0 %}
                 <div class="bookTags">
                     {% for tag in book.tags %}
-                        <span class="badge bgSecondary">{{ tag.title }}</span>
+                        <span class="tagBullet">{{ tag.title }}</span>
                     {% endfor %}
                 </div>
             {% endif %}
 
+
             <div class="bookDescription"> <p> {{ book.description }}  </p> </div>
 
 
-{#                {% block add_buttons %}#}
-{#                    {% if app.user %}#}
-{#                        {% if not formVisible %}#}
-{#                            {% if inLibrary %}#}
-{#                                <a href="{{ path('library_add', {id: book.id}) }}" class="btn btnPrimary mt2">➕ Zmien Status w biblioteczce</a>#}
-{#                            {% else %}#}
-{#                                <a href="{{ path('library_add', {id: book.id}) }}" class="btn btnPrimary mt2">➕ Dodaj do biblioteczki</a>#}
-{#                            {% endif %}#}
+            <div class="lib-actions">
+                {% if not formVisible is defined %}
+                    {% set formVisible= false %}
+                {% endif %}
 
-{#                        {% endif %}#}
 
-{#                        {% if not formVisibleReview and not hasUserReview %}#}
-{#                            <a href="{{ path('review_create', {bookId: book.id}) }}" class="btn btnPrimary mt2">➕ Dodaj recenzję</a>#}
-{#                        {% endif %}#}
-{#                    {% else %}#}
-{#                        <p class="textNotice mt2">🔒 <a href="{{ path('app_login') }}">Zaloguj się</a>, aby dodawać książki do biblioteczki i pisać recenzje.</p>#}
-{#                    {% endif %}#}
-{#                {% endblock %}#}
+                {% block add %}{% endblock %}
 
-{#                {% block add %}{% endblock %}#}
+                {% block library_buttons %}
+                    {% if app.user %}
+
+                        {% if not formVisible %}
+
+                            {% if inLibrary %}
+                                <a href="{{ path('library_add', {id: book.id}) }}" class="btn add-review mt2"><span class="material-symbols-outlined"> edit </span>Zmien Status</a>
+
+                                <form method="post"
+                                      action="{{ path('library_remove', { id: book.id }) }}"
+                                      class="remove-from-lib">
+{#                                      onsubmit="return confirm('Usunąć tę książkę z Twojej biblioteczki?');">#}
+                                    <input type="hidden" name="_token" value="{{ csrf_token('remove_library_' ~ book.id) }}">
+                                    <button class="btn add-review mt2"> <span class="material-symbols-outlined">close</span> Usuń z biblioteczki</button>
+                                </form>
+
+
+                            {% else %}
+                                <a href="{{ path('library_add', {id: book.id}) }}" class="btn add-review mt2"><span class="material-symbols-outlined"> add </span>Dodaj do biblioteczki</a>
+                            {% endif %}
+
+                        {% endif %}
+
+                    {% else %}
+                        <p class="textNotice mt2">🔒 <a href="{{ path('app_login') }}">Zaloguj się</a>, aby dodawać książki do biblioteczki i pisać recenzje.</p>
+                    {% endif %}
+                {% endblock %}
+
             </div>
 
 
-{#        reviews - whole block by js V #}
+
+
+
+        </div>
 
 
 
 
         <section class="reviews">
-            <h2 class = "header">Recenzje</h2>
-
+            <h2 class = "header"> Recenzje</h2>
             {% if userReview is defined and userReview %}
                 {% include 'review/_card.html.twig' with {
                     review: userReview,
                     isUserOwn: true
                 } %}
+                {% set hasUserReview = true %}
             {% endif %}
+
+
+            {% block review_buttons%}
+                {%set formVisibleReview = false %}
+                {% if not formVisibleReview and not hasUserReview %}
+                    <a href="{{ path('review_create', {bookId: book.id}) }}" class="btn add-review mt2"><span class="material-symbols-outlined"> add </span>Dodaj recenzję</a>
+                {% endif %}
+            {% endblock %}
+            <div class="add_review_card">
+                {% block add_review %}{% endblock %}
+            </div>
+
 
             {% if otherReviews|length > 0 %}
                 {% for review in otherReviews %}

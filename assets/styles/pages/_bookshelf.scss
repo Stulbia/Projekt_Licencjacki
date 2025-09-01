@@ -64,13 +64,13 @@
         }
 
         a:hover {
-          background: mix($color-secondary, #fff, 20%);
-          color: #fff;
+          background: mix($color-secondary, $body-bg, 20%);
+          color: $body-bg;
         }
 
         &.active span {
           background: $color-secondary;
-          color: #fff;
+          color: $body-bg;
         }
       }
     }
@@ -82,3 +82,4 @@
     margin-top: 1rem;
   }
 }
+

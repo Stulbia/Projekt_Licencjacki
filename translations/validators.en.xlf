@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="pl" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="not_blank">
+                <source>This value should not be blank.</source>
+                <target>To pole nie powinno być puste.</target>
+            </trans-unit>
+            <trans-unit id="message.enter_password">
+                <source>message.enter_password</source>
+                <target>Wprowadź hasło</target>
+            </trans-unit>
+            <trans-unit id="message.confirm_password">
+                <source>message.confirm_password</source>
+                <target>Potwierdź hasło</target>
+            </trans-unit>
+            <trans-unit id="message.max {{ limit }} characters">
+                <source>message.max {{ limit }} characters</source>
+                <target>limit {{ limit }} znaków</target>
+            </trans-unit>
+            <trans-unit id="message.email.not_blank">
+                <source>message.email.not_blank</source>
+                <target>To pole nie może być puste.</target>
+            </trans-unit>
+            <trans-unit id="message.name.not_blank">
+                <source>message.name.not_blank</source>
+                <target>To pole nie może być puste.</target>
+            </trans-unit>
+             <trans-unit id="message.value not in range">
+                    <source>message.value not in range</source>
+                    <target>Value not in range</target>
+                  </trans-unit>
+
+              <trans-unit id="message.rating.invalid">
+                     <source>message.rating.invalid</source>
+                     <target>Invalid rating</target>
+                   </trans-unit>
+
+     <trans-unit id="Dozwolone formaty to JPEG i PNG">
+        <source>Dozwolone formaty to JPEG i PNG.</source>
+        <target>Allowed formats are JPEG and PNG.</target>
+      </trans-unit>
+      <trans-unit id="form.avatar.invalid_type">
+        <source>form.avatar.invalid_type</source>
+        <target>Invalid avatar file type.</target>
+      </trans-unit>
+      <trans-unit id="Dozwolone tylko pliki JPG lub PNG.">
+        <source>Dozwolone tylko pliki JPG lub PNG.</source>
+        <target>Only JPG or PNG files are allowed.</target>
+      </trans-unit>
+
+
+        </body>
+    </file>
+</xliff>

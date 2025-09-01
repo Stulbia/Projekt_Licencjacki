@@ -28,6 +28,33 @@ class Account
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $displayAs = null;
+
+    public function getdisplayAs(): ?string
+    {
+        return $this->displayAs;
+    }
+
+    public function displayAs(?string $displayAs): self
+    {
+        $this->displayAs = $displayAs;
+        return $this;
+    }
+
+    public function getLabel(): string
+    {
+        if ($this->displayAs) {
+            return $this->displayAs;
+        }
+
+        // Fallback: show sanitized host or platform name
+        $link = $this->getLink() ?? '';
+        $host = strtolower(parse_url($link, PHP_URL_HOST) ?? '');
+        $host = preg_replace('~^(www|m)\.~', '', $host);
+        return $host ?: ucfirst((string)$this->getPortalSpolecznosciowy());
+    }
+
     public function getId(): ?int
     {
         return $this->id;

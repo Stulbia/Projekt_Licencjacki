@@ -3,10 +3,12 @@
 {% block title %}{{ 'title.my_profile'|trans }}{% endblock %}
 
 {% block body %}
-    <section class="profile-page">
-        <h1 class="profile-title">{{ 'title.my_profile'|trans }}</h1>
 
 
+
+    <section class="profile-page private">
+        <div class="profile-container">
+            {# ---------- Avatar ---------- #}
             <div class="profile-avatar">
                 {% if user.avatarFilename %}
                     <img src="{{ asset('uploads/avatars/' ~ user.avatarFilename) }}" alt="Avatar użytkownika {{ user.name }}" class="profile-avatar__img">
@@ -23,49 +25,99 @@
                 </a>
             </div>
 
-
+            {# ---------- Info ---------- #}
             <div class="profile-info">
-                <dl class="profile-dl">
-                    <dt>{{ 'label.name'|trans }}</dt>
-                    <dd>{{ user.name }}</dd>
+                <h1 class="profile-title">{{ user.name }}</h1>
 
+                <dl class="profile-dl">
                     <dt>{{ 'label.email'|trans }}</dt>
                     <dd>{{ user.email }}</dd>
                 </dl>
 
-                <div class="profile-actions">
-                    <a class="btn btnPrimary" href="{{ path('user_edit') }}">
-                        {{ 'action.edit_profile'|trans }}
-                    </a>
-                    <a class="btn btnOutlineSecondary" href="{{ path('user_password') }}">
-                        {{ 'action.change_password'|trans }}
-                    </a>
-                </div>
 
 
-                <div class="profile-social">
-                    <h3>{{ 'label.social_profiles'|trans }}</h3>
-
-                    {% if user.accounts is defined and user.accounts|length > 0 %}
-                        <ul class="profile-social__list">
-                            {% for account in user.accounts %}
-                                <li class="profile-social__item">
-                                    <span class="profile-social__platform">{{ account.portalSpolecznosciowy }}</span>
-                                    <a class="profile-social__link" href="{{ account.link }}" target="_blank" rel="noopener noreferrer">
-                                        {{ account.link }}
-                                    </a>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    {% else %}
-                        <p class="profile-social__empty">{{ 'message.no_social_profiles'|trans }}</p>
-                    {% endif %}
-
-                    <a href="{{ path('account_new') }}" class="btn btnOutlinePrimary mt-2">
-                        {{ 'action.add_social_profile'|trans }}
-                    </a>
-                </div>
             </div>
+        </div>
 
+
+
+
+
+
+
+
+
+
+    <section class="edit-profile">
+
+
+        <div class="profile-reviews">
+            <h2 class="profile-section-title">Szczegóły</h2>
+            <div class="profile-actions">
+                <a class="btn btn-outline-primary" href="{{ path('user_edit') }}">
+                    <span class="material-symbols-outlined">edit_note</span>{{ 'action.edit_profile'|trans }}
+                </a>
+                <a class="btn btn-outline-primary" href="{{ path('user_password') }}">
+                    <span class="material-symbols-outlined">passkey</span> {{ 'action.change_password'|trans }}
+                </a>
+                <a href="{{ path('user_public_profile',{slug: user.slug} ) }}" class="btn btn-outline-primary">
+                 <span class="material-symbols-outlined">contact_page</span>   {{ 'action.show_profile'|trans }}
+                </a>
+            </div>
+            <h3>Opis</h3>
+            {% if not user.opis %}
+            <p class="muted">Brak opisu użytkownika.</p>
+            {% else %}
+            <p>{{ user.opis }}</p>
+            {% endif %}
+        </div>
+        {# ---------- Social accounts ---------- #}
+        <div class="profile-reviews">
+            <h2>Połączone Konta</h2>
+            <a href="{{ path('account_new') }}" class="btn btn-small btn-outline-primary mt-2">
+                <span class="material-symbols-outlined">add</span>   {{ 'action.add_social_profile'|trans }}
+            </a>
+            <div class="profile-social">
+{#                <h3>{{ 'label.social_profiles'|trans }}</h3>#}
+
+                {% if user.accounts is defined and user.accounts|length > 0 %}
+                    <ul class="profile-social__list">
+                        {% for account in user.accounts %}
+                            <li class="profile-social__item">
+                                <span class="profile-social__platform">{{ account.portalSpolecznosciowy }}</span>
+                                <a class="profile-social__link" href="{{ account.link }}" target="_blank" rel="noopener noreferrer">
+                                    {{ account.label }}
+                                </a>
+                                <form method="post"
+                                      action="{{ path('account_delete', { id: account.id }) }}"
+                                      style="display:inline"
+{#                                      onsubmit="return confirm('{{ 'message.confirm_delete'|trans({'%name%': account.portalSpolecznosciowy}) }}');">#}
+                                >
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ account.id) }}">
+
+                                    <a href="{{ path('account_edit',{id: account.id} ) }}" class="btn btn-small btn-secondary">
+                                        {#                                        {{ 'action.edit_social_profile'|trans }}#}
+                                        <span class="material-symbols-outlined"> edit </span>
+                                    </a>
+
+                                    <button class="btn btn-small btn-danger">
+{#                                        {{ 'action.delete'|trans }}#}
+                                        <span class="material-symbols-outlined"> delete </span>
+                                    </button>
+
+                                </form>
+
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="profile-social__empty">{{ 'message.no_social_profiles'|trans }}</p>
+                {% endif %}
+
+
+            </div>
+        </div>
+
+    </section>
     </section>
 {% endblock %}

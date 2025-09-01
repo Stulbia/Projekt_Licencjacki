@@ -38,7 +38,8 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
      *
      * @const string
      */
-    private const DEFAULT_ROUTE = 'book_index';
+//    private const DEFAULT_ROUTE = 'book_index';
+    private const DEFAULT_ROUTE = 'homepage';
 
     /**
      * Constructor.

@@ -13,6 +13,7 @@ class AvatarType extends AbstractType
     {
         $builder->add('avatar', FileType::class, [
             'label' => 'form.avatar.label',
+            'translation_domain' => 'messages',
             'mapped' => false,
             'required' => true,
             'constraints' => [

@@ -22,16 +22,41 @@ class AuthorController extends AbstractController
         Request $request,
         PaginatorInterface $paginator
     ): Response {
-        $qb = $bookRepo->createQueryBuilder('b')
+//        $qb = $bookRepo->createQueryBuilder('b')
+//            ->setParameter('author', $author)
+//            ->leftJoin('b.reviews', 'r')
+//            ->having('COUNT(r.id) > 0')
+//            ->groupBy('b.id')
+//            ->addSelect('AVG(r.rating) AS avgRating')
+////            ->orderBy('avgRating', 'DESC')
+////            ->addOrderBy('b.id', 'DESC')
+//            ->orderBy('b.title', 'ASC')
+//            ->getQuery()
+//            ->getResult();
+
+
+        $rows = $bookRepo->createQueryBuilder('b')
+            ->leftJoin('b.reviews', 'r')
+            ->addSelect('AVG(r.rating) AS avgRating')   // visible scalar
+            ->groupBy('b.id')
+            ->having('COUNT(r.id) > 0')
+            ->orderBy('b.title', 'ASC')
+            ->addOrderBy('b.id', 'DESC')               // optional tie-breaker
             ->andWhere('b.author = :author')
             ->setParameter('author', $author)
-            ->orderBy('b.title', 'ASC');
+            ->getQuery()
+            ->getResult();
 
+        $hydrated = $bookRepo->hydrateAvgRatingIntoBooks($rows);
+
+//        $bookRepo->hydrateAvgRatingIntoBooks($qb);
         $pagination = $paginator->paginate(
-            $qb,
+            $hydrated,
             $request->query->getInt('page', 1),
             12
         );
+
+//        var_dump(($pagination->getItems()));
 
         return $this->render('author/show.html.twig', [
             'author'     => $author,
