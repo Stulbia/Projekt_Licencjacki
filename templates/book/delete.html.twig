@@ -1,7 +1,15 @@
+{% extends 'base.html.twig' %}
 
-{% include 'default/_form.html.twig' with {
-    page_title: 'title.book_delete'|trans({'%id%':book.id|default('')}),
-    form: form,
-    submit_label: 'action.delete'|trans,
-    back_to_list_path: 'book_index',
-} %}
+{% block title %}Delete Book{% endblock %}
+
+{% block body %}
+    <h1>Delete Book: {{ book.title }}</h1>
+
+    <p>Are you sure you want to delete this book?</p>
+
+    {{ form_start(form) }}
+    <button type="submit">Yes, delete</button>
+    {{ form_end(form) }}
+
+    <a href="{{ path('book_index') }}">Cancel</a>
+{% endblock %}

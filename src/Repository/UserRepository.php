@@ -1,9 +1,5 @@
 <?php
 
-/**
- * User repository.
- */
-
 namespace App\Repository;
 
 use App\Entity\User;
@@ -21,25 +17,25 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @extends ServiceEntityRepository
+ * @extends ServiceEntityRepository<User>
+ *
+ * @method User|null find($id, $lockMode = null, $lockVersion = null)
+ * @method User|null findOneBy(array $criteria, array $orderBy = null)
+ * @method User[]    findAll()
+ * @method User[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
-    /**
-     * Constructor.
-     *
-     * @param ManagerRegistry $registry Manager registry
-     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
     }
 
     /**
-     * Used to upgrade (rehash) the user's password automatically over time.
+     * Upgrade user password over time.
      *
-     * @param PasswordAuthenticatedUserInterface $user              PasswordAuthenticatedUser
-     * @param string                             $newHashedPassword hashed password
+     * @param PasswordAuthenticatedUserInterface $user
+     * @param string                             $newHashedPassword
      */
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
     {
@@ -48,14 +44,14 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         }
 
         $user->setPassword($newHashedPassword);
-        $this->getEntityManager()->persist($user);
-        $this->getEntityManager()->flush();
+        $this->_em->persist($user);
+        $this->_em->flush();
     }
 
     /**
-     * Save entity.
+     * Save user.
      *
-     * @param UserInterface $user user
+     * @param UserInterface $user
      *
      * @throws ORMException
      * @throws OptimisticLockException
@@ -68,26 +64,26 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     }
 
     /**
-     * Query all records.
+     * Query all users.
      *
-     * @return QueryBuilder Query builder
+     * @return QueryBuilder
      */
     public function queryAll(): QueryBuilder
     {
         return $this->getOrCreateQueryBuilder()
-            ->select('partial user.{id, email,name, roles,banned}')
+            ->select('partial user.{id, email, name, roles, banned}')
             ->orderBy('user.email', 'DESC');
     }
 
     /**
-     * Count all admins.
+     * Count all admin users.
      *
-     * @return int The amount of admins
+     * @return int
      *
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
-    public function countByAdmin(): ?int
+    public function countByAdmin(): int
     {
         $qb = $this->createQueryBuilder('user');
         $qb->select($qb->expr()->countDistinct('user.id'))
@@ -98,11 +94,11 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     }
 
     /**
-     * Get or create new query builder.
+     * Get or create query builder.
      *
-     * @param QueryBuilder|null $queryBuilder Query builder
+     * @param QueryBuilder|null $queryBuilder
      *
-     * @return QueryBuilder Query builder
+     * @return QueryBuilder
      */
     private function getOrCreateQueryBuilder(?QueryBuilder $queryBuilder = null): QueryBuilder
     {

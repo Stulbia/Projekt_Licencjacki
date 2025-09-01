@@ -1,6 +1,14 @@
-{% include 'default/_form.html.twig' with {
-    page_title: 'title.avatar_edit'|trans,
-    form: form,
-    submit_label: 'action.edit'|trans,
-    back_to_list_path: 'user_index',
-} %}
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'title.change_avatar'|trans }}{% endblock %}
+
+{% block body %}
+<h1>{{ 'title.change_avatar'|trans }}</h1>
+
+{{ form_start(form) }}
+{{ form_row(form.avatar) }}
+<button class="btn btnPrimary" type="submit">
+    {{ 'action.save'|trans }}
+</button>
+{{ form_end(form) }}
+{% endblock %}

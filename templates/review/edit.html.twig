@@ -1,0 +1,67 @@
+{# templates/review/edit.html.twig #}
+{% extends 'book/show.html.twig' %}
+
+{% block add_review %}
+    <section class="review-form-section">
+        <h2>Edytuj swoją recenzję</h2>
+
+        {{ form_start(form, { attr: { class: 'review-form' } }) }}
+
+        <div class="rating-slider">
+            {{ form_widget(form.rating, {
+                attr: {
+                    class: 'rating-range',
+                    type:  'range',
+                    min:   1,
+                    max:   10,
+                    step:  1
+                }
+            }) }}
+
+            <div id="starDisplay" class="star-display" aria-hidden="true">
+                {% for i in 1..10 %}
+                    <span class="star" data-value="{{ i }}">★</span>
+                {% endfor %}
+            </div>
+
+            <span id="ratingNumber" class="rating-number">
+                {{ form.rating.vars.value ?? 5 }}/10
+            </span>
+
+            {{ form_errors(form.rating) }}
+        </div>
+
+        {{ form_row(form.comment) }}
+        {{ form_row(form.reviewTags) }}
+
+        <button type="submit" class="btn btnPrimary">Zapisz zmiany</button>
+
+        {{ form_rest(form) }}
+        {{ form_end(form, { render_rest: false }) }}
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const range = document.querySelector('.rating-range');
+            const stars = [...document.querySelectorAll('#starDisplay .star')];
+            const counter = document.getElementById('ratingNumber');
+
+            const paint = () => {
+                const val = +range.value;
+                stars.forEach(star => {
+                    const fill = star.dataset.value <= val;
+                    if (fill && !star.classList.contains('filled')) {
+                        star.classList.add('filled', 'pop');
+                        star.addEventListener('animationend', () => star.classList.remove('pop'), { once: true });
+                    } else if (!fill) {
+                        star.classList.remove('filled');
+                    }
+                });
+                counter.textContent = `${val}/10`;
+            };
+
+            range.addEventListener('input', paint);
+            paint();
+        });
+    </script>
+{% endblock %}

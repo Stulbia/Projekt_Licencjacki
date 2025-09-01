@@ -1,0 +1,317 @@
+@use '../variables' as *;
+
+/* --------- container --------- */
+/* pointer hint on the clickable label */
+.tag-filter .field-head .form-label { cursor: pointer; }
+
+/* hide pieces when collapsed (JS already sets [hidden], this is a safe fallback) */
+.tag-filter.collapsed .tag-pills,
+.tag-filter.collapsed .tag-dropdown { display: none; }
+
+/* dim tools a bit when collapsed */
+.tag-filter.collapsed .field-tools { opacity: .75; }
+
+/* Clickable section header */
+.section-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .25rem .4rem;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+
+  .form-label { font-weight: 700; color: $text-color; }
+  .chev { transition: transform .2s ease; }
+}
+.section-toggle[aria-expanded="true"] .chev { transform: rotate(180deg); }
+
+/* No-JS fallback / initial state */
+.tag-filter.collapsed .tag-pills,
+.tag-filter.collapsed .tag-dropdown { display: none; }
+
+.tag-filter.collapsed .field-tools { opacity: .75; }
+
+
+
+.filters-form {
+  --gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  padding: clamp(1rem, 2vw, 1.25rem);
+  background: $body-bg;
+  border-radius: $radius;
+  box-shadow: 0 2px 8px rgba(0,0,0,.06);
+
+  /* two columns on wide screens */
+  grid-template-columns: 1fr;
+  @media (min-width: 860px) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  h2 {
+    grid-column: 1 / -1;
+    font-size: 1.25rem;
+    font-weight: 800;
+    margin: 0 0 .25rem;
+    color: $text-color;
+  }
+}
+
+/* --------- fields --------- */
+.field {
+  display: grid;
+  gap: .5rem;
+}
+
+.field-head {
+  display: flex;
+  justify-content: space-between;
+  //align-items: center;
+  gap: .75rem;
+}
+
+.field-tools {
+  display: inline-flex;
+  //align-items: center;
+  gap: .75rem;
+
+  .selected-count {
+    font-size: .85rem;
+    opacity: .8;
+  }
+  .link-clear {
+    background: transparent;
+    border: 0;
+    padding: .25rem .4rem;
+    font: inherit;
+    font-size: .85rem;
+    color: $color-secondary;
+    border-radius: .4rem;
+    cursor: pointer;
+    //text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: background .2s ease;
+    &:hover { background: rgba($color-secondary, .08); }
+  }
+}
+
+.form-label {
+  font-size: .9rem;
+  font-weight: 700;
+  color: $text-color;
+}
+
+/* inputs */
+.text-input,
+.custom-select,
+.range-input {
+  width: 100%;
+  padding: .65rem .8rem;
+  border: 1px solid mix($text-color,$body-bg, 15%);
+  border-radius: $radius;
+  background: $body-bg;
+  color: $text-color;
+  font-size: .95rem;
+  transition: border-color .15s ease, box-shadow .15s ease;
+
+  &:focus {
+    outline: none;
+    border-color: $color-secondary;
+    box-shadow: 0 0 0 2px rgba($color-secondary, .25);
+  }
+}
+
+.form-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+
+  .btn-primary {
+    padding: .6rem 1.1rem;
+    border-radius: $radius;
+    font-weight: 800;
+    background: $color-accent-first;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: transform .06s ease, background .2s ease;
+    &:hover { background: darken($color-accent-first, 8%); transform: translateY(-1px); }
+    &:active { transform: translateY(0); }
+  }
+}
+
+/* hide hidden select */
+.hidden-tag-select {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* tag filter */
+.tag-filter {
+  display: grid;
+  gap: .6rem;
+}
+
+.tag-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  padding: .25rem 0;
+  border-color: $color-secondary;
+}
+
+.tag-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .45rem .8rem;
+  border-radius: 999px;
+  font-size: .9rem;
+  font-weight: 600;
+  background: mix($body-bg,$color-secondary,95%);
+  border: 1px solid lighten($body-bg, 20%);
+  cursor: pointer;
+  user-select: none;
+  transition: transform .08s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+    border-color: $color-secondary;
+    box-shadow: 0 1px 6px rgba(0,0,0,.06);
+  }
+
+  &.active {
+    background: $color-secondary;
+    color: #fff;
+    border-color: $color-secondary;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,.2);
+  }
+
+  /* small close dot shown when active (pure CSS) */
+  &.active::after {
+    content: '×';
+    display: inline-block;
+    line-height: 1;
+    font-weight: 700;
+    opacity: .9;
+  }
+}
+
+
+/* --- Special styling for review-tags --- */
+.tag-filter[data-filter="review-tags"] {
+  .tag-pill {
+    background: mix($body-bg,$color-primary,95%);
+    border: $color-primary;
+    &:hover {
+      border-color: $color-primary;
+    }
+    &.active {
+      background: $color-primary;
+      border-color: $color-primary;
+    }
+  }
+}
+
+
+/* optional dropdown (kept for accessibility / future toggles) */
+.tag-dropdown {
+  display: none; /* hidden by default; JS can toggle */
+}
+
+.tag-option { display: none; } /* keep inputs but visually hide your checkbox list */
+
+/* range slider with filled track */
+.range-field { align-items: start; }
+
+.range-input {
+  appearance: none;
+  height: 8px;
+  border-radius: 999px;
+  background: linear-gradient(
+                  to right,
+                  $color-accent-first var(--fill, 0%),
+                  lighten($body-bg, 15%) var(--fill, 0%)
+  );
+  cursor: pointer;
+
+  &::-webkit-slider-thumb {
+    appearance: none;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid $color-accent-first;
+  }
+  &::-moz-range-thumb {
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid $color-accent-first;
+  }
+}
+
+/* hide-but-accessible */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* star rating */
+.star-rating {
+  display: inline-flex;
+  gap: .25rem;
+  align-items: center;
+  user-select: none;
+  align-content: center;
+  justify-self: center;   // horizontal centering in the grid cell
+  align-self: center
+}
+
+.star {
+  background: transparent;
+  border: 0;
+  padding: .15rem;
+  border-radius: .4rem;
+  cursor: pointer;
+  line-height: 1;
+  justify-self: center;
+
+  .material-symbols-outlined {
+    font-size: 2rem;
+    opacity: .35;
+    transition: transform .08s ease, opacity .15s ease, color .15s ease;
+    vertical-align: middle;
+  }
+  @media (max-width:900px) {
+
+   .material-symbols-outlined{
+     font-size: 1.25rem;
+   }
+
+
+  }
+
+  &:hover .material-symbols-outlined { transform: translateY(-1px); }
+  &:focus-visible { outline: 2px solid rgba($color-accent-second  , .45); outline-offset: 2px; }
+}
+
+.star.filled .material-symbols-outlined {
+  opacity: 1;
+  color: $color-accent-second; /* pick your accent; can switch to $color-secondary if preferred */
+}

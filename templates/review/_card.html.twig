@@ -1,0 +1,64 @@
+<div class="review-card {{ isUserOwn ? 'review-user-own' : '' }}">
+    <p class="review-header">
+        {%  if review.author.avatarFilename %}
+        <img src="{{ asset(review.author.avatarFilename
+            ? 'uploads/avatars/' ~ review.author.avatarFilename
+            : 'uploads/defaultAvatar.svg') }}"
+             alt="Avatar"
+             class="avatar-review">
+        {% else %}
+            <span class="material-symbols-outlined">
+                account_circle
+            </span>
+        {% endif %}
+        <strong>{{ review.author.name ?? 'Nieznany użytkownik' }}</strong>
+         {{ review.rating }}/10  </p>
+
+
+
+    <div class="review-stars" aria-label="Ocena: {{ review.rating }} na 10">
+        {# full stars #}
+        {% for i in 1..review.rating %}
+            <span class="material-symbols-outlined filled">
+            star
+        </span>
+        {% endfor %}
+
+        {# empty stars #}
+        {% if review.rating < 10 %}
+            {% for i in 1..(10 - review.rating) %}
+                <span class="material-symbols-outlined not-filled">
+                star
+            </span>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+
+
+
+
+    <p class="review-comment">
+        {{ review.comment }}
+    </p>
+
+    {% if review.tagAssignments|length > 0 %}
+    <div class="review-tags">
+        {% for assignment in review.tagAssignments %}
+            <span class="tag-badge">{{ assignment.tag.name }}</span>
+        {% endfor %}
+    </div>
+    {% elseif isUserOwn %}
+
+    {% endif %}
+
+    {% if isUserOwn %}
+        <div class="review-actions">
+            <a href="{{ path('review_edit', { id: review.id }) }}"
+               class="btn btn-small btn-outline-primary">✏️ Edytuj</a>
+
+            <a href="{{ path('review_delete', { id: review.id }) }}"
+               class="btn btn-small btn-danger">🗑️ Usuń</a>
+        </div>
+    {% endif %}
+</div>

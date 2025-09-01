@@ -1,0 +1,16 @@
+
+
+{# templates/review/delete.html.twig #}
+{% extends 'book/show.html.twig' %}
+
+{% block add_review %}
+    <section class="review-form-section">
+        <h2>Czy na pewno chcesz usunąć recenzję tej książki?</h2>
+
+        {{ form_start(form) }}
+        <button type="submit" class="btn btnDanger">Usuń recenzję</button>
+        {{ form_end(form) }}
+
+        <a href="{{ path('book_show', { slug: review.book.slug }) }}" class="btn btnSecondary mt-2">Anuluj</a>
+    </section>
+{% endblock %}

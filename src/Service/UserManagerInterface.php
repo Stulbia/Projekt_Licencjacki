@@ -65,4 +65,6 @@ interface UserManagerInterface
      * @param User $user The user entity
      */
     public function ifBanAdmin(User $user): bool;
+
+
 }

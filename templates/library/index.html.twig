@@ -1,0 +1,186 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Biblioteka{% endblock %}
+
+{% block body %}
+    <div>
+
+
+            <h1>Biblioteczka</h1>
+
+
+                <section >
+
+                    {% if pagination.items is not empty %}
+
+                        {% set toRead = [] %}
+                        {% set reading = [] %}
+                        {% set read = [] %}
+
+
+                        {% for relation in pagination.items %}
+                            {% if relation.status.value == 'to_read' %}
+                                {% set toRead = toRead|merge([relation]) %}
+                            {% elseif relation.status.value == 'reading' %}
+                                {% set reading = reading|merge([relation]) %}
+                            {% elseif relation.status.value == 'read' %}
+                                {% set read = read|merge([relation]) %}
+                            {% endif %}
+                        {% endfor %}
+
+
+                        <section >
+                            <h2 >
+                                Do przeczytania
+                            </h2>
+                           <div >
+                                {% for relation in toRead %}
+                                    {% set book = relation.book  %}
+
+                                    {% include 'book_card.html.twig' %}
+
+                                {% endfor %}
+                            </div>
+                        </section>
+
+                        <section>
+                            <h2 >Czytam</h2>
+                            <div class = "shelf-content">     <div class="book-shelf-row">
+                                {% for relation in reading %}
+                                    {% set book = relation.book  %}
+                                    {% include 'book_card.html.twig' %}
+
+                                {% endfor %}
+                            </div>
+                            </div>
+                        </section>
+
+                        <section class="bookshelf">
+                            <h2>  Przeczytane</h2>
+                            <div class = "shelf-content"><div class="book-shelf-row">
+                                {% for relation in read %}
+                                    {% set book = relation.book  %}
+
+                                    {% include 'book_card.html.twig' %}
+
+
+                                {% endfor %}
+                            </div>
+                            </div>
+                        </section>
+
+                        {{ knp_pagination_render(pagination) }}
+                    {% else %}
+                        <p>Brak wyników wyszukiwania.</p>
+                    {% endif %}
+
+                </section>
+            </div>
+
+
+    <div class="search-form">
+        <h1><b style="color: #fa0000"> /debilu wstaw tutaj szablon forms </b> </h1>
+    </div>
+{#    <div class="library-sidebar">#}
+
+{#        invisible settings #}
+{#        <div class="generatedForm">#}
+{#            {{ form_start(form, {#}
+{#                method: 'get',#}
+{#                action: path(app.request.attributes.get('_route')),#}
+{#                attr: {class: 'filter-form'}#}
+{#            }) }}#}
+{#        </div>#}
+
+
+{#        <h2 class="filterHeading">Filtry</h2>#}
+
+{#            <button type="submit" class="btn btnPrimary">🔍︎ Szukaj</button>#}
+
+
+
+{#            {{ form_label(form.title, null, {label_attr: {class: 'formLabel'}}) }}#}
+{#            {{ form_widget(form.title, {#}
+{#                attr: {class: 'textInput', placeholder: 'Wichrowe wzgorza...'}#}
+{#            }) }}#}
+
+{#        #}{# — AUTOR — #}
+
+{#            {{ form_label(form.authorTerm, null, {label_attr: {class: 'formLabel'}}) }}#}
+{#            {{ form_widget(form.authorTerm, {#}
+{#                attr: {class: 'textInput', placeholder: 'Brandon / King …'}#}
+{#            }) }}#}
+
+
+{#        #}{# — TAGI KSIĄŻKI — #}
+
+{#            {{ form_widget(form.tag, {attr: {class: 'hidden-tag-select'}}) }}#}
+
+{#            <button type="button" class="btnPrimary tagToggle" aria-expanded="false">#}
+{#                Wybierz tagi#}
+{#            </button>#}
+
+{#            <div class="tagPills"></div>#}
+
+{#            <div class="tagDropdown">#}
+{#                {% for choice in form.tag.vars.choices %}#}
+{#                    <label class="tagOption">#}
+{#                        <input type="checkbox" value="{{ choice.value }}" data-label="{{ choice.label }}">#}
+{#                        {{ choice.label }}#}
+{#                    </label>#}
+{#                {% endfor %}#}
+{#            </div>#}
+
+{#        #}{# — MINIMALNA OCENA — #}
+{#        <div class="formGroup">#}
+{#            <label class="formLabel" for="minRatingRange">#}
+{#                Minimalna ocena:#}
+{#                <span id="ratingPreview">{{ app.request.get('minRating') ?: 1 }}</span>/10#}
+{#            </label>#}
+{#            <input id="minRatingRange" name="minRating" type="range"#}
+{#                   min="1" max="10" step="1"#}
+{#                   value="{{ app.request.get('minRating') ?: 1 }}"#}
+{#                   class="rangeInput">#}
+{#        </div>#}
+
+{#        #}{# — TAGI RECENZJI — #}
+{#        <div class="formGroup tagFilter" data-filter="reviewTags">#}
+{#            {{ form_widget(form.reviewTags, {attr: {class: 'hidden-tag-select'}}) }}#}
+
+{#            <button type="button" class="btnPrimary tagToggle" aria-expanded="false">#}
+{#                Wybierz tagi recenzji#}
+{#            </button>#}
+
+{#            <div class="tagPills"></div>#}
+
+{#            <div class="tagDropdown">#}
+{#                <div class="tagDropdownInner">#}
+{#                    <div class="tagOptions">#}
+{#                        {% for choice in form.reviewTags.vars.choices %}#}
+{#                            <label class="tagOption">#}
+{#                                <input type="checkbox" value="{{ choice.value }}" data-label="{{ choice.label }}">#}
+{#                                <span class="tagLabel">{{ choice.label }}</span>#}
+{#                            </label>#}
+{#                        {% endfor %}#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+
+{#        #}{# — SORTOWANIE — #}
+{#        <div class="formGroup">#}
+{#            <label class="formLabel" for="sortBy">Sortuj według</label>#}
+{#            <select id="sortBy" name="sortBy" class="customSelect">#}
+{#                <option value="">Domyślnie</option>#}
+{#                <option value="rating"    {{ app.request.get('sortBy') == 'rating'    ? 'selected' }}>Średnia ocena</option>#}
+{#                <option value="title"     {{ app.request.get('sortBy') == 'title'     ? 'selected' }}>Tytuł</option>#}
+{#            </select>#}
+{#        </div>#}
+
+{#        {{ form_rest(form) }} #}{# CSRF & ukryte pola #}
+{#        {{ form_end(form, {render_rest: false}) }}#}
+{#    </div>#}
+
+
+
+{% endblock %}

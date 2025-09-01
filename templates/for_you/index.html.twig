@@ -1,0 +1,142 @@
+{#{% extends 'base.html.twig' %}#}
+
+{#{% block title %}Dla Ciebie{% endblock %}#}
+
+{#{% block body %}#}
+{#    <h1>Polecane ksiazki</h1>#}
+{#    <div>#}
+{#        {% if app.user %}#}
+{#            <p>Pozycje wybierane są na podstawie Twoich ocen. Przeczytaj więcej książek, aby otrzymywać lepsze propozycje!</p>#}
+
+{#        {% else %}#}
+
+{#           <p > Zaloguj sie lub zarejestruj, aby otrzymywac propozycje wybrane specjalnie dla Ciebie.</p>#}
+{#        {% endif %}#}
+
+{#        <section>#}
+{#            <h2>Wyniki</h2>#}
+
+{#            {% if books is not empty %}#}
+{#                    {% for book in books %}#}
+{#                 {% include "book_card.html.twig" %}#}
+{#                {% endfor %}#}
+{#            {% else %}#}
+{#                <p>Brak rekomendacji na ten moment. Przeczytaj kilka książek lub napisz recenzję, by zobaczyć propozycje!</p>#}
+{#            {% endif %}#}
+{#        </section>#}
+{#    </div>#}
+{#{% endblock %}#}
+
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Dla Ciebie{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {# Jeśli Swiper nie jest globalnie dodany, dołącz CSS tutaj #}
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
+{% endblock %}
+
+{% block body %}
+    <section class="forYouPage">
+        {# ---------- HERO ---------- #}
+        <header class="hero">
+            <div class="heroInner">
+                <h1 class="heroTitle">Polecane książki</h1>
+
+                {% if app.user %}
+                    <p class="heroSubtitle">
+                        Pozycje wybierane są na podstawie Twoich ocen. Im więcej czytasz, tym trafniejsze propozycje!
+                    </p>
+                {% else %}
+                    <p class="heroSubtitle">
+                        Zaloguj się lub zarejestruj, aby otrzymywać propozycje wybrane specjalnie dla Ciebie.
+                    </p>
+                    <div class="heroCtas">
+                        <a class="btn btnPrimary" href="{{ path('app_login') }}">Zaloguj się</a>
+                        <a class="btn btnSecondary" href="{{ path('user_register') }}">Zarejestruj się</a>
+                    </div>
+                {% endif %}
+            </div>
+        </header>
+
+        <div class="forYouContent">
+            {# --------- Sekcja: Na podstawie Twoich ocen (główna) --------- #}
+            <section class="recommendSection">
+                <div class="sectionHeader">
+                    <h2 class="sectionTitle">Dopasowane do Ciebie</h2>
+                </div>
+
+                {% if books is not empty %}
+                    <div class="swiper forYouCarousel" data-carousel="forYou">
+                        <div class="swiper-wrapper">
+                            {% for book in books %}
+                                <div class="swiper-slide">
+                                    {% include 'book_card.html.twig' with { book: book } %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="swiper-button-prev"></div>
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-pagination"></div>
+                    </div>
+                {% else %}
+                    <p class="emptyNotice">
+                        Brak rekomendacji na ten moment. Przeczytaj kilka książek lub napisz recenzję, by zobaczyć propozycje!
+                    </p>
+                {% endif %}
+            </section>
+
+            {% set popularBooks = books %}
+
+            {% if popularBooks is defined and popularBooks is not empty %}
+                <section class="recommendSection">
+                    <div class="sectionHeader">
+                        <h2 class="sectionTitle">Popularne wśród czytelników</h2>
+                    </div>
+
+                    <div class="swiper forYouCarousel" data-carousel="popular">
+                        <div class="swiper-wrapper">
+                            {% for book in popularBooks %}
+                                <div class="swiper-slide">
+                                    {% include 'book_card.html.twig' with { book: book } %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="swiper-button-prev"></div>
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-pagination"></div>
+                    </div>
+                </section>
+            {% endif %}
+        </div>
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script>
+        document.querySelectorAll('.forYouCarousel').forEach((el) => {
+            new Swiper(el, {
+                slidesPerView: 1.2,
+                spaceBetween: 16,
+                centeredSlidesBounds: true,
+                breakpoints: {
+                    640: { slidesPerView: 2.2 },
+                    960: { slidesPerView: 3.2 },
+                    1280:{ slidesPerView: 4.2 }
+                },
+                navigation: {
+                    nextEl: el.querySelector('.swiper-button-next'),
+                    prevEl: el.querySelector('.swiper-button-prev'),
+                },
+                pagination: {
+                    el: el.querySelector('.swiper-pagination'),
+                    clickable: true
+                }
+            });
+        });
+    </script>
+{% endblock %}

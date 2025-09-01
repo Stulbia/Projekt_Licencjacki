@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}All Reviews{% endblock %}
+
+{% block body %}
+    <h1>All Reviews</h1>
+
+    <a href="{{ path('review_create') }}">Write a new review</a>
+
+    {% if pagination.items is not empty %}
+        <ul>
+            {% for review in pagination.items %}
+                <li>
+                    <strong>Book:</strong> {{ review.book.title }}<br>
+                    <strong>Rating:</strong> {{ review.rating }}/10<br>
+                    <strong>By:</strong> {{ review.author.name }}<br>
+                    <strong>Comment:</strong> {{ review.comment|nl2br }}<br>
+                    <a href="{{ path('review_edit', {id: review.id}) }}">Edit</a> |
+                    <a href="{{ path('review_delete', {id: review.id}) }}">Delete</a>
+                </li>
+                <hr>
+            {% endfor %}
+        </ul>
+
+        <div>
+            Page {{ pagination.currentPageNumber }} of {{ pagination.pageCount }}
+        </div>
+
+        {% if pagination.previousPageNumber is defined %}
+            <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all | merge({'page': pagination.previousPageNumber})) }}">Previous</a>
+        {% endif %}
+        {% if pagination.nextPageNumber is defined %}
+            <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all | merge({'page': pagination.nextPageNumber})) }}">Next</a>
+        {% endif %}
+
+        {# Alternatywnie: #}
+        {# {{ knp_pagination_render(pagination) }} #}
+
+    {% else %}
+        <p>No reviews available.</p>
+    {% endif %}
+{% endblock %}

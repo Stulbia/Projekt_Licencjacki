@@ -1,7 +1,12 @@
+{% extends 'base.html.twig' %}
 
-{% include 'default/_form.html.twig' with {
-    page_title: 'title.book_edit'|trans({'%id%': book.id|default('')}),
-    form: form,
-    submit_label: 'action.edit'|trans,
-    back_to_list_path: 'gallery_index',
-} %}
+{% block title %}Edit Book{% endblock %}
+
+{% block body %}
+    <h1>Edit Book: {{ book.title }}</h1>
+
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button type="submit">Update</button>
+    {{ form_end(form) }}
+{% endblock %}

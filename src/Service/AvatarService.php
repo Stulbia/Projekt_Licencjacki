@@ -1,102 +1,45 @@
 <?php
 
-/**
- * Avatar service.
- */
-
 namespace App\Service;
 
-use App\Entity\Avatar;
+use App\Controller\AvatarController;
 use App\Entity\User;
-use App\Repository\AvatarRepository;
-use Doctrine\ORM\Exception\ORMException;
-use Doctrine\ORM\OptimisticLockException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\String\Slugger\SluggerInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
-/**
- * Class AvatarService.
- */
 class AvatarService implements AvatarServiceInterface
 {
-    /**
-     * Constructor.
-     *
-     * @param string                       $targetDirectory     Target directory
-     * @param AvatarRepository             $avatarRepository    Avatar repository
-     * @param AvatarUploadServiceInterface $avatarUploadService Avatar upload service
-     * @param Filesystem                   $filesystem          Filesystem component
-     */
-    public function __construct(private readonly string $targetDirectory, private readonly AvatarRepository $avatarRepository, private readonly AvatarUploadServiceInterface $avatarUploadService, private readonly Filesystem $filesystem)
-    {
+    private string $avatarDir;
+
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager,
+        private readonly SluggerInterface $slugger,
+        string $avatarsDir
+    ) {
+        $this->avatarDir = $avatarsDir;
     }
 
-    /**
-     * Create avatar.
-     *
-     * @param UploadedFile $uploadedFile Uploaded file
-     * @param Avatar       $avatar       Avatar entity
-     * @param User         $user         User entity
-     *
-     * @throws ORMException
-     * @throws OptimisticLockException
-     */
-    public function create(UploadedFile $uploadedFile, Avatar $avatar, User $user): void
+    public function updateAvatar(User $user, UploadedFile $file): void
     {
-        $avatarFilename = $this->avatarUploadService->upload($uploadedFile);
+        $filesystem = new Filesystem();
 
-        $avatar->setUser($user);
-        $avatar->setFilename($avatarFilename);
-        $this->avatarRepository->save($avatar);
-        try {
-            $this->avatarRepository->save($avatar);
-        } catch (OptimisticLockException|ORMException) {
+        // Usuń stary plik, jeśli istnieje
+        if ($user->getAvatarFilename()) {
+            $oldPath = $this->avatarDir . '/' . $user->getAvatarFilename();
+            if ($filesystem->exists($oldPath)) {
+                $filesystem->remove($oldPath);
+            }
         }
-    }
 
-    /**
-     * Update avatar.
-     *
-     * @param UploadedFile $uploadedFile Uploaded file
-     * @param Avatar       $avatar       Avatar entity
-     * @param User         $user         User entity
-     *
-     * @throws ORMException
-     * @throws OptimisticLockException
-     */
-    public function update(UploadedFile $uploadedFile, Avatar $avatar, User $user): void
-    {
-        $filename = $avatar->getFilename();
+        // Zapisz nowy plik
+        $safeFilename = $this->slugger->slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
+        $newFilename = $safeFilename . '-' . uniqid() . '.' . $file->guessExtension();
 
-        if (null !== $filename) {
-            $this->filesystem->remove(
-                $this->targetDirectory.'/'.$filename
-            );
+        $file->move($this->avatarDir, $newFilename);
 
-            $this->create($uploadedFile, $avatar, $user);
-        }
-    }
-
-    /**
-     * Delete avatar.
-     *
-     * @param Avatar $avatar Avatar entity
-     * @param User   $user   User   entity
-     *
-     * @throws ORMException
-     * @throws OptimisticLockException
-     */
-    public function delete(Avatar $avatar, User $user): void
-    {
-        $filename = $avatar->getFilename();
-
-        if (null !== $filename) {
-            $this->filesystem->remove(
-                $this->targetDirectory.'/'.$filename
-            );
-        }
-        $avatar->setUser(null);
-        $avatar->setFilename(null);
-        $this->avatarRepository->delete($avatar);
+        $user->setAvatarFilename($newFilename);
+        $this->entityManager->flush();
     }
 }

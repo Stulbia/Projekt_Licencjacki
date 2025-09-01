@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Moje recenzje{% endblock %}
+
+{% block body %}
+    <section class="reviews-page">
+        <div class="reviews-header">
+            <h1 class="reviews-title">Moje recenzje</h1>
+            <a href="{{ path('review_create') }}" class="btn btnPrimary reviews-new-btn">+ Napisz nową</a>
+        </div>
+
+        {% if pagination.items is not empty %}
+            <ul class="reviews-list">
+                {% for review in pagination.items %}
+                 {% include 'review/_card.html.twig' %}
+                {% endfor %}
+            </ul>
+
+            <nav class="pagination reviews-pagination">
+                {{ knp_pagination_render(pagination) }}
+            </nav>
+        {% else %}
+            <p class="reviews-empty">Nie napisałeś jeszcze żadnych recenzji.</p>
+        {% endif %}
+    </section>
+{% endblock %}

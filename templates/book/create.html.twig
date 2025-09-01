@@ -1,7 +1,12 @@
+{% extends 'base.html.twig' %}
 
-{% include 'default/_form.html.twig' with {
-    page_title: 'title.book_create'|trans,
-    form: form,
-    submit_label: 'action.save'|trans,
-    back_to_list_path: 'gallery_index',
-} %}
+{% block title %}Create Book{% endblock %}
+
+{% block body %}
+    <h1>Create a New Book</h1>
+
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button type="submit">Create</button>
+    {{ form_end(form) }}
+{% endblock %}

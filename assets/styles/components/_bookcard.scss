@@ -1,0 +1,188 @@
+@use '../variables' as *;
+
+
+// Sizes
+$book-card-width: 250px;
+$book-card-height: 260px;
+$book-cover-width: 80px;
+$book-cover-height: 120px;
+$book-border-radius: 0.75rem;
+$book-cover-radius: 0.5rem;
+
+// Colors
+$book-bg: $body-bg;
+$book-text: $text-color;
+$book-text-muted: $color-accent-third;
+$book-link-hover: $color-secondary;
+$book-cover-bg: $color-primary;
+$stars-accent: $color-accent-second;
+$stars-accent-muted: mix($body-bg,$color-secondary,90%);
+// Shadows
+$book-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+$book-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.12);
+
+.book-card {
+  width: $book-card-width;
+  height: $book-card-height;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: $book-bg;
+  container-type: inline-size;
+  box-shadow: $book-shadow;
+  padding: 1rem;
+  margin: 1rem;
+  border-radius: $book-border-radius;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: $book-shadow-hover;
+  }
+
+  .book-cover {
+    width: $book-cover-width;
+    height: $book-cover-height;
+    object-fit: cover;
+    border-radius: $book-cover-radius;
+    margin-bottom: 0.75rem;
+    background: $book-cover-bg;
+  }
+  .frame{
+    width: $book-cover-width;
+    height: $book-cover-height;
+    border-radius: $book-cover-radius;
+    margin:4px;
+    margin-bottom: 0.7rem;
+    padding: 0;
+    background: $book-cover-bg;
+    //box-shadow:
+    //        inset 0 0 0 1px rgba($color-primary, .55),   // crisp hairline
+    //        inset 0 6px 12px rgba($color-primary, .12); // soft tin
+  }
+
+
+  .book-title {
+    position: relative;          // needed for the fade overlay
+    font-size: 0.9em;
+    line-height: 1.2em;
+    overflow: hidden;
+    margin-bottom: 0.75rem;
+    // hide beyond 2 lines
+
+    @supports (block-size: 3lh) {
+      block-size: 2lh;
+    }
+    @supports not (block-size: 2lh) {
+      min-height: calc(2 * 1.3em);
+      max-height: calc(2 * 1.3em);
+    }
+
+    /* subtle bottom fade; doesn't block interactions */
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      height: 3em;
+      pointer-events: none;
+      //background: linear-gradient(to top, rgba($body-bg,0.88), transparent 70%);
+      background: linear-gradient(
+                      to top,
+                      rgba($body-bg, 1) 0%,
+                      rgba($body-bg, 0.7) 5%,
+                      transparent 100%
+      );
+
+
+    }
+
+    a {
+      display: -webkit-box;                    // enables multi-line clamp
+      -webkit-line-clamp: 2;                   // show up to 2 lines
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+
+      max-width: 100%;
+      color: $book-text;
+      text-decoration: none;
+      transition: color .2s ease;
+
+      &:hover {
+        color: $book-link-hover;
+        text-decoration: underline;
+      }
+    }
+  }
+
+
+  .book-author {
+    font-size: 0.85rem;
+    color: $book-text-muted;
+    //margin-top: 0.25rem;
+
+    a {
+      color: inherit;
+      text-decoration: none;
+
+      &:hover {
+        color: $book-link-hover;
+      }
+    }
+  }
+
+
+  .book-rating {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    margin-top: .5rem;
+    padding: .25rem .5rem;
+    border-radius: 999px;
+    background: rgba($color-secondary, .10);
+    color: $book-text;
+    font-weight: 700;
+    font-size: .95rem;
+
+    .star-icon {
+      font-size: 1.05rem;
+      line-height: 1;
+      color: $color-accent-second;
+    }
+    .rating-number { color: $book-text; }
+    .rating-max {
+      margin-left: .1rem;
+      font-weight: 600;
+      color: $stars-accent;
+      opacity: .9;
+    }
+
+    &.book-rating--muted {
+      background: transparent;
+      color: $stars-accent-muted;
+      font-weight: 600;
+      .star-icon { color: $stars-accent-muted; }
+    }
+  }
+
+  .rating-meter {
+    width: 100%;
+    height: 6px;
+    margin-top: .45rem;
+    border-radius: 999px;
+    background: rgba(0,0,0,.08);
+    overflow: hidden;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,.03);
+
+    span {
+      display: block;
+      height: 100%;
+      width: 0;
+      border-radius: 999px;
+      background: linear-gradient(90deg, $color-accent-first, lighten($color-accent-second, 12%));
+      transition: width .25s ease;
+    }
+  }
+
+
+}

@@ -1,18 +1,159 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}
-    {{ 'title.book_search'|trans }}
-{% endblock %}
+{% block title %}Szukaj książek{% endblock %}
+
 {% block body %}
 
-    <h1>{{ 'title.book_search'|trans }}</h1>
+    <div class="search">
+        <h1>Przegladaj</h1>
 
-    {% include 'default/_search_form.html.twig' with {
-        page_title: 'title.book_search'|trans,
-        form: form,
-        submit_label: 'action.search'|trans,
-        back_to_list_path: '',
-    } %}
-<br>
-    {% include'book/list.html.twig' %}
+
+        {{ form_start(form, {
+            method: 'get',
+            action: path(app.request.attributes.get('_route')),
+            attr: { id: 'book-search-form', class: 'filter-form' }
+        }) }}
+
+
+        <div class="quick-search">
+            {{ form_widget(form.title, {
+                attr: { class: 'quick-search-input', placeholder: 'Szukaj po tytule…' }
+            }) }}
+
+            <button class="filters-toggle" type="button" aria-expanded="false" aria-controls="filters-panel">
+                {#            Pokaż filtry#}
+                <span class="material-symbols-outlined">tune</span>
+            </button>
+            <button class="btn btn-primary" type="submit"><span class="material-symbols-outlined toggle">search</span></button>
+
+        </div>
+
+        <aside>
+            <div id="filters-panel" class="filters-panel" hidden>
+                {% include '_book_search_filters.html.twig' with { form: form } %}
+            </div>
+        </aside>
+
+        {# Render remaining #}
+        {{ form_rest(form) }}
+
+        {{ form_end(form, { render_rest: false }) }}
+        {# END SYMFONY FORM #}
+    </div>
+    <section class="search-results">
+        <form method="get" class="per-page-form">
+            <label>
+                Pozycji na stronę:
+                <select name="pp" onchange="this.form.submit()">
+                    {% set choices = [4,5,6,8,12,24] %}
+                    {% for n in choices %}
+                        <option value="{{ n }}" {{ perPage == n ? 'selected' : '' }}>{{ n }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            {% for key, val in app.request.query.all %}
+                {% if key not in ['pp','page'] %}
+                    {% if val is iterable %}
+                        {% for v in val %}
+                            <input type="hidden" name="{{ key }}[]" value="{{ v }}">
+                        {% endfor %}
+                    {% else %}
+                        <input type="hidden" name="{{ key }}" value="{{ val }}">
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </form>
+        <h2 class="search-results__title">Wyniki</h2>
+
+        {% if pagination.items is not empty %}
+            <div class="bookshelf">
+                {% for book in pagination.items %}
+                    <div class="book-slot">
+                        {% include 'book_card.html.twig' %}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="shelf-pagination">
+                {{ knp_pagination_render(pagination) }}
+            </div>
+        {% else %}
+            <p class="no-results">Brak wyników wyszukiwania.</p>
+        {% endif %}
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // ----- Filters toggle -----
+            const toggleBtn = document.querySelector('.filters-toggle');
+            const tg = document.getElementsByClassName('tg')
+            const panel = document.getElementById('filters-panel');
+            if (toggleBtn && panel) {
+                toggleBtn.addEventListener('click', () => {
+                    const isHidden = panel.hasAttribute('hidden');
+                    if (isHidden) {
+                        panel.removeAttribute('hidden');
+                        // toggleBtn.textContent = ' Ukryj filtry';
+                        tg.textContent='talk'
+                        toggleBtn.setAttribute('aria-expanded', 'true');
+                    } else {
+                        panel.setAttribute('hidden', '');
+                        // toggleBtn.textContent = ' Pokaż filtry';
+                        tg.textContent = 'nie'
+                        toggleBtn.setAttribute('aria-expanded', 'false');
+                    }
+                });
+            }
+
+            // ----- Live rating preview -----
+            const range = document.getElementById('min-rating-range');
+            const preview = document.getElementById('rating-preview');
+            if (range && preview) {
+                const sync = () => { preview.textContent = range.value; };
+                sync(); range.addEventListener('input', sync); range.addEventListener('change', sync);
+            }
+
+            // ----- Tag filters: sync checkboxes <-> hidden <select> -----
+            document.querySelectorAll('.tag-filter').forEach(section => {
+                const hiddenSelect =
+                    section.querySelector('select.hidden-tag-select, select.hidden-tag-select');
+                const checkboxes = section.querySelectorAll('.tag-dropdown input[type="checkbox"]');
+                const toggle = section.querySelector('.tag-toggle');
+                const dropdown = section.querySelector('.tag-dropdown');
+
+                if (toggle && dropdown) {
+                    toggle.addEventListener('click', () => {
+                        const isCollapsed = dropdown.classList.toggle('collapsed');
+                        toggle.setAttribute('aria-expanded', String(!isCollapsed));
+                    });
+                }
+
+                if (!hiddenSelect) return;
+                hiddenSelect.setAttribute('multiple', 'multiple');
+
+                const setSelected = (val, on) => {
+                    const opt = Array.from(hiddenSelect.options).find(o => o.value === val);
+                    if (opt) opt.selected = on;
+                };
+
+                checkboxes.forEach(cb => cb.addEventListener('change', () => setSelected(cb.value, cb.checked)));
+
+                const selected = Array.from(hiddenSelect.options).filter(o => o.selected).map(o => o.value);
+                checkboxes.forEach(cb => { cb.checked = selected.includes(cb.value); });
+            });
+
+            // ----- Responsive per-page: viewport -> ?pp=... -----
+            const BREAKS = [{min:0,pp:4},{min:1440,pp:6},{min:1920,pp:8}];
+            const desiredPP = w => BREAKS.reduce((p,b)=> w>=b.min?b.pp:p, BREAKS[0].pp);
+            const url = new URL(window.location.href);
+            const current = parseInt(url.searchParams.get('pp') || '{{ perPage|default(4) }}', 10);
+            const want = desiredPP(window.innerWidth);
+            const setPP = pp => { url.searchParams.set('pp', String(pp)); url.searchParams.delete('page'); window.location.replace(url.toString()); };
+            const userChose = url.searchParams.has('pp');
+            // if (!userChose && !Number.isNaN(current) && current !== want) { setPP(want); return; }
+            let last = desiredPP(window.innerWidth), t;
+            window.addEventListener('resize', () => { clearTimeout(t); t=setTimeout(()=>{const now=desiredPP(window.innerWidth); if(now!==last && !userChose){setPP(now);} last=now;},200); });
+        });
+    </script>
+
 {% endblock %}

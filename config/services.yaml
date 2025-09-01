@@ -1,23 +1,15 @@
-# This file is the entry point to configure your own services.
-# Files in the packages/ subdirectory configure your dependencies.
-
-# Put parameters here that don't need to change on each machine where the app is deployed
-# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
-     avatars_directory: '%kernel.project_dir%/public/uploads/avatars'
-     books_directory: '%kernel.project_dir%/public/uploads/books'
+    files_directory: '%kernel.project_dir%/public/uploads'
+    avatarsDir: '%kernel.project_dir%/public/uploads/avatars'
+    authorsDir: '%kernel.project_dir%/public/uploads/authors'
+    coversDir: '%kernel.project_dir%/public/uploads/covers'
 
 
 services:
-    # default configuration for services in *this* file
     _defaults:
-        autowire: true      # Automatically injects dependencies in your services.
-        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
-#    App\Security\Voter\UserVoter:
-#        tags:
-#            - { name: security.voter }
-    # makes classes in src/ available to be used as services
-    # this creates a service per class whose id is the fully-qualified class name
+        autowire: true
+        autoconfigure: true
+
     App\:
         resource: '../src/'
         exclude:
@@ -25,27 +17,28 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
+    App\Service\FileUploadService:
+        arguments:
+            $targetDirectory: '%files_directory%'
 
     App\Service\AvatarService:
         arguments:
-            $targetDirectory: '%avatars_directory%'
+            $avatarsDir: '%avatarsDir%'
 
-
-    App\Service\FileUploadService:
+    App\Service\AuthorService:
         arguments:
-            $targetDirectory: '%books_directory%'
+            $authorsDir: '%authorsDir%'
 
 
-    App\Service\AvatarUploadService:
+    App\Controller\BookEditController:
         arguments:
-            $targetDirectory: '%avatars_directory%'
+            $coversDir: '%coversDir%'
+
 
 
     App\Service\BookService:
         arguments:
-             $targetDirectory: '%books_directory%'
+            $targetDirectory: '%files_directory%'
 
     App\Security\AccessDeniedHandler:
         tags:
@@ -54,6 +47,11 @@ services:
     App\Resolver\BookListInputFiltersDtoResolver:
         tags:
             - { name: 'controller.argument_value_resolver' }
+
+    App\Resolver\ReviewSearchFiltersDtoResolver:
+        tags:
+            - { name: 'controller.argument_value_resolver' }
+
 
     App\EventListener\AccessDeniedListener:
         tags:
@@ -65,11 +63,22 @@ services:
 
     App\Form\Type\BookType:
         arguments:
-            - '@App\Form\DataTransformer\TagsDataTransformer'  # Argument 1: TagsDataTransformer
-            - '@security.authorization_checker'  # Argument 2: AuthorizationCheckerInterface
+            - '@App\Form\DataTransformer\TagsDataTransformer'
+            - '@security.authorization_checker'
         tags: [ 'form.type' ]
+
+
+    App\Form\DataTransformer\ReviewTagToIdArrayTransformer:
+        autowire: true
+        autoconfigure: true
+
+
     App\Form\Type\BookEditType:
         arguments:
-            - '@App\Form\DataTransformer\TagsDataTransformer'  # Argument 1: TagsDataTransformer
-            - '@security.authorization_checker'  # Argument 2: AuthorizationCheckerInterface
+            - '@App\Form\DataTransformer\TagsDataTransformer'
+            - '@security.authorization_checker'
         tags: [ 'form.type' ]
+
+    Gedmo\Sluggable\SluggableListener:
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }

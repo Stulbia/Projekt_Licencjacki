@@ -8,11 +8,11 @@
     <h1>{{ 'title.user_list'|trans }}</h1>
     {% if pagination is defined and pagination.items|length %}
 
-        <div class="navigation text-center">
+        <div class="navigation textCenter">
             {{ knp_pagination_render(pagination) }}
         </div>
 
-        <table class="table table-striped">
+        <table class="table tableStriped">
             <thead>
             <tr>
                 <th> {{ 'label.avatar'|trans }}</th>
@@ -28,15 +28,14 @@
             {% for user in pagination.items %}
                 <tr>
                     <td>
-                    <a href="{{ url('avatar_index', {id: user.id}) }}">
-                        {% if user.avatar.filename is defined and user.avatar.filename|length %}
-                        <img class="nav-profile-img" src="{{ asset(avatars_directory~user.avatar.filename) }}" alt="avatar" style="width: 50px; height: 50px;" >
+{#                    <a href="{{ url('avatar_index', {id: user.id}) }}">#}
+                        {% if book.coverFilename %}
+                            <img src="{{ asset('uploads/covers/' ~ book.coverFilename) }}" alt="Okładka książki {{ book.title }}">
                         {% else %}
-                            <img class="nav-profile-img" src="{{ asset('uploads/default.png') }}"
-                                 alt="avatar" style="width: 50px; height: 50px;" >
+                            <img src="{{ asset('uploads/defaultCover.svg') }}" alt="Domyślna okładka książki {{ book.title }}">
                         {% endif %}
 
-                    </a>
+{#                    </a>#}
                     </td>
                     <td>{{ user.id }}</td>
                     <td>{{ user.email }}</td>
@@ -47,16 +46,16 @@
                     </td>
                  {% if is_granted('ROLE_ADMIN') %}
                     <td>
-                            <a class="btn btn-outline-primary" href="{{ url('user_show', {id: user.id}) }}" title="{{ 'action.show'|trans }}">
+                            <a class="btn btnOutlinePrimary" href="{{ url('user_show', {id: user.id}) }}" title="{{ 'action.show'|trans }}">
                                 {{ 'action.show'|trans }}
                             </a>
-                            <a class="btn btn-outline-success" href="{{ url('user_edit', {id: user.id}) }}" title="{{ 'action.edit'|trans }}">
+                            <a class="btn btnOutlineSuccess" href="{{ url('user_edit', {id: user.id}) }}" title="{{ 'action.edit'|trans }}">
                                 {{ 'action.edit'|trans }}
                             </a>
-                            <a class="btn btn-outline-success" href="{{ url('user_edit_admin', {id: user.id}) }}" title="{{ 'action.edit.admin'|trans }}">
+                            <a class="btn btnOutlineSuccess" href="{{ url('user_edit_admin', {id: user.id}) }}" title="{{ 'action.edit.admin'|trans }}">
                             {{ 'action.edit.admin'|trans }}
                             </a>
-                        <a class="btn btn-outline-success" href="{{ url('user_password', {id: user.id}) }}" title="{{ 'action.edit.password'|trans }}">
+                        <a class="btn btnOutlineSuccess" href="{{ url('user_password', {id: user.id}) }}" title="{{ 'action.edit.password'|trans }}">
                             {{ 'action.edit.password'|trans }}
                         </a>
                     </td>
@@ -73,7 +72,7 @@
             </tbody>
         </table>
 
-        <div class="navigation text-center">
+        <div class="navigation textCenter">
             {{ knp_pagination_render(pagination) }}
         </div>
 

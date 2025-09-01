@@ -1,86 +1,110 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}
-    {{ 'title.book_details'|trans({'%id%': book.id|default('')}) }}
-{% endblock %}
+{% block title %}{{ book.title }}{% endblock %}
 
 {% block body %}
-    <div class="container mt-4">
-        <h1>{{ book.title }}</h1>
+{#    {% set formVisible = formVisible|default(false) %}#}
+{#    {% set formVisibleReview = formVisibleReview|default(false) %}#}
+    <div class="bookBanner">
 
-        {% if book is defined and book|length %}
-            <div class="row">
-                <div class="col-md-8">
-                    <img src="{{ asset(books_directory ~ book.filename) }}" alt="book" class="img-fluid mb-3" style="max-height:800px;">
-                    <dl class="dl-horizontal">
-                        <dt>{{ 'label.average.rating'|trans }}</dt>
-                        <dd>{{ rating }}</dd>
-                        {% block rating %}
-                            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                                <a class="btn btn-outline-success mt-3" href="{{ url('rating', {id: book.id}) }}" title="{{ 'action.rate'|trans }}">
-                                    {{ 'action.rate'|trans }}
-                                </a>
-                            {% endif %}
-                            {% if is_granted('ROLE_ADMIN') %}
-                                <a class="btn btn-outline-success mt-3" href="{{ url('rating_list', {id: book.id}) }}" title="{{ 'action.rate_admin'|trans }}">
-                                    {{ 'action.rate_admin'|trans }}
-                                </a>
-                            {% endif %}
-                        {% endblock %}
-                        <dt>{{ 'label.created_at'|trans }}</dt>
-                        <dd>{{ book.createdAt|format_date('long') }}</dd>
-                        <dt>{{ 'label.created_at'|trans }}</dt>
-                        <dd>{{ book.createdAt|format_date('long') }}</dd>
-                        <dt>{{ 'label.updated_at'|trans }}</dt>
-                        <dd>{{ book.updatedAt|format_date('long') }}</dd>
-                        {# ... #}
-                        <dt>{{ 'label.description'|trans }}</dt>
-                        <dd>{{ book.description|markdown_to_html }}</dd>
-                        {# ... #}
-                        <dt>{{ 'label.gallery'|trans }}</dt>
-                        <dd>
-                            <a href="{{ path('gallery_show', {id: book.gallery.id}) }}" title="{{ 'action.show'|trans }}">
-                                {{ book.gallery.title }}
-                            </a>
-                        </dd>
-                    </dl>
-                    <div class="btn-group mt-3" role="group">
-                        {% if is_granted('EDIT', book) %}
-                            <a href="{{ path('book_edit', {id: book.id}) }}" class="btn btn-outline-success" title="{{ 'action.edit'|trans }}">
-                                {{ 'action.edit'|trans }}
-                            </a>
-                        {% endif %}
 
-                        {% if is_granted('DELETE', book) %}
-                            <a href="{{ path('book_delete', {id: book.id}) }}" class="btn btn-outline-danger" title="{{ 'action.delete'|trans }}">
-                                {{ 'action.delete'|trans }}
-                            </a>
-                        {% endif %}
-                        <a href="{{ path('book_index') }}" class="btn btn-outline-secondary" title="{{ 'action.back_to_list'|trans }}">
-                            {{ 'action.back_to_list'|trans }}
-                        </a>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="comments">
-                        <h2>{{ 'title.comments'|trans }}</h2>
-
-                            {% block comment %}
-                                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                                <a class="btn btn-outline-success mt-3" href="{{ url('comment_create', {id: book.id}) }}" title="{{ 'action.comment'|trans }}">
-                                    {{ 'action.comment'|trans }}
-                                </a>
-                                {% endif %}
-                                {% include "comment/index.html.twig" %}
-                            {% endblock %}
-
-                    </div>
-                </div>
+            <div class="bookCover">
+                {% if book.coverFilename %}
+                    <img src="{{ asset('uploads/covers/' ~ book.coverFilename) }}" alt="Okładka książki {{ book.title }}">
+                {% else %}
+                    <img src="{{ asset('uploads/defaultCover.svg') }}" alt="Domyślna okładka książki {{ book.title }}">
+                {% endif %}
             </div>
-        {% else %}
-            <div class="alert alert-warning">
-                {{ 'message.record_not_found'|trans }}
+
+            <div class="bookInfo">
+                <h1 class = "bookTitle">{{ book.title }}</h1>
+                <p class="bookAuthor">
+                    <strong>Autor:</strong>
+                    {% if book.author %}
+                        <a href="{{ path('author_show', { id: book.author.id }) }}">{{ book.author }}</a>
+                    {% else %}
+                        Nieznany autor
+                    {% endif %}
+                </p>
+
             </div>
-        {% endif %}
+
     </div>
+        <div class="bookDetail">
+
+                {% if avg and avg >= 1 %}
+                    <div class="bookRating">
+                        <strong>Średnia ocen:</strong>
+
+                                               <span class="ratingNumber">{{ avg }}/10</span>
+                    </div>
+
+                {% else %}
+                    <p class="noReviews">Ta książka nie posiada jeszcze ocen.</p>
+                {% endif %}
+
+{#                    ///////////////////////////////////////////////////                   #}
+
+
+            {% if book.tags|length > 0 %}
+                <div class="bookTags">
+                    {% for tag in book.tags %}
+                        <span class="badge bgSecondary">{{ tag.title }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <div class="bookDescription"> <p> {{ book.description }}  </p> </div>
+
+
+{#                {% block add_buttons %}#}
+{#                    {% if app.user %}#}
+{#                        {% if not formVisible %}#}
+{#                            {% if inLibrary %}#}
+{#                                <a href="{{ path('library_add', {id: book.id}) }}" class="btn btnPrimary mt2">➕ Zmien Status w biblioteczce</a>#}
+{#                            {% else %}#}
+{#                                <a href="{{ path('library_add', {id: book.id}) }}" class="btn btnPrimary mt2">➕ Dodaj do biblioteczki</a>#}
+{#                            {% endif %}#}
+
+{#                        {% endif %}#}
+
+{#                        {% if not formVisibleReview and not hasUserReview %}#}
+{#                            <a href="{{ path('review_create', {bookId: book.id}) }}" class="btn btnPrimary mt2">➕ Dodaj recenzję</a>#}
+{#                        {% endif %}#}
+{#                    {% else %}#}
+{#                        <p class="textNotice mt2">🔒 <a href="{{ path('app_login') }}">Zaloguj się</a>, aby dodawać książki do biblioteczki i pisać recenzje.</p>#}
+{#                    {% endif %}#}
+{#                {% endblock %}#}
+
+{#                {% block add %}{% endblock %}#}
+            </div>
+
+
+{#        reviews - whole block by js V #}
+
+
+
+
+        <section class="reviews">
+            <h2 class = "header">Recenzje</h2>
+
+            {% if userReview is defined and userReview %}
+                {% include 'review/_card.html.twig' with {
+                    review: userReview,
+                    isUserOwn: true
+                } %}
+            {% endif %}
+
+            {% if otherReviews|length > 0 %}
+                {% for review in otherReviews %}
+                    {% include 'review/_card.html.twig' with {
+                        review: review,
+                        isUserOwn: false
+                    } %}
+                {% endfor %}
+            {% else %}
+                <p>Brak recenzji dla tej książki.</p>
+            {% endif %}
+        </section>
+
 {% endblock %}

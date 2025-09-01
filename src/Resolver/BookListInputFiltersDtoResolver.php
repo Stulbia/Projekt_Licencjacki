@@ -1,42 +1,47 @@
 <?php
 
-/**
- * BookListInputFiltersDto resolver.
- */
-
 namespace App\Resolver;
 
 use App\Dto\BookListInputFiltersDto;
-use App\Entity\Enum\BookStatus;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
-/**
- * BookListInputFiltersDtoResolver class.
- */
+//class BookListInputFiltersDtoResolver implements ValueResolverInterface
+//{
+//    public function resolve(Request $request, ArgumentMetadata $argument): iterable
+//    {
+//        if ($argument->getType() !== BookListInputFiltersDto::class) {
+//            return [];
+//        }
+//
+//        $tagId = $request->query->has('tagId') && is_numeric($request->query->get('tagId'))
+//            ? (int) $request->query->get('tagId')
+//            : null;
+//
+//        $statusRaw = $request->query->get('statusId', BookStatus::PUBLIC->value);
+//        $status = BookStatus::tryFrom($statusRaw)?->value ?? BookStatus::PUBLIC->value;
+//
+//        return [new BookListInputFiltersDto($tagId, $status)];
+//    }
+//}
+
 class BookListInputFiltersDtoResolver implements ValueResolverInterface
 {
-    /**
-     * Returns the possible value(s).
-     *
-     * @param Request          $request  HTTP Request
-     * @param ArgumentMetadata $argument Argument metadata
-     *
-     * @return iterable Iterable
-     */
+
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
-        $argumentType = $argument->getType();
-
-        if (!$argumentType || !is_a($argumentType, BookListInputFiltersDto::class, true)) {
+        if ($argument->getType() !== BookListInputFiltersDto::class) {
             return [];
         }
+        $tagId = $request->query->getInt('tag');
+        $bookStatus = $request->query->get('bookStatus');
+        $sortBy = $request->query->get('sortBy');
 
-        $galleryId = $request->query->get('galleryId');
-        $tagId = $request->query->get('tagId');
-        $statusId = $request->query->get('statusId', BookStatus::PUBLIC->value);
-
-        return [new BookListInputFiltersDto($galleryId, $tagId, $statusId)];
+        yield new BookListInputFiltersDto(
+            tagId: $tagId ?: null,
+            bookStatus: $bookStatus ?: null,
+            sortBy: $sortBy ?: null,
+        );
     }
 }

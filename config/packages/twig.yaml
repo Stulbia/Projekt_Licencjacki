@@ -1,0 +1,10 @@
+twig:
+    file_name_pattern: '*.twig'
+    form_themes: [ 'bootstrap_5_horizontal_layout.html.twig' ]
+    globals:
+        avatars_directory: 'uploads/books/'
+        file_directory: 'uploads/'
+
+when@test:
+    twig:
+        strict_variables: true

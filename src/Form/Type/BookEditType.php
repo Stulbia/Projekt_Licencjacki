@@ -6,20 +6,22 @@
 
 namespace App\Form\Type;
 
+use App\Entity\Author;
 use App\Entity\Enum\BookStatus;
-use App\Entity\Gallery;
 use App\Entity\Book;
 use App\Form\DataTransformer\TagsDataTransformer;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Validator\Constraints\Image;
 
 /**
- * Class BookType.
+ * Class BookEditType.
  */
 class BookEditType extends AbstractType
 {
@@ -29,9 +31,12 @@ class BookEditType extends AbstractType
      * @param TagsDataTransformer           $tagsDataTransformer  Tags data transformer
      * @param AuthorizationCheckerInterface $authorizationChecker Authorization Checker
      */
-    public function __construct(private readonly TagsDataTransformer $tagsDataTransformer, AuthorizationCheckerInterface $authorizationChecker)
+//    public function __construct(private readonly TagsDataTransformer $tagsDataTransformer, AuthorizationCheckerInterface $authorizationChecker)
+//    {
+//        $this->authorizationChecker = $authorizationChecker;
+//    }
+    public function __construct(private readonly TagsDataTransformer $tagsDataTransformer)
     {
-        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -48,33 +53,35 @@ class BookEditType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add(
+            'cover',
+            FileType::class,
+            [
+                'mapped' => false,
+                'label' => 'label.cover',
+                'required' => false,
+                'constraints' => new Image(
+                    [
+                        'maxSize' => '1024k', // 1mb
+                        'mimeTypes' => [
+                            'image/png',
+                            'image/jpeg',
+                            'image/pjpeg',
+                            'image/jpeg',
+                            'image/pjpeg',
+                        ],
+                    ]
+                ),
+            ]
+        );
+
+        $builder->add(
             'title',
             TextType::class,
             ['label' => 'label.title',
                 'required' => true,
                 'attr' => ['max_length' => 255], ]
         );
-        $builder->add(
-            'gallery',
-            EntityType::class,
-            [
-                'class' => Gallery::class,
-                'choice_label' => function ($gallery) {
-                    return $gallery->getTitle();
-                },
-                'label' => 'label.gallery',
-                'placeholder' => 'label.none',
-                'required' => true,
-                'choice_attr' => function ($gallery) {
-                    $attrs = [];
-                    if (!$this->authorizationChecker->isGranted('EDIT', $gallery)) {
-                        $attrs['disabled'] = 'disabled';
-                    }
 
-                    return $attrs;
-                },
-            ]
-        );
 
         $builder->add(
             'description',
@@ -93,6 +100,12 @@ class BookEditType extends AbstractType
             'multiple' => false,
             'expanded' => true,
             'label' => 'label.book_status',
+        ]);
+        $builder->add('author', EntityType::class, [
+            'class' => Author::class,
+            'label' => 'Autor',
+            'placeholder' => 'Wybierz autora',
+            'required' => true,
         ]);
         $builder->add(
             'tags',

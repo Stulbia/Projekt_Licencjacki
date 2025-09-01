@@ -1,0 +1,159 @@
+@use '../variables' as *;
+
+$accent: if(global-variable-exists(primary-color), $primary-color, #2e7d6a);
+$radius: if(global-variable-exists(radius), $radius, 14px);
+
+.forYouPage {
+  --card-shadow: 0 6px 24px rgba(0,0,0,.08);
+  --ring: rgba(46,125,106,.25);
+  --hero-grad: linear-gradient(135deg, #0f5570 0%, #2c8f55 38%, #c2751d 100%);
+
+  display: block;
+  color: inherit;
+
+
+/* ---------- HERO ---------- */
+.hero {
+  background: var(--hero-grad);
+  color: #fff;
+  padding: clamp(2rem, 5vw, 4rem) 1rem;
+  margin-bottom: 1.5rem;
+
+  .heroInner {
+    max-width: 1100px;
+    margin: 0 auto;
+    text-align: left;
+  }
+
+  .heroTitle {
+    font-size: clamp(1.8rem, 2.8vw, 2.4rem);
+    font-weight: 800;
+    margin: 0 0 .6rem;
+    letter-spacing: .2px;
+  }
+
+  .heroSubtitle {
+    max-width: 850px;
+    opacity: .95;
+    font-size: 1.05rem;
+    margin: 0 0 1rem;
+  }
+
+  .heroCtas {
+    display: flex;
+    gap: .75rem;
+
+    .btn {
+      display: inline-block;
+      padding: .7rem 1.1rem;
+      border-radius: $radius;
+      font-weight: 700;
+      box-shadow: var(--card-shadow);
+      transition: transform .15s ease, filter .2s ease;
+
+      &.btnPrimary {
+        background: #fff;
+        color: #0f172a;
+      }
+      &.btnSecondary {
+        background: rgba(255,255,255,.15);
+        color: #fff;
+        border: 1px solid rgba(255,255,255,.35);
+        backdrop-filter: blur(6px);
+      }
+
+      &:hover { transform: translateY(-1px); filter: brightness(1.03); }
+      &:active { transform: translateY(0); }
+    }
+  }
+}
+
+/* ---------- CONTENT ---------- */
+.forYouContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem clamp(.75rem, 3vw, 1.25rem) 3rem;
+}
+
+/* ---------- SEKCJE ---------- */
+.recommendSection {
+  margin: 1.25rem 0 2.25rem;
+
+  .sectionHeader {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: .75rem;
+  }
+
+  .sectionTitle {
+    font-size: 1.35rem;
+    font-weight: 800;
+    margin: 0;
+  }
+
+  .seeAllLink {
+    font-weight: 600;
+    text-decoration: none;
+    opacity: .85;
+
+    &:hover { opacity: 1; text-decoration: underline; }
+  }
+}
+
+/* ---------- KARUZELE ---------- */
+.forYouCarousel {
+  position: relative;
+
+  .swiper-slide {
+    height: auto; /* żeby karta określała wysokość */
+  }
+
+  .swiper-button-prev,
+  .swiper-button-next {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: var(--card-shadow);
+    top: 42%;
+    &:after { font-size: 16px; color: #0f172a; }
+  }
+
+  .swiper-pagination-bullet {
+    background: rgba(0,0,0,.3);
+    &-active { background: $accent; }
+  }
+}
+
+/* ---------- GRID NOWOŚCI ---------- */
+.bookGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+
+  @media (min-width: 720px) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* Opcjonalny drobny lifting istniejących kart */
+.bookCard {
+  border-radius: $radius;
+  box-shadow: var(--card-shadow);
+  transition: transform .18s ease, box-shadow .18s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(0,0,0,.12);
+  }
+
+  .book-cover { border-radius: calc($radius - 6px); }
+}
+
+/* ---------- PUSTO ---------- */
+.emptyNotice {
+  opacity: .85;
+  padding: .75rem 0 .25rem;
+} }

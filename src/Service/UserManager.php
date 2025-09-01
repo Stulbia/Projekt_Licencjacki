@@ -143,4 +143,10 @@ class UserManager implements UserManagerInterface
 
         return true;
     }
+
+    public function findOneBySlug(string $slug): ?User
+    {
+        return $this->userRepository->findOneBy(['slug' => $slug]);
+    }
+
 }

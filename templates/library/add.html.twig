@@ -1,0 +1,10 @@
+{% extends 'book/show.html.twig' %}
+
+{% block add %}
+    {{ form_start(form) }}
+    {{ form_row(form.status) }}
+    <button class="btn btnPrimary">Zapisz</button>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% set formVisible = true %}

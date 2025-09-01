@@ -1,0 +1,107 @@
+/* ---------- Book Show ---------- */
+@use '../variables' as *;
+
+.bookBanner {
+  --padding-top: 3rem;
+  color: $body-bg;
+  background: $gradient-bg;
+  position: relative;
+  padding-top: var(--padding-top);
+  overflow: visible;
+  display: flex;
+  width: 100%;
+  min-height: 220px;
+
+  /* reserve a lane so centered content doesn't collide with the cover */
+  --cover-w: clamp(110px, 20vw, 200px);
+  --cover-gap: 15%;
+  padding-left: calc(var(--cover-w) + var(--cover-gap) + 1rem);
+
+  .bookTitle {
+    margin: 0;
+    color: $body-bg;
+  }
+
+  .bookCover {
+    position: absolute;
+    left: var(--cover-gap);
+    top: calc(var(--padding-top) - 2rem);
+    bottom: -30%;                 /* hangs below the banner */
+    width: var(--cover-w);
+
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: $radius;
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.12);
+      object-fit: cover;
+      background: rgba(0, 0, 0, 0.06);
+    }
+  }
+}
+
+/* body section with details aligned to the right of the cover lane */
+.bookDetail {
+  --cover-w: clamp(110px, 20vw, 200px);
+  --cover-gap: 1rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-left: calc(var(--cover-w)*2 + var(--cover-gap) + 1rem);
+  /* optional: small top spacing so text doesn't feel cramped under banner */
+  margin-top: 0.5rem;
+}
+
+.bookInfo {
+  .bookAuthor {
+    margin: 0 0 1rem 0;
+    font-size: 0.95rem;
+
+    strong {
+      font-weight: 600;
+      margin-right: 0.35rem;
+    }
+
+    a {
+      color: $color-accent-second;
+      text-decoration: none;
+      font-weight: 600;
+
+      &:hover { text-decoration: underline; }
+    }
+  }
+}
+
+.bookDescription {
+  margin-right: 10%;
+  line-height: 1.65;
+  color: var(--text-color, #1f2937);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 900px) {
+  .bookBanner {
+    padding-left: 1rem; /* no reserved lane on mobile */
+
+    .bookCover {
+      position: static;          /* back in flow */
+      width: clamp(160px, 55vw, 260px);
+      margin: 1rem auto 0 auto;  /* centered under banner content */
+    }
+  }
+
+  .bookDetail {
+    padding-left: 0;
+    margin-top: 0.75rem;
+  }
+}
+
+.reviews{
+  padding: 2rem;
+  .header {
+    padding: 1rem;
+  }
+
+}

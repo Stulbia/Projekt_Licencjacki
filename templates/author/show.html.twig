@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ author }}{% endblock %}
+
+
+{% block body %}
+
+
+    <div class="author">
+    <section class="banner">
+
+
+        <div class="author-avatar">
+            {% if  author.photoFilename %}
+                <img src="{{ asset('uploads/authors/' ~ author.photoFilename) }}"
+                     alt="Zdjęcie {{ author }}"
+                     class="profile-avatar__img"
+                     onerror="this.outerHTML='<div class=&quot;author-avatar__placeholder&quot;><span class=&quot;material-symbols-outlined&quot;>question_mark</span></div>'"/>
+            {% else %}
+                <div class="author-avatar__placeholder" aria-label="Brak zdjęcia">
+                    <span class="material-symbols-outlined">question_mark</span>
+                </div>
+            {% endif %}
+        </div>
+
+                <div class="author-info">
+                    <h1 class="author-name">{{ author }}</h1>
+                    {% if author.description %}
+                        <p class="author-bio">{{ author.description|nl2br }}</p>
+                    {% endif %}
+                </div>
+
+    </section>
+        <section class="publications">
+            <h2>Publikacje:</h2>
+            {% if pagination is not empty %}
+                <div class="publications__grid">
+                    {% for book in pagination %}
+                        {% include 'book_card.html.twig' %}
+                    {% endfor %}
+                </div>
+                <div class="swiper-pagination"></div>
+            {% endif %}
+        </section>
+
+    </div>
+{% endblock %}

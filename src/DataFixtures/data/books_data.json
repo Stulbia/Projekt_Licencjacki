@@ -1,0 +1,122 @@
+[
+  {
+    "title": "Pride and Prejudice",
+    "author": "Jane Austen",
+    "description": "A timeless romance exploring the themes of love, social standing, and misunderstanding.",
+    "cover": "pride_and_prejudice.jpg"
+  },
+  {
+    "title": "Frankenstein",
+    "author": "Mary Shelley",
+    "description": "A gothic novel about a scientist who creates a sentient creature with tragic consequences.",
+    "cover": "frankenstein.jpg"
+  },
+  {
+    "title": "Dracula",
+    "author": "Bram Stoker",
+    "description": "A chilling tale of the infamous vampire Count Dracula and his attempt to move from Transylvania to England.",
+    "cover": "dracula.jpg"
+  },
+  {
+    "title": "Jane Eyre",
+    "author": "Charlotte Brontë",
+    "description": "A powerful coming-of-age story of an orphaned girl who becomes a governess.",
+    "cover": "jane_eyre.jpg"
+  },
+  {
+    "title": "Moby-Dick",
+    "author": "Herman Melville",
+    "description": "An epic tale of obsession and revenge between a sea captain and a white whale.",
+    "cover": "moby_dick.jpg"
+  },
+  {
+    "title": "The Adventures of Sherlock Holmes",
+    "author": "Arthur Conan Doyle",
+    "description": "A collection of mysteries solved by the brilliant detective Sherlock Holmes.",
+    "cover": "sherlock_holmes.jpg"
+  },
+  {
+    "title": "The Picture of Dorian Gray",
+    "author": "Oscar Wilde",
+    "description": "A young man sells his soul to retain youth and beauty, facing moral decay.",
+    "cover": "dorian_gray.jpg"
+  },
+  {
+    "title": "The Time Machine",
+    "author": "H.G. Wells",
+    "description": "A scientist invents a machine that allows him to travel into the distant future.",
+    "cover": "time_machine.jpg"
+  },
+  {
+    "title": "Twenty Thousand Leagues Under the Sea",
+    "author": "Jules Verne",
+    "description": "An underwater adventure aboard Captain Nemo’s submarine, the Nautilus.",
+    "cover": "20k_leagues.jpg"
+  },
+  {
+    "title": "The Call of the Wild",
+    "author": "Jack London",
+    "description": "A story about a domestic dog reverting to his wild instincts in the Alaskan wilderness.",
+    "cover": "call_of_the_wild.jpg"
+  },
+  {
+    "title": "The War of the Worlds",
+    "author": "H.G. Wells",
+    "description": "Aliens invade Earth in this early science fiction classic.",
+    "cover": "war_of_the_worlds.jpg"
+  },
+  {
+    "title": "Les Misérables",
+    "author": "Victor Hugo",
+    "description": "A sweeping novel of love, justice, and redemption set during post-revolutionary France.",
+    "cover": "les_miserables.jpg"
+  },
+  {
+    "title": "Crime and Punishment",
+    "author": "Fyodor Dostoevsky",
+    "description": "A psychological drama following a man who believes he can commit a crime without consequences.",
+    "cover": "crime_and_punishment.jpg"
+  },
+  {
+    "title": "The Brothers Karamazov",
+    "author": "Fyodor Dostoevsky",
+    "description": "A philosophical novel about family, faith, and free will.",
+    "cover": "brothers_karamazov.jpg"
+  },
+  {
+    "title": "Wuthering Heights",
+    "author": "Emily Brontë",
+    "description": "A tragic story of love and revenge on the Yorkshire moors.",
+    "cover": "wuthering_heights.jpg"
+  },
+  {
+    "title": "The Scarlet Letter",
+    "author": "Nathaniel Hawthorne",
+    "description": "A tale of sin, guilt, and redemption in Puritan New England.",
+    "cover": "scarlet_letter.jpg"
+  },
+  {
+    "title": "The Jungle Book",
+    "author": "Rudyard Kipling",
+    "description": "Stories of a boy raised by wolves in the Indian jungle.",
+    "cover": "jungle_book.jpg"
+  },
+  {
+    "title": "The Count of Monte Cristo",
+    "author": "Alexandre Dumas",
+    "description": "A tale of betrayal, imprisonment, and revenge.",
+    "cover": "monte_cristo.jpg"
+  },
+  {
+    "title": "Treasure Island",
+    "author": "Robert Louis Stevenson",
+    "description": "A classic pirate adventure involving treasure maps and mutiny.",
+    "cover": "treasure_island.jpg"
+  },
+  {
+    "title": "A Tale of Two Cities",
+    "author": "Charles Dickens",
+    "description": "A novel set during the French Revolution, exploring justice and sacrifice.",
+    "cover": "tale_two_cities.jpg"
+  }
+]

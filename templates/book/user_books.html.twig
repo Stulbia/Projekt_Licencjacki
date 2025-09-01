@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'label.my_books'|trans }}{% endblock %}
+
+{% block body %}
+    <h1 >{{ 'label.my_books'|trans }}</h1>
+
+    {# Uwaga! Teraz przekazujemy właściwy FormView #}
+    {% include 'book/search.html.twig' with { form: form } %}
+
+    {% if pagination.items is not empty %}
+        <div>
+            {% for book in pagination.items %}
+                <div>
+                    <h2 >{{ book.title }}</h2>
+                    {% if book.slug %}
+                        <a href="{{ path('book_show', {slug: book.slug}) }}">
+                            {{ 'label.details'|trans }}
+                        </a>
+                    {% endif %}
+                    <p >{{ book.description|u.truncate(100) }}</p>
+                    <p >
+                        {{ 'label.updated_at'|trans }}: {{ book.updatedAt|date('Y-m-d') }}
+                    </p>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div >
+            {{ knp_pagination_render(pagination) }}
+        </div>
+    {% else %}
+        <p >{{ 'label.no_books_found'|trans }}</p>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,184 @@
+@use '../variables' as *;
+
+/* ---------- Layout ---------- */
+.login-page {
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  padding: clamp(1rem, 2vw, 2rem);
+  background:
+          linear-gradient(rgba(0,0,0,0.06), rgba(0,0,0,0.06)),
+          $gradient-bg;
+}
+
+.login-card {
+  width: min(100%, 430px);
+  background: $body-bg;
+  border-radius: $radius;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  padding: clamp(1rem, 3.5vw, 2rem);
+  border: 1px solid rgba(0,0,0,0.06);
+}
+
+/* ---------- Headings ---------- */
+.login-title {
+  margin: 0 0 1rem;
+  font-family: $font-stack;
+  font-size: clamp(1.35rem, 2.2vw, 1.6rem);
+  font-weight: 700;
+  color: $color-primary;
+}
+
+/* ---------- Session info ---------- */
+.login-session {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  margin-bottom: .75rem;
+
+  &__text { margin: 0; }
+}
+
+/* ---------- Alerts ---------- */
+.alert {
+  padding: .75rem .9rem;
+  border-radius: $radius;
+  font-size: .95rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+
+  &.alert-danger {
+    background: mix($color-accent-first, #fff, 10%);
+    border-color: mix($color-accent-first, #000, 20%);
+    color: $color-accent-first;
+  }
+}
+
+/* ---------- Form ---------- */
+.login-form { display: grid; gap: .9rem; }
+
+.form-group { display: grid; gap: .35rem; }
+
+.form-label {
+  font-size: .92rem;
+  color: $text-color;
+  font-weight: 600;
+}
+
+.form-control {
+  width: 100%;
+  font: inherit;
+  color: $text-color;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.14);
+  border-radius: $radius;
+  padding: .65rem .8rem;
+  transition: box-shadow .2s ease, border-color .2s ease, transform .05s ease;
+
+  &:hover {
+    border-color: $color-secondary;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $color-secondary;
+    box-shadow: 0 0 0 3px rgba(227,100,20,0.2);
+  }
+
+  &:invalid[focused="true"] {
+    border-color: $color-accent-first;
+    box-shadow: 0 0 0 3px rgba(154,3,30,0.18);
+  }
+}
+
+/* Keep “:invalid” from showing red before user interaction — optional helper */
+.form-control:focus { &[focused] { } } /* no-op to keep SCSS valid */
+.form-control:focus, .form-control[user-touched="true"] { }
+
+/* ---------- Checkbox ---------- */
+.form-check {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  margin: .2rem 0 .4rem;
+
+  &__control {
+    width: 1.05rem;
+    height: 1.05rem;
+    border-radius: 4px;
+    border: 1px solid rgba(0,0,0,0.25);
+    accent-color: $color-secondary; /* modern browsers */
+  }
+
+  &__label { font-size: .95rem; }
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  --btn-pad-y: .65rem;
+  --btn-pad-x: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  padding: var(--btn-pad-y) var(--btn-pad-x);
+  border: 0;
+  border-radius: $radius;
+  font-weight: 700;
+  font-family: $font-stack;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform .06s ease, box-shadow .2s ease, background-color .2s ease, opacity .2s ease;
+
+  &:active { transform: translateY(1px); }
+}
+
+.btn-lg   { --btn-pad-y: .75rem; --btn-pad-x: 1.1rem; }
+.btn-block { width: 100%; }
+
+.btn-primary {
+  background: $color-primary;
+  color: #fff;
+  box-shadow: 0 6px 14px rgba(15,76,92,0.22);
+
+  &:hover { opacity: .95; }
+  &:focus { outline: none; box-shadow: 0 0 0 4px rgba(15,76,92,0.25); }
+}
+
+.btn-google {
+  background: #fff;
+  color: #1f1f1f;
+  border: 1px solid rgba(0,0,0,0.14);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+
+  &:hover { background: #fafafa; }
+  &:focus { outline: none; box-shadow: 0 0 0 4px rgba(95,15,64,0.18); }
+}
+
+/* ---------- Divider ---------- */
+.login-divider {
+  position: relative;
+  display: block;
+  height: 1px;
+  background: rgba(0,0,0,0.08);
+  margin: .2rem 0 0;
+
+  &::before {
+    content: 'lub';
+    position: absolute;
+    left: 50%;
+    top: -0.9rem;
+    transform: translateX(-50%);
+    background: $body-bg;
+    padding: 0 .5rem;
+    font-size: .85rem;
+    color: rgba(0,0,0,0.55);
+  }
+}
+
+/* ---------- Small screens tweaks ---------- */
+@media (max-width: 380px) {
+  .login-card { padding: 1rem; }
+  .btn-lg     { --btn-pad-y: .65rem; --btn-pad-x: .9rem; }
+}

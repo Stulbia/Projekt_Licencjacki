@@ -1,8 +1,106 @@
 <?php
+//
+//namespace App\Repository;
+//
+//use App\Entity\Tag;
+//use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+//use Doctrine\ORM\EntityManager;
+//use Doctrine\ORM\Exception\ORMException;
+//use Doctrine\ORM\NoResultException;
+//use Doctrine\ORM\OptimisticLockException;
+//use Doctrine\ORM\QueryBuilder;
+//use Doctrine\Persistence\ManagerRegistry;
+//
+///**
+// * @extends ServiceEntityRepository<Tag>
+// *
+// * @method Tag|null find($id, $lockMode = null, $lockVersion = null)
+// * @method Tag|null findOneBy(array $criteria, array $orderBy = null)
+// * @method Tag[]    findAll()
+// * @method Tag[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+// */
+//class TagRepository extends ServiceEntityRepository
+//{
+//    public function __construct(ManagerRegistry $registry)
+//    {
+//        parent::__construct($registry, Tag::class);
+//    }
+//
+//    /**
+//     * Query all tags ordered by update date.
+//     *
+//     * @return QueryBuilder
+//     */
+//    public function queryAll(): QueryBuilder
+//    {
+//        return $this->getOrCreateQueryBuilder()
+//            ->select('partial tag.{id, createdAt, updatedAt, title}')
+//            ->orderBy('tag.updatedAt', 'DESC');
+//    }
+//
+//    /**
+//     * Find one tag by its title.
+//     *
+//     * @param string $title
+//     *
+//     * @return Tag|null
+//     */
+//    public function findOneByTitle(string $title): ?Tag
+//    {
+//        $qb = $this->createQueryBuilder('tag')
+//            ->andWhere('tag.title = :title')
+//            ->setParameter('title', $title);
+//
+//        try {
+//            return $qb->getQuery()->getSingleResult();
+//        } catch (NoResultException) {
+//            return null;
+//        }
+//    }
+//
+//    /**
+//     * Save a tag entity.
+//     *
+//     * @param Tag $tag
+//     *
+//     * @throws ORMException
+//     * @throws OptimisticLockException
+//     */
+//    public function save(Tag $tag): void
+//    {
+//        assert($this->_em instanceof EntityManager);
+//        $this->_em->persist($tag);
+//        $this->_em->flush();
+//    }
+//
+//    /**
+//     * Delete a tag entity.
+//     *
+//     * @param Tag $tag
+//     *
+//     * @throws ORMException
+//     * @throws OptimisticLockException
+//     */
+//    public function delete(Tag $tag): void
+//    {
+//        assert($this->_em instanceof EntityManager);
+//        $this->_em->remove($tag);
+//        $this->_em->flush();
+//    }
+//
+//    /**
+//     * Create or reuse a QueryBuilder.
+//     *
+//     * @param QueryBuilder|null $queryBuilder
+//     *
+//     * @return QueryBuilder
+//     */
+//    private function getOrCreateQueryBuilder(?QueryBuilder $queryBuilder = null): QueryBuilder
+//    {
+//        return $queryBuilder ?? $this->createQueryBuilder('tag');
+//    }
+//}
 
-/**
- * Tag repository.
- */
 
 namespace App\Repository;
 
@@ -16,29 +114,22 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * @extends ServiceEntityRepository<Tag>
+ *
  * @method Tag|null find($id, $lockMode = null, $lockVersion = null)
  * @method Tag|null findOneBy(array $criteria, array $orderBy = null)
  * @method Tag[]    findAll()
  * @method Tag[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
- *
- * @extends ServiceEntityRepository<Tag>
  */
 class TagRepository extends ServiceEntityRepository
 {
-    /**
-     * Constructor.
-     *
-     * @param ManagerRegistry $registry Manager registry
-     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Tag::class);
     }
 
     /**
-     * Query all records.
-     *
-     * @return QueryBuilder Query builder
+     * Query all tags ordered by update date.
      */
     public function queryAll(): QueryBuilder
     {
@@ -48,48 +139,41 @@ class TagRepository extends ServiceEntityRepository
     }
 
     /**
-     * FindOneByTitle.
-     *
-     * @param string $title Title
-     *
-     * @return Tag|null The Tag entity or null if not found
+     * Find one tag by its title.
      */
     public function findOneByTitle(string $title): ?Tag
     {
-        $queryBuilder = $this->createQueryBuilder('tag')
+        return $this->createQueryBuilder('tag')
             ->andWhere('tag.title = :title')
-            ->setParameter('title', $title);
-
-        try {
-            return $queryBuilder->getQuery()->getSingleResult();
-        } catch (NoResultException $e) {
-            return null;
-        }
+            ->setParameter('title', $title)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 
     /**
-     * Save entity.
-     *
-     * @param Tag $tag Tag entity
-     *
-     * @throws ORMException
-     * @throws OptimisticLockException
+     * Optional helper: Find tag safely by ID (for resolvers).
+     */
+    public function findOneById(?int $id): ?Tag
+    {
+        if ($id === null) {
+            return null;
+        }
+
+        return $this->find($id); // uses base find()
+    }
+
+    /**
+     * Save a tag entity.
      */
     public function save(Tag $tag): void
     {
         assert($this->_em instanceof EntityManager);
-
         $this->_em->persist($tag);
         $this->_em->flush();
     }
 
     /**
-     * Delete entity.
-     *
-     * @param Tag $tag Tag entity
-     *
-     * @throws ORMException
-     * @throws OptimisticLockException
+     * Delete a tag entity.
      */
     public function delete(Tag $tag): void
     {
@@ -99,14 +183,10 @@ class TagRepository extends ServiceEntityRepository
     }
 
     /**
-     * Get or create new query builder.
-     *
-     * @param QueryBuilder|null $queryBuilder Query builder
-     *
-     * @return QueryBuilder Query builder
+     * Create or reuse a QueryBuilder.
      */
-    private function getOrCreateQueryBuilder(?QueryBuilder $queryBuilder = null): QueryBuilder
+    private function getOrCreateQueryBuilder(?QueryBuilder $qb = null): QueryBuilder
     {
-        return $queryBuilder ?? $this->createQueryBuilder('tag');
+        return $qb ?? $this->createQueryBuilder('tag');
     }
 }

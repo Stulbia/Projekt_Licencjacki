@@ -1,7 +1,4 @@
 <?php
-/**
- * BookSearchInputFiltersDto resolver.
- */
 
 namespace App\Resolver;
 
@@ -11,33 +8,52 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
-/**
- * BookSearchInputFiltersDtoResolver class.
- */
 class BookSearchInputFiltersDtoResolver implements ValueResolverInterface
 {
-    /**
-     * Returns the possible value(s).
-     *
-     * @param Request          $request  HTTP Request
-     * @param ArgumentMetadata $argument Argument metadata
-     *
-     * @return iterable Iterable
-     */
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
-        $argumentType = $argument->getType();
-
-        if (!$argumentType || !is_a($argumentType, BookSearchInputFiltersDto::class, true)) {
+        if ($argument->getType() !== BookSearchInputFiltersDto::class) {
             return [];
         }
 
-        $categoryId = $request->query->get('categoryId');
-        $tagId = $request->query->get('tagId');
-        $statusId = $request->query->get('statusId', BookStatus::PUBLIC->value);
-        $titleId = $request->query->get('titleId');
-        $descriptionId = $request->query->get('descriptionId');
+//        $tagId = $request->query->get('tagId');
+//        $tagId = is_numeric($tagId) ? (int) $tagId : null;
 
-        return [new BookSearchInputFiltersDto($categoryId, $tagId, $statusId, $titleId, $descriptionId)];
+//        $reviewTagId = $request->query->get('reviewTagId');
+//        $reviewTagId = is_numeric($reviewTagId) ? (int) $reviewTagId : null;
+
+        $tagId       = array_map('intval', $request->query->all('tag'));
+        $reviewTagId = array_map('intval', $request->query->all('reviewTags'));
+
+        $statusRaw = $request->query->get('statusId');
+        $bookStatus = null;
+
+        if ($statusRaw !== null) {
+            try {
+                $bookStatus = BookStatus::from($statusRaw);
+            } catch (\ValueError) {
+                $bookStatus = null;
+            }
+        }
+
+        $titlePattern = $request->query->get('title');
+        $descriptionPattern = $request->query->get('description');
+        $sortBy = $request->query->get('sortBy'); // np. 'rating', 'title'
+        $minRating = $request->query->getInt('minRating');
+        $author = $request->query->get('authorTerm');
+
+        //$authorId = $request->query->get('author');
+        //$authorId = is_numeric($authorId) ? (int) $authorId : null;
+
+        yield new BookSearchInputFiltersDto(
+            tagId: $tagId,
+            bookStatus: $bookStatus = "",
+            titlePattern: $titlePattern,
+            descriptionPattern: $descriptionPattern,
+            sortBy: $sortBy ?: null,
+            minRating: $minRating ?: null,
+            reviewTagId: $reviewTagId,
+            author: $author
+        );
     }
 }

@@ -1,0 +1,467 @@
+
+
+<section class="filters-form" aria-labelledby="filtersTitle">
+    <h2>Filtry</h2>
+
+    {# --- Author term --- #}
+    <div class="field">
+        {{ form_label(form.authorTerm, null, { label_attr: { class: 'form-label' } }) }}
+        {{ form_widget(form.authorTerm, {
+            attr: { class: 'text-input', placeholder: 'Podaj imię lub pseudonim …' }
+        }) }}
+    </div>
+
+
+    {% set currentMin = app.request.get('minRating') ?: 1 %}
+
+    <div class="field range-field">
+        <label class="form-label" for="minRatingRange">
+            Minimalna ocena: <span id="rating-preview">{{ currentMin }}</span>/10
+        </label>
+
+        {# keep the range but hide it; it remains the single source of truth for form submission #}
+        <input id="minRatingRange" name="minRating" type="range"
+               min="1" max="10" step="1"
+               value="{{ currentMin }}"
+               class="range-input visually-hidden">
+
+        <div class="star-rating" data-for="minRatingRange" role="radiogroup" aria-label="Minimalna ocena">
+            {% for i in 1..10 %}
+                <button
+                        type="button"
+                        class="star {{ currentMin >= i ? 'filled' : '' }}"
+                        data-value="{{ i }}"
+                        role="radio"
+                        aria-label="{{ i }} na 10 }}"
+                        aria-checked="{{ currentMin == i ? 'true' : 'false' }}"
+                >
+                    <span class="material-symbols-outlined">star</span>
+                </button>
+            {% endfor %}
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+{#    #}{# --- BOOK TAGS --- #}
+{#    <div class="field tag-filter" data-filter="book-tags">#}
+{#        <div class="field-head">#}
+{#            <label class="form-label">Tagi książek</label>#}
+{#            <div class="field-tools">#}
+{#                <span class="selected-count" aria-live="polite">0 wybranych</span>#}
+{#                <button type="button" class="link-clear" data-clear>Wyczyść</button>#}
+{#            </div>#}
+{#        </div>#}
+
+{#        {{ form_widget(form.tag, { attr: { class: 'hidden-tag-select' } }) }}#}
+
+{#        <div class="tag-pills" role="listbox" aria-label="Tagi książek"></div>#}
+
+{#        <div class="tag-dropdown">#}
+{#            <div class="tag-dropdown-inner">#}
+{#                <div class="tag-options">#}
+{#                    {% for choice in form.tag.vars.choices %}#}
+{#                        <label class="tag-option">#}
+{#                            <input type="checkbox" value="{{ choice.value }}" data-label="{{ choice.label }}">#}
+{#                            <span class="tag-label">{{ choice.label }}</span>#}
+{#                        </label>#}
+{#                    {% endfor %}#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+
+{#    #}{##}{# --- RATING --- #}
+{#    <div class="field range-field">#}
+{#        <label class="form-label" for="minRatingRange">#}
+{#            Minimalna ocena: <span id="rating-preview">{{ app.request.get('minRating') ?: 1 }}</span>/10#}
+{#        </label>#}
+{#        <input id="minRatingRange" name="minRating" type="range"#}
+{#               min="1" max="10" step="1"#}
+{#               value="{{ app.request.get('minRating') ?: 1 }}"#}
+{#               class="range-input">#}
+{#    </div>#}
+
+
+
+
+{#    #}{# --- REVIEW TAGS --- #}
+{#    <div class="field tag-filter" data-filter="review-tags">#}
+{#        <div class="field-head">#}
+{#            <label class="form-label">Tagi recenzji</label>#}
+{#            <div class="field-tools">#}
+{#                <span class="selected-count" aria-live="polite">0 wybranych</span>#}
+{#                <button type="button" class="link-clear" data-clear>Wyczyść</button>#}
+{#            </div>#}
+{#        </div>#}
+
+{#        {{ form_widget(form.reviewTags, { attr: { class: 'hidden-tag-select' } }) }}#}
+
+{#        <div class="tag-pills" role="listbox" aria-label="Tagi recenzji"></div>#}
+
+{#        <div class="tag-dropdown">#}
+{#            <div class="tag-dropdown-inner">#}
+{#                <div class="tag-options">#}
+{#                    {% for choice in form.reviewTags.vars.choices %}#}
+{#                        <label class="tag-option">#}
+{#                            <input type="checkbox" value="{{ choice.value }}" data-label="{{ choice.label }}">#}
+{#                            <span class="tag-label">{{ choice.label }}</span>#}
+{#                        </label>#}
+{#                    {% endfor %}#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+
+    {# --- BOOK TAGS --- #}
+    <div class="field tag-filter collapsed" data-filter="book-tags">
+        <div class="field-head">
+            <button
+                    type="button"
+                    class="section-toggle"
+                    aria-expanded="false"
+                    aria-controls="pills-book-tags dropdown-book-tags"
+            >
+                <span class="form-label">Tagi książek</span>
+                <span class="material-symbols-outlined chev" aria-hidden="true">expand_more</span>
+            </button>
+
+            <div class="field-tools">
+                <span class="selected-count" aria-live="polite">0 wybranych</span>
+                <button type="button" class="link-clear" data-clear>Wyczyść</button>
+            </div>
+        </div>
+
+        {{ form_widget(form.tag, { attr: { class: 'hidden-tag-select' } }) }}
+
+        <div id="pills-book-tags" class="tag-pills" role="listbox" aria-label="Tagi książek" hidden></div>
+
+        <div id="dropdown-book-tags" class="tag-dropdown" hidden>
+            <div class="tag-dropdown-inner">
+                <div class="tag-options">
+                    {% for choice in form.tag.vars.choices %}
+                        <label class="tag-option">
+                            <input type="checkbox" value="{{ choice.value }}" data-label="{{ choice.label }}">
+                            <span class="tag-label">{{ choice.label }}</span>
+                        </label>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# --- REVIEW TAGS --- #}
+    <div class="field tag-filter collapsed" data-filter="review-tags">
+        <div class="field-head">
+            <button
+                    type="button"
+                    class="section-toggle"
+                    aria-expanded="false"
+                    aria-controls="pills-review-tags dropdown-review-tags"
+            >
+                <span class="form-label">Tagi recenzji</span>
+                <span class="material-symbols-outlined chev" aria-hidden="true">expand_more</span>
+            </button>
+
+            <div class="field-tools">
+                <span class="selected-count" aria-live="polite">0 wybranych</span>
+                <button type="button" class="link-clear" data-clear>Wyczyść</button>
+            </div>
+        </div>
+
+        {{ form_widget(form.reviewTags, { attr: { class: 'hidden-tag-select' } }) }}
+
+        <div id="pills-review-tags" class="tag-pills" role="listbox" aria-label="Tagi recenzji" hidden></div>
+
+        <div id="dropdown-review-tags" class="tag-dropdown" hidden>
+            <div class="tag-dropdown-inner">
+                <div class="tag-options">
+                    {% for choice in form.reviewTags.vars.choices %}
+                        <label class="tag-option">
+                            <input type="checkbox" value="{{ choice.value }}" data-label="{{ choice.label }}">
+                            <span class="tag-label">{{ choice.label }}</span>
+                        </label>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+    {# --- SORTING --- #}
+    <div class="field">
+        <label class="form-label" for="sortBy">Sortuj według</label>
+        <select id="sortBy" name="sortBy" class="custom-select">
+            <option value="">Domyślnie</option>
+            <option value="rating" {{ app.request.get('sortBy') == 'rating' ? 'selected' }}>Średnia ocena</option>
+            <option value="title"  {{ app.request.get('sortBy') == 'title'  ? 'selected' }}>Tytuł</option>
+        </select>
+    </div>
+
+    <div class="form-actions">
+        <button type="submit" class="btn-primary">🔍︎ Szukaj</button>
+    </div>
+</section>
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // ----- Tag pills (both groups) -----
+        document.querySelectorAll('.tag-filter').forEach(filter => {
+            const hiddenSelect = filter.querySelector('.hidden-tag-select');
+            const pillsContainer = filter.querySelector('.tag-pills');
+            const countEl = filter.querySelector('.selected-count');
+            const clearBtn = filter.querySelector('[data-clear]');
+
+            // Build pills from the real hidden <select> (labels/values are guaranteed)
+            const opts = Array.from(hiddenSelect?.options || []);
+            pillsContainer.innerHTML = '';
+            opts.forEach(o => {
+                const pill = document.createElement('button');
+                pill.type = 'button';
+                pill.className = 'tag-pill';
+                pill.textContent = o.text;
+                pill.dataset.value = o.value;
+                pill.setAttribute('role', 'option');
+                pill.setAttribute('aria-selected', o.selected ? 'true' : 'false');
+
+                if (o.selected) pill.classList.add('active');
+
+                pill.addEventListener('click', () => {
+                    pill.classList.toggle('active');
+                    pill.setAttribute('aria-selected', pill.classList.contains('active') ? 'true' : 'false');
+                    syncToSelect();
+                    updateCount();
+                });
+
+                // Keyboard support: Space/Enter toggles
+                pill.addEventListener('keydown', (e) => {
+                    if (e.key === ' ' || e.key === 'Enter') {
+                        e.preventDefault();
+                        pill.click();
+                    }
+                });
+
+                pillsContainer.appendChild(pill);
+            });
+
+            function syncToSelect() {
+                if (!hiddenSelect) return;
+                // clear
+                opts.forEach(o => (o.selected = false));
+                // set selected based on active pills
+                pillsContainer.querySelectorAll('.tag-pill.active').forEach(p => {
+                    const opt = opts.find(o => o.value === p.dataset.value);
+                    if (opt) opt.selected = true;
+                });
+            }
+
+            function updateCount() {
+                const n = pillsContainer.querySelectorAll('.tag-pill.active').length;
+                if (countEl) countEl.textContent = n + (n === 1 ? ' wybrany' : ' wybranych');
+                // optional: visually emphasize when some are chosen
+                filter.classList.toggle('has-selection', n > 0);
+            }
+
+            // Clear button
+            if (clearBtn) {
+                clearBtn.addEventListener('click', () => {
+                    pillsContainer.querySelectorAll('.tag-pill.active').forEach(p => p.classList.remove('active'));
+                    syncToSelect();
+                    updateCount();
+                });
+            }
+
+            // Initial sync (respect preselected)
+            syncToSelect();
+            updateCount();
+        });
+
+        // ----- Rating preview + filled track -----
+        const range = document.getElementById('minRatingRange');
+        const preview = document.getElementById('rating-preview');
+        function updateRangeFill() {
+            const min = Number(range.min) || 0;
+            const max = Number(range.max) || 100;
+            const v = Number(range.value);
+            const pct = ((v - min) / (max - min)) * 100;
+            range.style.setProperty('--fill', pct + '%');
+            if (preview) preview.textContent = v;
+        }
+        if (range) {
+            updateRangeFill();
+            range.addEventListener('input', updateRangeFill);
+            range.addEventListener('change', updateRangeFill);
+        }
+    });document.querySelectorAll('.star-rating').forEach(initStarRating);
+
+    function initStarRating(container) {
+        const inputId = container.getAttribute('data-for');
+        const input = document.getElementById(inputId);
+        const preview = document.getElementById('rating-preview');
+        const stars = Array.from(container.querySelectorAll('.star'));
+
+        // Clamp value and initialize
+        const clamp = v => Math.max(Number(input.min || 1), Math.min(Number(input.max || 10), v));
+        let value = clamp(Number(input.value || 1));
+
+        function apply(v) {
+            value = clamp(v);
+            input.value = value;
+            if (preview) preview.textContent = value;
+            stars.forEach((s, i) => {
+                const filled = i < value;
+                s.classList.toggle('filled', filled);
+                s.setAttribute('aria-checked', (i + 1) === value ? 'true' : 'false');
+                s.tabIndex = (i + 1) === value ? 0 : -1; // roving tabindex
+            });
+        }
+
+        function highlight(tempVal) {
+            stars.forEach((s, i) => s.classList.toggle('filled', i < tempVal));
+            if (preview) preview.textContent = tempVal;
+        }
+
+        stars.forEach((star, i) => {
+            const v = i + 1;
+
+            star.addEventListener('click', () => apply(v));
+            star.addEventListener('mouseenter', () => highlight(v));
+            star.addEventListener('mouseleave', () => apply(value));
+
+            star.addEventListener('keydown', (e) => {
+                if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); apply(v); return; }
+                if (e.key === 'ArrowRight' || e.key === 'ArrowUp')  { e.preventDefault(); apply(value + 1); focusStar(value); return; }
+                if (e.key === 'ArrowLeft'  || e.key === 'ArrowDown'){ e.preventDefault(); apply(value - 1); focusStar(value); return; }
+                if (e.key === 'Home') { e.preventDefault(); apply(1); focusStar(1); return; }
+                if (e.key === 'End')  { e.preventDefault(); apply(10); focusStar(10); return; }
+            });
+        });
+
+        function focusStar(v) {
+            const idx = clamp(v) - 1;
+            const el = stars[idx];
+            if (el) el.focus();
+        }
+
+        // Initial paint
+        apply(value);
+    }
+
+
+
+
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const STORAGE_KEY = 'filters-collapsed-state';
+
+        // load saved collapsed state
+        let saved = {};
+        try { saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch {}
+
+        document.querySelectorAll('.tag-filter').forEach(section => {
+            const key = section.dataset.filter || 'unknown';
+            const label = section.querySelector('.field-head .form-label');
+            const pills = section.querySelector('.tag-pills');
+            const dropdown = section.querySelector('.tag-dropdown');
+
+            if (!label) return;
+
+            // ensure IDs for aria-controls
+            const ensureId = (el, prefix) => {
+                if (!el) return null;
+                if (!el.id) el.id = `${prefix}-${key}`;
+                return el.id;
+            };
+            const pillsId = ensureId(pills, 'pills');
+            const dropId  = ensureId(dropdown, 'dropdown');
+
+            // make label behave like a button
+            label.setAttribute('role', 'button');
+            label.setAttribute('tabindex', '0');
+            if (pillsId) label.setAttribute('aria-controls', pillsId);
+            if (dropId)  label.setAttribute('aria-controls', `${label.getAttribute('aria-controls')} ${dropId}`);
+
+            // initial collapsed state (from storage)
+            const startCollapsed = !!saved[key];
+            setCollapsed(startCollapsed);
+
+            // interactions
+            const toggle = () => setCollapsed(!section.classList.contains('collapsed'));
+            label.addEventListener('click', toggle);
+            label.addEventListener('keydown', e => {
+                if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); toggle(); }
+                if (e.key === 'ArrowLeft')  { e.preventDefault(); setCollapsed(true); }
+                if (e.key === 'ArrowRight') { e.preventDefault(); setCollapsed(false); }
+            });
+
+            function setCollapsed(collapsed) {
+                section.classList.toggle('collapsed', collapsed);
+                if (pills)    pills.hidden = collapsed;
+                if (dropdown) dropdown.hidden = collapsed;
+                label.setAttribute('aria-expanded', String(!collapsed));
+                saved[key] = collapsed;
+                try { localStorage.setItem(STORAGE_KEY, JSON.stringify(saved)); } catch {}
+            }
+        });
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const STORAGE_KEY = 'filters-collapsed-state-v2';
+        let saved = {};
+        try { saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch {}
+
+        document.querySelectorAll('.tag-filter').forEach(section => {
+            const key = section.dataset.filter || 'unknown';
+            const toggle = section.querySelector('.section-toggle');
+            const pills  = section.querySelector('.tag-pills');
+            const drop   = section.querySelector('.tag-dropdown');
+            if (!toggle) return;
+
+            // default = collapsed; restore if previously expanded
+            const shouldExpand = saved[key] === 'expanded';
+            setCollapsed(!shouldExpand);
+
+            toggle.addEventListener('click', () => {
+                const expanded = toggle.getAttribute('aria-expanded') === 'true';
+                setCollapsed(expanded); // if expanded → collapse; if collapsed → expand
+            });
+
+            toggle.addEventListener('keydown', e => {
+                if (e.key === 'ArrowLeft')  { e.preventDefault(); setCollapsed(true); }
+                if (e.key === 'ArrowRight') { e.preventDefault(); setCollapsed(false); }
+            });
+
+            function setCollapsed(collapsed) {
+                section.classList.toggle('collapsed', collapsed);
+                toggle.setAttribute('aria-expanded', String(!collapsed));
+                if (pills) pills.hidden = collapsed;
+                if (drop)  drop.hidden  = collapsed;
+                saved[key] = collapsed ? 'collapsed' : 'expanded';
+                try { localStorage.setItem(STORAGE_KEY, JSON.stringify(saved)); } catch {}
+            }
+        });
+    });
+</script>
+
+
+
