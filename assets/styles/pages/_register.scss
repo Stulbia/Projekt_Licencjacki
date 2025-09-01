@@ -56,7 +56,7 @@
     width: 100%;
     font: inherit;
     color: $text-color;
-    background: #fff;
+    background: $body-bg;
     border: 1px solid rgba(0,0,0,0.14);
     border-radius: $radius;
     padding: .65rem .8rem;
@@ -93,43 +93,6 @@
   display: grid;
   gap: .5rem;
   margin-top: .6rem;
-}
-
-.btn {
-  --btn-pad-y: .65rem;
-  --btn-pad-x: 1rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: .5rem;
-  padding: var(--btn-pad-y) var(--btn-pad-x);
-  border: 0;
-  border-radius: $radius;
-  font-weight: 700;
-  font-family: $font-stack;
-  cursor: pointer;
-  text-decoration: none;
-  transition: transform .06s ease, box-shadow .2s ease, background-color .2s ease, opacity .2s ease;
-  &:active { transform: translateY(1px); }
-}
-.btn-lg { --btn-pad-y: .75rem; --btn-pad-x: 1.1rem; }
-
-.btn-primary {
-  background: $color-primary;
-  color: #fff;
-  box-shadow: 0 6px 14px rgba(15,76,92,0.22);
-  &:hover { opacity: .95; }
-  &:focus { outline: none; box-shadow: 0 0 0 4px rgba(15,76,92,0.25); }
-}
-
-/* Secondary = subtle outlined */
-.btn-secondary {
-  background: transparent;
-  color: $text-color;
-  border: 1px solid rgba(0,0,0,0.14);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.06);
-  &:hover { background: rgba(0,0,0,0.03); }
-  &:focus { outline: none; box-shadow: 0 0 0 4px rgba(95,15,64,0.18); }
 }
 
 /* ---------- Divider (optional, if you add OAuth later) ---------- */

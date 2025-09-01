@@ -21,7 +21,7 @@ $stars-accent-muted: mix($body-bg,$color-secondary,90%);
 $book-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 $book-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.12);
 
-.book-card {
+.book-card, .library-card{
   width: $book-card-width;
   height: $book-card-height;
   display: flex;

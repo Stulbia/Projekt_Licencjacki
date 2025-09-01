@@ -14,7 +14,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class ReviewService implements ReviewServiceInterface
 {
-    private const PAGINATOR_ITEMS_PER_PAGE = 10;
+    private const PAGINATOR_ITEMS_PER_PAGE = 5;
 
     public function __construct(
         private readonly ReviewRepository $reviewRepository,
@@ -36,7 +36,23 @@ class ReviewService implements ReviewServiceInterface
         return $this->paginator->paginate(
             $this->reviewRepository->queryByAuthor($user),
             $page,
-            self::PAGINATOR_ITEMS_PER_PAGE
+            self::PAGINATOR_ITEMS_PER_PAGE,
+            [
+
+                    // domyślne sortowanie (gdy brak ?sort=&direction=)
+                    'defaultSortFieldName' => 'r.rating',
+                    'defaultSortDirection' => 'DESC',
+
+                    // bardzo ważne: whitelist pól do sortowania
+                    'sortFieldAllowList' => [
+                        'r.rating',
+                        'b.title',
+                        'a.name'
+                    ],
+                    'wrap-queries' => true,
+                    'distinct' => true,
+
+            ]
         );
     }
 
@@ -46,7 +62,7 @@ class ReviewService implements ReviewServiceInterface
 
         try {
             $this->reviewRepository->save($review);
-        } catch (ORMException|OptimisticLockException) {
+        } catch (ORMException | OptimisticLockException) {
             // handle exception if needed
         }
     }
@@ -55,7 +71,7 @@ class ReviewService implements ReviewServiceInterface
     {
         try {
             $this->reviewRepository->save($review);
-        } catch (ORMException|OptimisticLockException) {
+        } catch (ORMException | OptimisticLockException) {
             // handle exception if needed
         }
     }
@@ -64,7 +80,7 @@ class ReviewService implements ReviewServiceInterface
     {
         try {
             $this->reviewRepository->delete($review);
-        } catch (ORMException|OptimisticLockException) {
+        } catch (ORMException | OptimisticLockException) {
             // handle exception if needed
         }
     }

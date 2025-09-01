@@ -12,33 +12,55 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/account')]
+#[IsGranted('IS_AUTHENTICATED_FULLY')]
 class AccountController extends AbstractController
 {
+    public function __construct(private readonly EntityManagerInterface $em)
+    {
+    }
 
+    /** Map of service => allowed host suffixes */
+    private const ALLOWED_HOSTS = [
+        'tiktok'    => ['tiktok.com'],
+        'youtube'   => ['youtube.com', 'youtu.be'],
+        'instagram' => ['instagram.com'],
+        'facebook'  => ['facebook.com'],
+    ];
+
+    private function canonicalizeUrl(string $url): string
+    {
+        // Add scheme if user pasted a bare domain
+        if (!preg_match('~^https?://~i', $url)) {
+            $url = 'https://' . ltrim($url, '/');
+        }
+        return $url;
+    }
+
+    private function extractHost(?string $url): string
+    {
+        if (!$url) return '';
+        $url  = $this->canonicalizeUrl($url);
+        $host = strtolower(parse_url($url, PHP_URL_HOST) ?? '');
+        // strip common subdomains like www. or m.
+        $host = preg_replace('~^(www|m)\.~', '', $host);
+        return $host ?? '';
+    }
 
     private function isLinkValidForService(Account $account): bool
     {
-        $service = $account->getPortalSpolecznosciowy();
-        $host    = strtolower(parse_url($account->getLink(), PHP_URL_HOST) ?? '');
+        $service = $account->getPortalSpolecznosciowy(); // e.g. 'instagram'
+        $host    = $this->extractHost($account->getLink());
 
-        $allowedHosts = [
-            'tiktok'    => ['tiktok.com'],
-            'youtube'   => ['youtube.com', 'youtu.be'],
-            'instagram' => ['instagram.com'],
-            'facebook'  => ['facebook.com'],
-        ];
-
-        foreach ($allowedHosts[$service] ?? [] as $domain) {
-            if (\str_ends_with($host, $domain)) {
+        foreach (self::ALLOWED_HOSTS[$service] ?? [] as $allowedSuffix) {
+            if (str_ends_with($host, $allowedSuffix)) {
                 return true;
             }
         }
-
         return false;
     }
+
     #[Route('/new', name: 'account_new', methods: ['GET','POST'])]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function new(Request $request, EntityManagerInterface $em): Response
+    public function new(Request $request): Response
     {
         $account = new Account();
         $account->setUser($this->getUser());
@@ -47,14 +69,14 @@ class AccountController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // walidacja hosta w linku
-            if (! $this->isLinkValidForService($account)) {
+            if (!$this->isLinkValidForService($account)) {
                 $this->addFlash('error', 'message.invalid_social_link');
             } else {
-                $em->persist($account);
-                $em->flush();
+                $this->em->persist($account);
+                $this->em->flush();
                 $this->addFlash('success', 'message.account_added');
-                return $this->redirectToRoute('user_show', ['id' => $this->getUser()->getId()]);
+
+                return $this->redirectToRoute('user_index');
             }
         }
 
@@ -62,24 +84,25 @@ class AccountController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
     #[Route('/{id}/edit', name: 'account_edit', methods: ['GET','POST'])]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function edit(Account $account, Request $request, EntityManagerInterface $em): Response
+    public function edit(Account $account, Request $request): Response
     {
-      //  $this->denyAccessUnlessGranted('EDIT', $account);
         $this->denyAccessUnlessGranted(AccountVoter::EDIT, $account);
 
         $form = $this->createForm(AccountType::class, $account);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // walidacja hosta w linku
-            if (! $this->isLinkValidForService($account)) {
+            if (!$this->isLinkValidForService($account)) {
                 $this->addFlash('error', 'message.invalid_social_link');
             } else {
-                $em->flush();
+                $this->em->flush();
                 $this->addFlash('success', 'message.account_updated');
+
+                // take user back to their profile (adjust route if you use slug)
                 return $this->redirectToRoute('user_index');
+
             }
         }
 
@@ -89,19 +112,20 @@ class AccountController extends AbstractController
         ]);
     }
 
-
     #[Route('/{id}/delete', name: 'account_delete', methods: ['POST'])]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function delete(Account $account, Request $request, EntityManagerInterface $em): Response
+    public function delete(Account $account, Request $request): Response
     {
         $this->denyAccessUnlessGranted(AccountVoter::EDIT, $account);
 
-        if ($this->isCsrfTokenValid('delete'.$account->getId(), $request->request->get('_token'))) {
-            $em->remove($account);
-            $em->flush();
+        if ($this->isCsrfTokenValid('delete'.$account->getId(), (string)$request->request->get('_token'))) {
+            $this->em->remove($account);
+            $this->em->flush();
             $this->addFlash('success', 'message.account_deleted');
+        } else {
+            $this->addFlash('error', 'message.csrf_invalid');
         }
 
+        // Back to the user's profile (or wherever you list the accounts)
         return $this->redirectToRoute('user_index');
     }
 }

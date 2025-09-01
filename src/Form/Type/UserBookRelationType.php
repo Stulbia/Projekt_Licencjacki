@@ -19,7 +19,7 @@ class UserBookRelationType extends AbstractType
         'Czytam' => ReadingStatus::READING,
         'Przeczytane' => ReadingStatus::READ,
         ],
-        'label' => 'Status czytania',
+        'label' => 'Status',
         ]);
     }
 

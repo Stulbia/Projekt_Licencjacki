@@ -133,7 +133,7 @@
     border-radius: $radius;
     font-weight: 800;
     background: $color-accent-first;
-    color: #fff;
+    color: $body-bg;
     border: none;
     cursor: pointer;
     transition: transform .06s ease, background .2s ease;
@@ -191,7 +191,7 @@
 
   &.active {
     background: $color-secondary;
-    color: #fff;
+    color: $body-bg;
     border-color: $color-secondary;
     box-shadow: inset 0 0 0 1px rgba(0,0,0,.2);
   }
@@ -248,13 +248,13 @@
     appearance: none;
     width: 18px; height: 18px;
     border-radius: 50%;
-    background: #fff;
+    background: $body-bg;
     border: 2px solid $color-accent-first;
   }
   &::-moz-range-thumb {
     width: 18px; height: 18px;
     border-radius: 50%;
-    background: #fff;
+    background: $body-bg;
     border: 2px solid $color-accent-first;
   }
 }
@@ -314,4 +314,18 @@
 .star.filled .material-symbols-outlined {
   opacity: 1;
   color: $color-accent-second; /* pick your accent; can switch to $color-secondary if preferred */
+}
+
+@media (max-width: 900px) {
+  .form-actions {
+    display: flex;
+    justify-content: center; /* horizontal center */
+    align-items: center;     /* vertical center if there's height */
+    flex-wrap: wrap;
+    flex-direction: column;
+  }
+
+  .form-actions .btn-primary {
+    margin: 0; /* reset the auto margins */
+  }
 }

@@ -10,6 +10,7 @@ use App\Service\BookServiceInterface;
 use App\Service\FileUploadService;
 use App\Service\ReviewServiceInterface;
 use App\Service\UserManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,7 +27,8 @@ class ProfileController extends AbstractController
         private readonly TranslatorInterface $translator,
         private readonly BookServiceInterface $bookService,
         private readonly ReviewServiceInterface $reviewService,
-        private readonly UserBookRelationRepository $bookRepo,
+        private UserBookRelationRepository $bookRepo,
+        private PaginatorInterface $paginator,
     ) {
     }
     #[Route('/profile/avatar', name: 'user_avatar_edit')]
@@ -67,10 +69,31 @@ class ProfileController extends AbstractController
 
 //        BIBLIOTECZKA UZYTKOWNIKA
         $page = $request->query->getInt('page', 1);
-//        $filters = new BookSearchFiltersDto();
-        $paginationR = $this->reviewService->getPaginatedUserList($request->query->getInt('page', 1), $user);
+        $paginationR= $this->reviewService->getPaginatedUserList($request->query->getInt('page', 1), $user);
         if ($user) {
-            $paginationB = $this->bookService->getPaginatedUserList($page, $user,new BookListInputFiltersDto(null,null,null )); //przepisac metode na bez filtrow
+
+            $query = $this->bookRepo->getBooksByUser($user);
+            $paginationB = $this->paginator->paginate(
+                $query,
+                $page,
+                8,
+                [
+                    'defaultSortFieldName' => 'b.title',
+                    'defaultSortDirection' => 'asc',
+                    'sortFieldAllowList' => [
+                        'b.title',
+                        'a.name',
+                        'relation.createdAt',
+                        'relation.status',
+                        'r.rating',
+                        'avg_rating', // HIDDEN scalar from repo
+                    ],
+                ],
+            );
+
+
+
+//            $paginationB = $this->bookService->getPaginatedUserList($page, $user,new BookListInputFiltersDto(null,null,null )); //przepisac metode na bez filtrow
         } else {
             return $this->redirectToRoute('login');
         }

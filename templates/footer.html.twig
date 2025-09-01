@@ -1,5 +1,48 @@
-<footer class="site-footer">
+<footer>
+    <div class="site-footer">
+    <div class="footer-container">
 
+        {# --- Logo / brand --- #}
+        <div class="footer-brand">
+            <a href="{{ path('homepage') }}" class="footer-logo">
+                <span class="material-symbols-outlined">menu_book</span> Biblioteka
+            </a>
+{#            <p class="footer-copy">© {{ "now"|date("Y") }} Biblioteka. Wszelkie prawa zastrzeżone.</p>#}
+        </div>
+
+        {# --- Sitemap links --- #}
+        <nav class="footer-nav" aria-label="Mapa strony">
+            <div class="footer-column">
+                <h3 class="footer-heading">Odkrywaj</h3>
+                <a class="footer-link" href="{{ path('homepage') }}">Strona Główna</a>
+                <a class="footer-link" href="{{ path('for_you_index') }}">Polecane</a>
+                <a class="footer-link" href="{{ path('book_search') }}">Szukaj</a>
+            </div>
+
+            <div class="footer-column">
+                <h3 class="footer-heading">Twoje konto</h3>
+                {% if app.user %}
+                    <a class="footer-link" href="{{ path('library_index') }}">Biblioteczka</a>
+                    <a class="footer-link" href="{{ path('review_index') }}">Twoje Recenzje</a>
+                    <a class="footer-link" href="{{ path('user_index') }}">Twój profil</a>
+                    <a class="footer-link" href="{{ path('app_logout') }}">Wyloguj</a>
+                {% else %}
+                    <a class="footer-link" href="{{ path('app_login') }}">Zaloguj</a>
+                    <a class="footer-link" href="{{ path('user_register') }}">Zarejestruj</a>
+                {% endif %}
+            </div>
+
+            <div class="footer-column">
+                <h3 class="footer-heading">Informacje</h3>
+                <a class="footer-link" href="{{ path('homepage') }}#about">O nas</a>
+                <a class="footer-link" href="{{ path('contact') }}">Kontakt</a>
+{#                <a class="footer-link" href="#">Polityka prywatności</a>#}
+{#                <a class="footer-link" href="#">Regulamin</a>#}
+            </div>
+        </nav>
+
+    </div>
+    </div>
     <div class="footer-bottom">
         <p>&copy; {{ "now"|date("Y") }} TU INFO LICENCJAT </p>
     </div>

@@ -1,0 +1,54 @@
+
+{# inside your book card / relation loop #}
+<div class="book-actions">
+    <button type="button"
+            class="actions-toggle"
+            data-actions-toggle
+            aria-expanded="false"
+            aria-controls="actions-{{ relation.book.id }}">
+        <span class="material-symbols-outlined">menu_open</span>
+        Opcje
+    </button>
+
+    <div class="actions-panel" id="actions-{{ relation.book.id }}" hidden>
+        <div class="actions-list">
+            <form method="post"
+                  action="{{ path('library_change_status', { id: relation.book.id }) }}">
+                <input type="hidden" name="_token" value="{{ csrf_token('lib_status_' ~ relation.book.id) }}">
+
+                <button type="submit"
+                        name="status"
+                        value="to_read"
+                        class="status-pill {{ relation.status.value == 'to_read' ? 'active' }}">
+                    Do przeczytania
+                </button>
+
+                <button type="submit"
+                        name="status"
+                        value="reading"
+                        class="status-pill {{ relation.status.value == 'reading' ? 'active' }}">
+                    Czytam
+                </button>
+
+                <button type="submit"
+                        name="status"
+                        value="read"
+                        class="status-pill {{ relation.status.value == 'read' ? 'active' }}">
+                    Przeczytane
+                </button>
+            </form>
+
+            <form method="post"
+                  action="{{ path('library_delete', { id: book.id }) }}">
+                <input type="hidden" name="_token" value="{{ csrf_token('remove_library_' ~ book.id) }}">
+                <button class="status-pill">
+{#                    <span class="material-symbols-outlined">close</span>#}
+                    Usuń z biblioteczki
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+

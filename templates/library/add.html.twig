@@ -1,9 +1,12 @@
 {% extends 'book/show.html.twig' %}
 
 {% block add %}
-    {{ form_start(form) }}
+
+
+    {%set formVisible = true %}
+    {{ form_start(form,{ 'attr' : { 'class': 'add-to-lib' } }) }}
     {{ form_row(form.status) }}
-    <button class="btn btnPrimary">Zapisz</button>
+    <button class="btn add-review">Zapisz</button>
     {{ form_end(form) }}
 {% endblock %}
 

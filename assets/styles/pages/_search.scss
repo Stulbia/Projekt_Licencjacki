@@ -1,13 +1,62 @@
 @use '../variables' as *;
 
 /* --- shared container for this page --- */
-.perPageForm,
+.per-page-form,
 .search-results {
   max-width: 1200px;
   margin-inline: auto;
   padding-inline: 1rem;
   //background: $body-bg}
   }
+
+.per-page-form {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  margin: .5rem 0 1rem;
+  padding: .35rem .75rem;
+  background: $body-bg;
+  border: 1px solid rgba(0,0,0,.08);
+  border-radius: 999px; /* pill look */
+  font-size: .95rem;
+  color: $text-color;
+  box-shadow: 0 2px 6px rgba(0,0,0,.05);
+  transition: border-color .2s, box-shadow .2s;
+
+  &:hover {
+    border-color: rgba($color-primary,.35);
+    box-shadow: 0 3px 10px rgba(0,0,0,.08);
+  }
+
+  label {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin: 0; /* reset default */
+  }
+
+  select {
+    appearance: none;
+    padding: .35rem .9rem;
+    font-size: .9rem;
+    font-weight: 600;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: .5rem;
+    //background-color: $body-bg;
+    color: $text-color;
+    cursor: pointer;
+    transition: border-color .2s, box-shadow .2s;
+
+    &:hover { border-color: $color-primary; }
+    &:focus {
+      outline: none;
+      border-color: $color-primary;
+      box-shadow: 0 0 0 3px rgba($color-primary,.25);
+    }
+  }
+}
 
 /* --- header row: title + filters toggle --- */
 .search {
@@ -98,54 +147,6 @@
 /* --- results --- */
 .search-results {
   padding-bottom: 2rem;
-  .perPageForm {
-    display: inline-flex;
-    align-items: center;
-    gap: .5rem;
-    margin: .5rem 0 1rem;
-    padding: .35rem .75rem;
-    background: $body-bg;
-    border: 1px solid rgba(0,0,0,.08);
-    border-radius: 999px; /* pill look */
-    font-size: .95rem;
-    color: $text-color;
-    box-shadow: 0 2px 6px rgba(0,0,0,.05);
-    transition: border-color .2s, box-shadow .2s;
-
-    &:hover {
-      border-color: rgba($color-primary,.35);
-      box-shadow: 0 3px 10px rgba(0,0,0,.08);
-    }
-
-    label {
-      display: flex;
-      align-items: center;
-      gap: .4rem;
-      font-weight: 600;
-      cursor: pointer;
-      margin: 0; /* reset default */
-    }
-
-    select {
-      appearance: none;
-      padding: .35rem .9rem;
-      font-size: .9rem;
-      font-weight: 600;
-      border: 1px solid rgba(0,0,0,.15);
-      border-radius: .5rem;
-      //background-color: $body-bg;
-      color: $text-color;
-      cursor: pointer;
-      transition: border-color .2s, box-shadow .2s;
-
-      &:hover { border-color: $color-primary; }
-      &:focus {
-        outline: none;
-        border-color: $color-primary;
-        box-shadow: 0 0 0 3px rgba($color-primary,.25);
-      }
-    }
-  }
 
   &__title {
     margin: .25rem 0 1rem;

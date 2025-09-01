@@ -18,4 +18,11 @@ class HomeController extends AbstractController
             'popularBooks' => $popularBooks,
         ]);
     }
+
+    #[Route('/contact', name: 'contact')]
+    public function contact(): Response
+    {
+        return $this->render('home/contact.html.twig', [
+        ]);
+    }
 }

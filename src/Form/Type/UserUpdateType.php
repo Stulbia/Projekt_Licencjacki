@@ -9,6 +9,7 @@ namespace App\Form\Type;
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -45,16 +46,12 @@ class UserUpdateType extends AbstractType
                     'message' => 'message.name.not_blank',
                 ]),
             ],
-        ]);
-        //        ->add('roles', ChoiceType::class, [
-        //            'choices' => [
-        //            'User' => 'ROLE_USER',
-        //            'Admin' => 'ROLE_ADMIN',
-        //            ],
-        //            'multiple' => true,
-        //            'expanded' => true,
-        //            'label' => 'Roles',
-        // //        ]);
+        ])
+        ->add('opis', TextareaType::class, [
+            'label' => 'label.description',
+            'required' => false,
+            'attr' => ['max_length' => 255],
+         ]);
     }
 
     /**

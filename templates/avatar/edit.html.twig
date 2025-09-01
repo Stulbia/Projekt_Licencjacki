@@ -1,14 +1,44 @@
+{#{% extends 'base.html.twig' %}#}
+
+{#{% block title %}{{ 'title.change_avatar'|trans }}{% endblock %}#}
+
+{#{% block body %}#}
+{#<h1>{{ 'title.change_avatar'|trans }}</h1>#}
+
+{#{{ form_start(form) }}#}
+{#{{ form_row(form.avatar) }}#}
+{#<button class="btn btnPrimary" type="submit">#}
+{#    {{ 'action.save'|trans }}#}
+{#</button>#}
+{#{{ form_end(form) }}#}
+{#{% endblock %}#}
+
+
+{# templates/user/change_avatar.html.twig #}
 {% extends 'base.html.twig' %}
 
 {% block title %}{{ 'title.change_avatar'|trans }}{% endblock %}
 
 {% block body %}
-<h1>{{ 'title.change_avatar'|trans }}</h1>
+    <section class="auth-page">
+        <div class="auth-card">
+            <h1 class="auth-title">{{ 'title.change_avatar'|trans }}</h1>
 
-{{ form_start(form) }}
-{{ form_row(form.avatar) }}
-<button class="btn btnPrimary" type="submit">
-    {{ 'action.save'|trans }}
-</button>
-{{ form_end(form) }}
+            {{ form_start(form, { attr: { class: 'auth-form' } }) }}
+            {{ form_row(form.avatar) }}
+
+            <div class="auth-actions">
+                <button class="btn btnPrimary" type="submit">
+                    {{ 'action.save'|trans }}
+                </button>
+            </div>
+            {{ form_end(form) }}
+
+        {# templa   tes/avatar/_delete_button.html.twig #}
+        <form method="post" action="{{ path('avatar_delete') }}" style="display:inline">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete_avatar') }}">
+            <button class="btn btn-danger">{{ 'action.delete_avatar'|trans }}</button>
+        </form>
+        </div>
+    </section>
 {% endblock %}

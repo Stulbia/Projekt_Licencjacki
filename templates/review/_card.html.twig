@@ -11,10 +11,9 @@
                 account_circle
             </span>
         {% endif %}
-        <strong>{{ review.author.name ?? 'Nieznany użytkownik' }}</strong>
+
+        <a href="{{ path('user_public_profile', { slug: review.author.slug }) }}">{{ review.author.name ?? 'Nieznany użytkownik' }}</a>
          {{ review.rating }}/10  </p>
-
-
 
     <div class="review-stars" aria-label="Ocena: {{ review.rating }} na 10">
         {# full stars #}
@@ -55,10 +54,10 @@
     {% if isUserOwn %}
         <div class="review-actions">
             <a href="{{ path('review_edit', { id: review.id }) }}"
-               class="btn btn-small btn-outline-primary">✏️ Edytuj</a>
+               class="btn  btn-outline-primary">Edytuj</a>
 
             <a href="{{ path('review_delete', { id: review.id }) }}"
-               class="btn btn-small btn-danger">🗑️ Usuń</a>
+               class="btn  btn-danger">Usuń</a>
         </div>
     {% endif %}
 </div>

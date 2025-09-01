@@ -5,7 +5,8 @@
 {% block body %}
 
     <div class="search">
-        <h1>Przegladaj</h1>
+        <h1><span class="material-symbols-outlined">search</span> Jakich książek szukasz ?  </h1>
+
 
 
         {{ form_start(form, {
@@ -63,9 +64,12 @@
                 {% endif %}
             {% endfor %}
         </form>
+
+
         <h2 class="search-results__title">Wyniki</h2>
 
         {% if pagination.items is not empty %}
+
             <div class="bookshelf">
                 {% for book in pagination.items %}
                     <div class="book-slot">

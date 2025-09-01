@@ -18,6 +18,10 @@
 @use 'pages/search';
 @use 'pages/for_you';
 @use 'pages/register';
+@use 'components/review_form';
+@use 'pages/profile_page';
+@use "pages/library";
+@use 'components/flash';
 
 body {
   background: $body-bg;

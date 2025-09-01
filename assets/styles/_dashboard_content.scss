@@ -256,3 +256,231 @@ $hero-btn-text: $color-accent-third;
     .swiper-button-next { display: none; }
   }
 }
+
+
+.reviews-list{
+  padding: 0 5%;
+}
+.review-card-extended{
+  display: flex;
+  flex-direction: row;
+  border-radius: $radius;
+.review-card{
+  width: 80%;
+  background: $body-bg;
+  margin:1rem;
+  border: rgb($color-primary,0.2);
+
+  &.review-user-own{
+    border: 1px solid rgb($color-primary, 0.2);
+
+    background: $body-bg;
+  }
+  }
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(0,0,0,0.26);
+    //background: red;
+  }
+  .book-card {
+    transform: none;
+    box-shadow:none;
+    border: solid 1px mix($color-primary,$body-bg,20%);
+    margin:1rem;
+    //background: red;
+    &:hover{
+      transform:none;
+      box-shadow: none;
+      //border:solid mix($body-bg,$color-accent-second,10%);
+      //background: red;
+    }
+  }
+}
+
+@media(max-width: 600px){
+
+.reviews-list{
+  padding: 0;
+  margin: 0;
+}
+  .review-card-extended{
+    display: flex;
+    flex-direction: column;
+    //align-items: center;
+    //justify-items: center;
+    padding: 0;
+    gap: 0;
+    row-gap: 0;
+    margin: 0;
+   .review-card,.book-card{
+    width: 100%;
+    margin:0;
+    //padding:0;
+    border: 0;
+
+    &.review-user-own{
+      //padding: 0;
+      margin: 0;
+      margin-bottom: 1rem;
+    ;
+    }
+  }
+  }
+
+}
+
+.reviews-page{
+
+
+  .reviews-pagination {
+    margin: 0 auto 0;
+    display: flex;
+    justify-content: center;
+
+    .pagination {
+      display: inline-flex;
+      list-style: none;
+      gap: .4rem;
+      padding: 0;
+      margin: 0;
+
+      li {
+        display: inline-flex;
+
+        a,
+        span {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          min-width: 2.2rem;
+          height: 2.2rem;
+          padding: 0 .65rem;
+          margin-bottom: 2rem;
+          margin-top: 0;
+          font-size: .95rem;
+          font-weight: 600;
+          color: mix($text-color,$color-primary,30%);
+          background: $body-bg;
+          border: 1px solid rgba(0,0,0,.1);
+          border-radius: $radius;
+          cursor: pointer;
+          transition: all .2s ease;
+
+          &:hover {
+            background: mix($body-bg, $color-secondary, 90%);
+            color: $color-secondary;
+            text-decoration: none;
+          }
+        }
+
+        &.active span {
+          background: $color-secondary;
+          color: $body-bg;
+          border-color: $color-secondary;
+        }
+
+        &.disabled span {
+          opacity: .5;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+
+
+}
+
+.reviews-header{
+  --hero-grad: linear-gradient(135deg, #0f5570 0%, #2c8f55 38%, #c2751d 100%);
+  background: var(--hero-grad);
+  color: $body-bg;
+  padding: clamp(2rem, 5vw, 4rem) 1rem;
+  margin-bottom: 1.5rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+
+  .reviews-title{
+    color: $body-bg;
+    text-align: center;
+
+  }
+
+
+
+}
+
+.contact-info{
+  padding: 5%;
+  margin: 2rem;
+  gap: 2rem;
+  display: flex;
+  flex-direction: column;
+  font-size: 1.2rem;
+
+
+
+}
+.reviews-sortbar {
+  max-width: 1200px;
+  margin: 0 auto 0;
+  padding: .6rem 1rem;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .5rem;
+  background: $body-bg;
+  //border: 1px solid rgba(0,0,0,.06);
+  border-radius: $radius;
+
+  span {
+    font-weight: 700;
+    color: $text-color;
+    margin-right: .25rem;
+  }
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    padding: .4rem .9rem;
+    border-radius: 999px;
+    font-size: .9rem;
+    font-weight: 600;
+    background: mix($body-bg, $color-primary, 96%);
+    border: 1px solid rgba(0,0,0,.1);
+    color: $text-color;
+    text-decoration: none;
+    transition: transform .08s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease;
+
+    &:hover {
+      transform: translateY(-1px);
+      border-color: $color-primary;
+      color: $color-primary;
+      box-shadow: 0 1px 6px rgba(0,0,0,.06);
+    }
+
+    &.asc::after,
+    &.desc::after {
+      font-size: .85em;
+      opacity: .8;
+    }
+    &.asc::after { content: "▲"; }
+    &.desc::after { content: "▼"; }
+
+    &.sorted {
+      background: $color-primary;
+      color: $body-bg;
+      border-color: $color-primary;
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,.15);
+    }
+  }
+}
+
+
+
+.auth-card {
+ .btn-danger{width: 100%}
+}

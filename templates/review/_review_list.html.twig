@@ -1,0 +1,26 @@
+{% if pagination.items is not empty %}
+    <div class="reviews-sortbar">
+        <span>Sortuj:</span>
+
+        {{ knp_pagination_sortable(pagination, 'Ocena', 'r.rating') }}
+        {{ knp_pagination_sortable(pagination, 'Tytuł książki', 'b.title') }}
+        {{ knp_pagination_sortable(pagination, 'Autor', 'a.name') }}
+    </div>
+
+    <ul class="reviews-list">
+        {% for review in pagination.items %}
+            {#                    <a href="href="{{ path('book_show', { slug: review.book.slug }) }}"">#}
+            <div class="review-card-extended">
+                {% set book = review.book %}{% include 'book_card.html.twig' %}
+                {% include 'review/_card.html.twig' %}
+            </div>
+            {#                    </a>#}
+        {% endfor %}
+    </ul>
+
+    <nav class="pagination reviews-pagination">
+        {{ knp_pagination_render(pagination) }}
+    </nav>
+{% else %}
+    <p class="reviews-empty">Nie napisałeś jeszcze żadnych recenzji.</p>
+{% endif %}

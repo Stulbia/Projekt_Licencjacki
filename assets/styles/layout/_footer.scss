@@ -1,7 +1,91 @@
 @use '../variables' as *;
 footer {
   background: $gradient-bg;
-  color: white;
-  padding: 1rem;
+  color: $body-bg;
+  padding: 0 ;
+
   text-align: center;
+.footer-bottom{
+  //margin: 0;
+  padding-top: 1rem;
+  background: $body-bg;
+  color:$text-color;
 }
+
+}
+
+.site-footer {
+  //background: $body-bg;
+  border-top: 1px solid rgba(0,0,0,.08);
+  padding: 2rem 1rem;
+  font-size: .95rem;
+  color: $body-bg;
+  //margin: 0;
+
+  .footer-container {
+    max-width: 1200px;
+    margin-inline: auto;
+    line-height: 2rem;
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: 1fr 2fr;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+      text-align: center;
+    }
+  }
+
+  .footer-brand {
+    .footer-logo {
+      font-weight: 700;
+      font-size: 2rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      margin-bottom: .5rem;
+      margin-top: 3rem;
+      color: $body-bg;
+      text-decoration: none;
+    }
+
+    .footer-copy {
+      font-size: .85rem;
+      //color: rgba($text-color, .75);
+    }
+  }
+
+  .footer-nav {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+
+    .footer-column {
+      min-width: 150px;
+
+      .footer-heading {
+        font-weight: 600;
+        margin-bottom: .75rem;
+        font-size: 1rem;
+        color: $body-bg;
+      }
+
+      .footer-link {
+        display: block;
+        margin: .35rem 0;
+        //color: $text-color;
+        text-decoration: none;
+
+        &:hover {
+          color: $color-primary;
+        }
+      }
+    }
+  }
+
+
+}
+
+

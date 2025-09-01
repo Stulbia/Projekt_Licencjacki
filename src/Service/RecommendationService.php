@@ -18,18 +18,55 @@ class RecommendationService implements RecommendationServiceInterface
     public function getRecommendationsFor(?User $user): array
     {
         if (!$user) {
-        // Gość – pokaż najpopularniejsze książki
-            return $this->bookRepository->findMostPopularBooks(5);
+            return $this->getTopBooks();
         }
 
-    // Krok 1: znajdź najczęściej używane tagi w recenzjach użytkownika
-        $tagIds = $this->reviewRepository->findTopTagIdsUsedByUser($user, 3);
 
-        if (empty($tagIds)) {
-            return $this->bookRepository->findMostPopularBooks(5);
+        $reviews = $this->reviewRepository->topReviewsByAuthor($user);
+        $reviews = $reviews ->getQuery()->getResult();
+        $reviewTagCounts = [];
+        $bookSet = [];
+        foreach ($reviews as $review) {
+            foreach ($review->getTagAssignments() as $assignment) {
+                $tag = $assignment->getTag();
+                $tid = $tag->getId();
+                $reviewTagCounts[$tid] = ($reviewTagCounts[$tid] ?? 0) + 1;
+            }
+            $bookSet[$review->getBook()->getId()] = $review->getBook();
         }
+        $tagCounts = [];
+        foreach ($bookSet as $book) {
+            foreach ($book->getTags() as $tag) {
+                $tid = $tag->getId();
+                $tagCounts[$tid] = ($tagCounts[$tid] ?? 0) + 1;
+            }
+        }
+        arsort($tagCounts);
+        arsort($reviewTagCounts);
+//        if (empty($topBookTags) && empty($topReviewTags)) {
+//            return $this->getTopBooks();
+//        }
+        $topBookTags    = array_slice(array_keys($tagCounts), 0, 3);
+        $topReviewTags    = array_slice(array_keys($reviewTagCounts), 0, 3);
+        //topka bookId po tagach ksiazek;
+        $top1 =  $this->reviewRepository->findMostPopularBooksByTags($topReviewTags, 10);
+        $top2 = $this->bookRepository->findBooksByTagIdsExcludingUserReviewed($topBookTags, $user, 10);
 
-    // Krok 2: znajdź książki z tymi tagami, pomiń już ocenione przez użytkownika
-        return $this->bookRepository->findBooksByTagIdsExcludingUserReviewed($tagIds, $user, 5);
+//        var_dump($top2);
+        $top = array_merge($top1, $top2);
+
+        $recommendedBooks = array_slice($this->bookRepository->searchTopWithAvgRating($top), 0, 5);
+
+        return  $recommendedBooks;
+    }
+
+
+    public function getPopularBooks(): array
+    {
+        return $this->bookRepository->findMostPopularBooks(10);
+    }
+    public function getTopBooks(): array
+    {
+        return $this->bookRepository->findHighestRatedBooks(10);
     }
 }

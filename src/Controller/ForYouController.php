@@ -21,10 +21,16 @@ class ForYouController extends AbstractController
     public function index(): Response
     {
         $user = $this->getUser();
-        $recommendedBooks = $this->recommendationService->getRecommendationsFor($user);
-
+        $yourBooks = $this->recommendationService->getRecommendationsFor($user);
+        $popularBooks = $this->recommendationService->getPopularBooks();
+        $topBooks = $this->recommendationService->getTopBooks();
         return $this->render('for_you/index.html.twig', [
-            'books' => $recommendedBooks,
+            'yourBooks' => $yourBooks,
+            'popularBooks' => $popularBooks,
+            'topBooks' => $topBooks,
         ]);
     }
+//    popularBooks
+//yourBooks
+//topBooks
 }

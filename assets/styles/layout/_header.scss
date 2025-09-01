@@ -1,6 +1,6 @@
 @use '../variables' as *;
 header {
   background: $color-primary;
-  color: white;
+  color: $body-bg;
   padding: 1rem;
 }

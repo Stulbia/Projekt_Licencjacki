@@ -1,6 +1,6 @@
 @use '../variables' as *;
 
-$accent: if(global-variable-exists(primary-color), $primary-color, #2e7d6a);
+$accent: if(global-variable-exists(primary-color), $color-primary, #2e7d6a);
 $radius: if(global-variable-exists(radius), $radius, 14px);
 
 .forYouPage {
@@ -15,7 +15,7 @@ $radius: if(global-variable-exists(radius), $radius, 14px);
 /* ---------- HERO ---------- */
 .hero {
   background: var(--hero-grad);
-  color: #fff;
+  color: $body-bg;
   padding: clamp(2rem, 5vw, 4rem) 1rem;
   margin-bottom: 1.5rem;
 
@@ -52,12 +52,12 @@ $radius: if(global-variable-exists(radius), $radius, 14px);
       transition: transform .15s ease, filter .2s ease;
 
       &.btnPrimary {
-        background: #fff;
+        background: $body-bg;
         color: #0f172a;
       }
       &.btnSecondary {
         background: rgba(255,255,255,.15);
-        color: #fff;
+        color: $body-bg;
         border: 1px solid rgba(255,255,255,.35);
         backdrop-filter: blur(6px);
       }
@@ -115,7 +115,7 @@ $radius: if(global-variable-exists(radius), $radius, 14px);
     width: 42px;
     height: 42px;
     border-radius: 50%;
-    background: #fff;
+    background: $body-bg;
     box-shadow: var(--card-shadow);
     top: 42%;
     &:after { font-size: 16px; color: #0f172a; }
@@ -124,6 +124,11 @@ $radius: if(global-variable-exists(radius), $radius, 14px);
   .swiper-pagination-bullet {
     background: rgba(0,0,0,.3);
     &-active { background: $accent; }
+  }
+
+  .swiper-pagination {
+    margin-top: 1rem;
+    position: relative;
   }
 }
 

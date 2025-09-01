@@ -71,6 +71,13 @@ class ReviewController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $selectedTags = $form->get('reviewTags')->getData();
+            foreach ($selectedTags as $tag) {
+                $assignment = new ReviewTagAssignment();
+                $assignment->setReview($review);
+                $assignment->setTag($tag);
+                $review->addTagAssignment($assignment);
+            }
             $em->persist($review);
             $em->flush();
 

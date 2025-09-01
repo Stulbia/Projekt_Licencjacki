@@ -1,13 +1,141 @@
 @use '../variables' as *;
-.btn {
-  background: $color-primary;
-  color: white;
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: $radius;
-  cursor: pointer;
 
-  &:hover {
-    background: lighten($color-primary, 10%);
+/* ---------------- Core ---------------- */
+.btn {
+  /* size tokens (override in size modifiers) */
+  --btn-pad-y: .65rem;
+  --btn-pad-x: 1rem;
+  --btn-font: .95rem;
+  --btn-radius: #{$radius};
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .45rem;
+
+  padding: var(--btn-pad-y) var(--btn-pad-x);
+  font-size: var(--btn-font);
+  font-weight: 700;
+  font-family: $font-stack;
+  line-height: 1;
+  border-radius: var(--btn-radius);
+  border: 1px solid transparent;
+  cursor: pointer;
+  user-select: none;
+  text-decoration: none;
+
+  transition:
+          transform .08s ease,
+          box-shadow .2s ease,
+          background-color .2s ease,
+          border-color .2s ease,
+          color .2s ease,
+          opacity .2s ease;
+
+  &:hover { transform: translateY(-1px); }
+  &:active { transform: translateY(0); }
+  &:disabled,
+  &[aria-disabled="true"] {
+    opacity: .6;
+    pointer-events: none;
   }
 }
+
+/* --------------- Sizes ---------------- */
+.btn-sm { --btn-pad-y: .35rem; --btn-pad-x: .7rem; --btn-font: .85rem; --btn-radius: calc(#{$radius} - 2px); }
+.btn-lg { --btn-pad-y: .8rem;  --btn-pad-x: 1.15rem; --btn-font: 1rem; }
+.btn-block { width: 100%; }
+
+/* -------------- Variants -------------- */
+@mixin focus-ring($c) {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba($c, .25);
+}
+
+/* Primary (filled) */
+.btn-primary {
+  background: $color-primary;
+  color: $body-bg;
+  border-color: $color-primary;
+  box-shadow: 0 6px 14px rgba(0,0,0,.12);
+
+  &:hover { background: lighten($color-primary, 2%); }
+  &:active { background: darken($color-primary, 6%); border-color: darken($color-primary, 6%); }
+  &:focus-visible { @include focus-ring($color-primary); }
+}
+
+
+/* Primary (filled) */
+.add-review {
+  background: $color-secondary;
+  color: $body-bg;
+  border-color: $color-secondary;
+  box-shadow: 0 6px 14px rgba(0,0,0,.12);
+  margin-left: 10px;
+
+  &:hover { background: lighten($color-secondary, 2%); }
+  &:active { background: darken($color-secondary, 6%); border-color: darken($color-secondary, 6%); }
+  &:focus-visible { @include focus-ring($color-secondary); }
+}
+
+/* Secondary (subtle neutral outline) */
+.btn-secondary {
+  background: transparent;
+  color: $text-color;
+  border-color: rgba(0,0,0,.16);
+  box-shadow: 0 4px 10px rgba(0,0,0,.06);
+
+  &:hover { background: rgba(0,0,0,.03); }
+  &:active { background: rgba(0,0,0,.06); }
+  &:focus-visible { @include focus-ring($color-primary); }
+}
+
+/* Outline Primary */
+.btn-outline-primary {
+  background: transparent;
+  color: $color-primary;
+  border-color: $color-primary;
+
+  &:hover   { background: $color-primary; color: $body-bg; }
+  &:active  { background: darken($color-primary, 8%); border-color: darken($color-primary, 8%); }
+  &:focus-visible { @include focus-ring($color-primary); }
+}
+
+/* Danger (filled) — uses your accent variable */
+.btn-danger {
+  background: $color-accent-first;
+  color: $body-bg;
+  border-color: $color-accent-first;
+
+  &:hover  { background: lighten($color-accent-first, 2%); }
+  &:active { background: darken($color-accent-first, 8%); border-color: darken($color-accent-first, 8%); }
+  &:focus-visible { @include focus-ring($color-accent-first); }
+}
+
+/* Google – light button with border */
+.btn-google {
+  background: $body-bg;
+  color: #1f1f1f;
+  border-color: rgba(0,0,0,.14);
+  box-shadow: 0 4px 10px rgba(0,0,0,.06);
+
+  &:hover  { background: #fafafa; }
+  &:active { background: #f2f2f2; }
+  &:focus-visible { @include focus-ring($color-primary); }
+}
+
+/* ------------- Utilities ------------- */
+.btn > .icon,
+.btn > .material-symbols-outlined,
+.btn > svg { inline-size: 1.1em; block-size: 1.1em; }
+
+/* Icon-only button */
+.btn-icon {
+  --btn-pad-y: .5rem; --btn-pad-x: .5rem;
+  min-inline-size: 2.25rem;
+  min-block-size: 2.25rem;
+  padding: var(--btn-pad-y);
+}
+
+/* If you still have legacy class .btn-small, map it to .btn-sm */
+.btn-small { @extend .btn-sm; }

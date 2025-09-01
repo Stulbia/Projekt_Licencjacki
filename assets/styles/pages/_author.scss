@@ -5,13 +5,16 @@
 .author {
   .banner {
     background: $gradient-bg;
-    color: #fff;
+    color: $body-bg;
     padding: clamp(1.25rem, 3vw, 2.5rem);
     display: grid;
     grid-template-columns: 140px 1fr;
     gap: clamp(1rem, 2.5vw, 2rem);
     align-items: center;
     box-shadow: 0 12px 28px rgba(0, 0, 0, 0.14);
+    h1{
+      color: $body-bg;
+    }
   }
 
   @media (min-width: 768px) {
@@ -64,7 +67,7 @@
 
   /* text block */
   .author-info {
-    color: #fff;
+    color: $body-bg;
   }
 
   .author-name {
@@ -90,6 +93,7 @@
   /* Add class="publications" to the section if you can (recommended) */
   .publications {
     margin-top: clamp(1.5rem, 4vw, 3rem);
+    padding: 0 5% 5%;
 
     h2 {
       color: $color-primary;

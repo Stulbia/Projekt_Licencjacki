@@ -263,4 +263,5 @@ class Book
         $this->coverFilename = $coverFilename;
         return $this;
     }
+
 }

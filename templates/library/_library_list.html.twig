@@ -1,0 +1,125 @@
+<div class="library-quickSearch">
+
+    <input type="search" placeholder="Szukaj w biblioteczce…" id="libSearch">
+
+    <span class="material-symbols-outlined">search</span>
+</div>
+
+<script>
+    (function(){
+        const inp = document.getElementById('libSearch');
+        if (!inp) return;
+        inp.addEventListener('input', e=>{
+            const q = e.target.value.trim().toLowerCase();
+            document.querySelectorAll('.book-card').forEach(card=>{
+                const t = (card.dataset.title || '').toLowerCase();
+                const a = (card.dataset.author || '').toLowerCase();
+                card.style.display = (t.includes(q) || a.includes(q)) ? '' : 'none';
+            });
+        });
+    })();
+</script>
+
+
+
+{% if pagination.items is not empty %}
+    {# --- bucketize --- #}
+    {% set toRead = [] %}
+    {% set reading = [] %}
+    {% set read = [] %}
+
+    {% for relation in pagination.items %}
+        {% if relation.status.value == 'to_read' %}
+            {% set toRead = toRead|merge([relation]) %}
+        {% elseif relation.status.value == 'reading' %}
+            {% set reading = reading|merge([relation]) %}
+        {% elseif relation.status.value == 'read' %}
+            {% set read = read|merge([relation]) %}
+        {% endif %}
+    {% endfor %}
+
+    {# ---------- Shelf component (repeat for each status) ---------- #}
+    <section class="shelf" data-shelf-key="toRead" aria-labelledby="shelf-to-read-title">
+        <button class="shelf-header" type="button" aria-expanded="true" aria-controls="shelf-to-read">
+            <h2 id="shelf-to-read-title" class="shelf-title">
+                <span class="material-symbols-outlined">book_5</span>Do przeczytania</h2>
+            <span class="shelf-count">{{ toRead|length }}</span>
+            <span class="shelf-chevron" aria-hidden="true">▾</span>
+        </button>
+        <div id="shelf-to-read" class="shelf-panel is-open">
+            <div class="bookGrid">
+                {% for relation in toRead %}
+                    <div class="lib-card">
+                        {% set book = relation.book %}
+                        {% set avg = book.avgRating %}
+                        {% include '_library_card.html.twig' %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <section class="shelf" data-shelf-key="reading" aria-labelledby="shelf-reading-title">
+        <button class="shelf-header" type="button" aria-expanded="false" aria-controls="shelf-reading">
+            <h2 id="shelf-reading-title" class="shelf-title">
+
+                <span class="material-symbols-outlined">two_pager</span>
+                Czytam</h2>
+            <span class="shelf-count">{{ reading|length }}</span>
+            <span class="shelf-chevron" aria-hidden="true">▾</span>
+        </button>
+        <div id="shelf-reading" class="shelf-panel is-open">
+            <div class="bookGrid">
+                {% for relation in reading %}
+                    <div class="lib-card">
+                        {% set book = relation.book %}
+                        {% set avg = book.avgRating %}
+                        {% include '_library_card.html.twig' %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <section class="shelf" data-shelf-key="read" aria-labelledby="shelf-read-title">
+        <button class="shelf-header" type="button" aria-expanded="false" aria-controls="shelf-read">
+            <h2 id="shelf-read-title" class="shelf-title">
+                <span class="material-symbols-outlined">book_2</span>
+
+                Przeczytane</h2>
+            <span class="shelf-count">{{ read|length }}</span>
+            <span class="shelf-chevron" aria-hidden="true">▾</span>
+        </button>
+        <div id="shelf-read" class="shelf-panel is-open">
+            <div class="bookGrid">
+                {% for relation in read %}
+                    <div class="lib-card">
+                        {% set book = relation.book %}
+                        {% set avg = book.avgRating %}
+                        {% include '_library_card.html.twig' %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    {{ knp_pagination_render(pagination) }}
+{% else %}
+    <p class="library-empty">Brak wyników wyszukiwania.</p>
+{% endif %}
+<script>
+    (function () {
+        document.addEventListener('click', function (e) {
+            const btn = e.target.closest('[data-actions-toggle]');
+            if (!btn) return;
+
+            const id = btn.getAttribute('aria-controls');
+            const panel = document.getElementById(id);
+            if (!panel) return;
+            const expanded = btn.getAttribute('aria-expanded') === 'true';
+            btn.setAttribute('aria-expanded', String(!expanded));
+            panel.hidden = expanded;
+        });
+    })();
+</script>
+

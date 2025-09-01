@@ -1,60 +1,9 @@
-{#{% extends 'base.html.twig' %}#}
-
-{#{% block title %}Profil {{ user.name }}{% endblock %}#}
-
-{#{% block body %}#}
-{#    <section class="profile-page">#}
-{#        <h1 class="profile-title">Profil użytkownika</h1>#}
-
-{#        <div class="profile-container">#}
-{#            #}{# ---------- Avatar ---------- #}
-{#            <div class="profile-avatar">#}
-{#                {% if user.avatarFilename %}#}
-{#                    <img src="{{ asset('uploads/avatars/' ~ user.avatarFilename) }}" alt="Avatar użytkownika {{ user.name }}" class="profile-avatar__img">#}
-{#                {% else %}#}
-{#                    <div class="profile-avatar__placeholder" aria-label="Brak avatara">#}
-{#                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="profile-avatar__icon">#}
-{#                            <path fill-rule="evenodd" d="M12 2a6 6 0 100 12 6 6 0 000-12zm-9 18a9 9 0 1118 0H3z" clip-rule="evenodd" />#}
-{#                        </svg>#}
-{#                    </div>#}
-{#                {% endif %}#}
-{#            </div>#}
-
-{#            #}{# ---------- Info ---------- #}
-{#            <div class="profile-info">#}
-{#                <dl class="profile-dl">#}
-{#                    <dt>Imię</dt>#}
-{#                    <dd>{{ user.name }}</dd>#}
-
-{#                    <dt>Email</dt>#}
-{#                    <dd>{{ user.email }}</dd>#}
-{#                </dl>#}
-
-{#                {% if user.accounts is defined and user.accounts|length > 0 %}#}
-{#                    <div class="profile-social">#}
-{#                        <h3>Profile społecznościowe</h3>#}
-{#                        <ul class="profile-social__list">#}
-{#                            {% for account in user.accounts %}#}
-{#                                <li class="profile-social__item">#}
-{#                                    <span class="profile-social__platform">{{ account.portalSpolecznosciowy }}</span>#}
-{#                                    <a class="profile-social__link" href="{{ account.link }}" target="_blank" rel="noopener noreferrer">{{ account.link }}</a>#}
-{#                                </li>#}
-{#                            {% endfor %}#}
-{#                        </ul>#}
-{#                    </div>#}
-{#                {% endif %}#}
-{#            </div>#}
-{#        </div>#}
-{#    </section>#}
-{#{% endblock %}#}
 {% extends 'base.html.twig' %}
 
 {% block title %}{{ user.name}}{% endblock %}
 
 {% block body %}
     <section class="profile-page">
-        <h1 class="profile-title">{{ user.name }}</h1>
-
         <div class="profile-container">
             {# ---------- Avatar ---------- #}
             <div class="profile-avatar">
@@ -73,84 +22,106 @@
 
             {# ---------- Info ---------- #}
             <div class="profile-info">
+                <h1 class="profile-title">{{ user.name }}</h1>
                 <dl class="profile-dl">
-                    <dt>{{ 'label.name'|trans }}</dt>
-                    <dd>{{ user.name }}</dd>
+{#                    <dt>{{ 'label.name'|trans }}</dt>#}
+{#                    <dd>{{ user.name }}</dd>#}
 
                     <dt>{{ 'label.email'|trans }}</dt>
                     <dd>{{ user.email }}</dd>
                 </dl>
 
 
-                {# ---------- Social accounts ---------- #}
-                <div class="profile-social">
-                    <h3>{{ 'label.social_profiles'|trans }}</h3>
 
-                    {% if user.accounts is defined and user.accounts|length > 0 %}
-                        <ul class="profile-social__list">
-                            {% for account in user.accounts %}
-                                <li class="profile-social__item">
-                                    <span class="profile-social__platform">{{ account.portalSpolecznosciowy }}</span>
-                                    <a class="profile-social__link" href="{{ account.link }}" target="_blank" rel="noopener noreferrer">
-                                        {{ account.link }}
-                                    </a>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    {% else %}
-                        <p class="profile-social__empty">{{ 'message.no_social_profiles'|trans }}</p>
-                    {% endif %}
 
-                </div>
             </div>
         </div>
 
+        <section class="profile-reviews">
+            <h2 class="profile-section-title">Opis</h2>
+            <p>{{ user.opis }}</p>
+        </section>
+        {# ---------- Social accounts ---------- #}
+        <section class="profile-reviews">
+        <div class="profile-social">
+{#            <h3>{{ 'label.social_profiles'|trans }} </h3>#}
+            <h2 class="profile-section-title">Połączone konta</h2>
 
+
+            {% if user.accounts is defined and user.accounts|length > 0 %}
+                <ul class="profile-social__list">
+                    {% for account in user.accounts %}
+                        <li class="profile-social__item">
+                            <span class="profile-social__platform">{{ account.portalSpolecznosciowy }}:</span>
+                            <a class="profile-social__link" href="{{ account.link }}" target="_blank" rel="noopener noreferrer">
+                                {{ account.label }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>{{ 'message.no_social_profiles'|trans }}</p>
+            {% endif %}
+
+        </div>
+    </section>
                 {# ---------- RECENZJE ---------- #}
                 <section class="profile-reviews">
                     <h2 class="profile-section-title">Recenzje użytkownika</h2>
 
-                    {% if paginationR.items is not empty %}
-                        <ul class="reviewList">
-                            {% for review in paginationR.items %}
-                                <li class="reviewCard">
-                                    <h3><a href="{{ path('book_show', { slug: review.book.slug }) }}">{{ review.book.title }}</a></h3>
-                                    <p><strong>Ocena:</strong> {{ review.rating }}/10</p>
-                                    <p>{{ review.comment|slice(0, 200) ~ '...' }}</p>
-                                </li>
-                            {% endfor %}
-                        </ul>
+{% set pagination = paginationR %}
+                    {% set isUserOwn = false %}
+                    {% include 'review/_review_list.html.twig' %}
 
-                        {{ knp_pagination_render(paginationR) }}
-                    {% else %}
-                        <p class="profile-empty">Ten użytkownik nie napisał jeszcze żadnych recenzji.</p>
-                    {% endif %}
+{#                    {% if paginationR.items is not empty %}#}
+{#                        {% set isUserOwn = false %}#}
+{#                        <ul class="reviewList">#}
+{#                            {% for review in paginationR.items %}#}
+{#                                {% include 'review/_card.html.twig' %}#}
+{#                            {% endfor %}#}
+{#                        </ul>#}
+
+{#                        {{ knp_pagination_render(paginationR) }}#}
+{#                    {% else %}#}
+{#                        <p class="profile-empty">Ten użytkownik nie napisał jeszcze żadnych recenzji.</p>#}
+{#                    {% endif %}#}
                 </section>
 
                 {# ---------- BIBLIOTECZKA ---------- #}
                 <section class="profile-books">
                     <h2 class="profile-section-title">Biblioteczka</h2>
-
-                    {% if paginationB.items is not empty %}
-                        <div class="bookGrid">
-                            {% for relation in paginationB.items %}
-                                {% set book = relation.book %}
-                                <div class="bookCard">
-                                    {% if book.coverFilename %}
-                                        <img src="{{ asset('uploads/covers/' ~ book.coverFilename) }}" class="book-cover" alt="Okładka: {{ book.title }}">
-                                    {% else %}
-                                        <img src="{{ asset('uploads/defaultCover.svg') }}" alt="Brak okładki">
-                                    {% endif %}
-                                    <h3><a href="{{ path('book_show', {slug: book.slug}) }}">{{ book.title }}</a></h3>
-                                    <p class="author">{{ book.author ? book.author : 'Nieznany autor' }}</p>
-                                </div>
-                            {% endfor %}
-                        </div>
-
-                        {{ knp_pagination_render(paginationB) }}
-                    {% else %}
-                        <p class="profile-empty">Ten użytkownik nie ma jeszcze żadnych książek w biblioteczce.</p>
-                    {% endif %}
+                    {% set pagination = paginationB %}
+                    {% include 'library/_library_list.html.twig' %}
                 </section>
             </section>
+
+    <script>
+        (function() {
+            const STORAGE_KEY = 'libraryShelvesState';
+            const root = document.querySelector('.profile-page');
+            if (!root) return;
+
+            const state = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+
+            // Initialize shelves from saved state
+            document.querySelectorAll('.shelf').forEach(shelf => {
+                const key = shelf.getAttribute('data-shelf-key');
+                const header = shelf.querySelector('.shelf-header');
+                const panel = shelf.querySelector('.shelf-panel');
+
+                const isOpen = state[key] !== undefined ? !!state[key] : true;
+                header.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                panel.classList.toggle('is-open', isOpen);
+
+                header.addEventListener('click', () => {
+                    const expanded = header.getAttribute('aria-expanded') === 'true';
+                    header.setAttribute('aria-expanded', (!expanded).toString());
+                    panel.classList.toggle('is-open', !expanded);
+                    state[key] = !expanded;
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+                });
+            });
+        })();
+    </script>
         {% endblock %}
+

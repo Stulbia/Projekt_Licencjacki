@@ -1,0 +1,312 @@
+@use '../variables' as *;
+
+.library-page {
+  padding-block: clamp(0.75rem, 2vw, 1.25rem);
+}
+
+.library-container {
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: 1rem;
+
+}
+
+.library-title {
+  margin: 0 0 1rem;
+  font-size: clamp(1.4rem, 3.2vw, 2rem);
+  font-weight: 800;
+  color: $text-color;
+}
+
+/* Shelf component */
+.shelf {
+  background: $body-bg;
+  border: 1px solid rgba(0,0,0,.08);
+  border-radius: $radius;
+  box-shadow: 0 4px 16px rgba(0,0,0,.06);
+  margin-bottom: 1rem;
+  overflow: clip; // prevents outline overflow on animation
+}
+
+.shelf-header {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: .75rem;
+  text-align: left;
+
+  padding: .85rem 1rem;
+  //border: 0;
+  border: solid 2px  rgba($color-primary,0.3);
+  border-radius: $radius;
+  cursor: pointer;
+  background: $body-bg;
+
+
+  //        linear-gradient(
+  //                90deg,
+  //                rgba($color-primary,0.2) 0%,
+  //                rgba($color-accent-first,0.2)38%,
+  //                rgba($color-accent-second,0.2) 100%
+  //);
+  //transition: background .5s ease;
+  transition: border .5s ease;
+
+  &:hover {
+    //background:  linear-gradient(
+  //                90deg,
+  //                rgba($color-primary,0.4) 0%,
+  //                rgba($color-accent-first,0.4)38%,
+  //                rgba($color-accent-second,0.4) 100%
+  //);
+
+    border: solid 2px   $color-accent-second;
+  }
+}
+
+.shelf-title {
+  margin: 0;
+  font-size: clamp(1.05rem, 2.2vw, 1.2rem);
+  font-weight: 800;
+  color: $text-color;
+}
+
+.shelf-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.9rem;
+  height: 1.6rem;
+  padding: 0 .5rem;
+  border-radius: 999px;
+  font-size: .85rem;
+  font-weight: 700;
+  //background: mix($body-bg, $color-secondary, 90%);
+  background: $body-bg;
+  border: solid 3px rgba($color-accent-first,.08);
+  //border: 1px solid rgba(0,0,0,.08);
+  color: $text-color;
+}
+
+.shelf-chevron {
+  transition: transform .2s ease;
+}
+
+.shelf-header[aria-expanded="true"] .shelf-chevron { transform: rotate(180deg); }
+
+/* Collapsible panel with smooth height animation */
+.shelf-panel {
+  overflow: hidden;
+  transition: grid-template-rows .25s ease, padding .2s ease;
+  display: grid;
+  grid-template-rows: 0fr; // collapsed
+  padding: 0 1rem;
+
+  &.is-open {
+    grid-template-rows: 1fr; // expanded
+    padding: 0 1rem 1rem;
+  }
+
+  > * {
+    min-height: 0; // required for the grid animation trick
+  }
+}
+
+
+
+/* Your cards grid (reusing existing bookGrid class if you have it) */
+.bookGrid {
+  //display: grid;
+  display: flex;
+  flex-wrap: wrap;
+  //gap: clamp(.75rem, 2vw, 1rem);
+  //grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+}
+
+
+/* Empty state */
+.library-empty {
+  margin: 1rem 0 2rem;
+  padding: 1rem;
+  border-radius: $radius;
+  background: mix($body-bg, $color-secondary, 96%);
+  border: 1px dashed rgba(0,0,0,.1);
+  color: $text-color;
+
+}
+
+/* --- Quick search --- */
+.library-quickSearch {
+  margin: .25rem 0 1rem;
+  display: flex;
+  border-radius: 999px;
+  border: 2px solid rgba($color-primary,.22);
+
+  flex-direction: row;
+  width: fit-content;
+  overflow: hidden;
+  background: $body-bg;
+
+  .material-symbols-outlined{
+    padding: 5px;
+    background: $color-primary;
+    color: $body-bg;
+
+  }
+}
+.library-quickSearch input[type="search"]{
+  padding: .55rem .75rem;
+  //border-radius: 999px;
+  width:300px;
+  font-weight: 500;
+  font-size: medium;
+  border: 2px solid rgba($color-primary,.22);
+  background: rgba(0,0,0,0);
+}
+@media (max-width: 650px) {
+  .bookGrid {
+    //padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-items: center;
+    align-content: center;
+    justify-content: center;
+
+    margin: auto;
+
+  }
+}
+
+.book-actions{
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  align-items: center;
+  flex-direction: column;
+  margin: auto;
+  background: $body-bg;
+  //border: solid red 5px;
+
+  border: 2px solid rgba($color-accent-third,.08);
+  //border-radius: 0;
+  /*background: var(--panel-bg, #fff);*/
+  box-shadow: 0 6px 18px rgba($color-primary,.06);
+
+
+  justify-self: center;
+
+  .actions-toggle{
+    text-align: center;
+    margin-bottom: 0;
+    margin-top: 0;
+    border: hidden;
+    background: mix($color-accent-second,$body-bg,90%);
+  }
+
+}
+
+.book-actions { position: relative;
+  border-radius: $radius;
+  overflow: hidden;
+  width: 90%;
+  background: $body-bg;
+  //padding: 0 5% 5%;
+
+}
+
+.actions-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .4rem .7rem;
+  border-radius: 0;
+  width: 100%;
+  background: $body-bg;
+  margin: 0;
+
+
+  background: rgba(0,0,0,.03);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.actions-panel[hidden] { display: none !important; }
+
+.actions-panel {
+  margin: 0;
+  //border: 2px solid rgba(0,0,0,.08);
+  //border-radius: 0;
+  /*background: var(--panel-bg, #fff);*/
+  //box-shadow: 0 6px 18px rgba(0,0,0,.06);
+  padding: 0;
+  background: $body-bg;
+}
+
+.actions-list {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  align-items: center;
+  border: hidden;
+  //width: 90%;
+  margin:0;
+  //background: greenyellow;
+  justify-content: center;
+
+  form{
+    padding: 5%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 200px;
+  }
+    .status-pill{
+      cursor: pointer;
+      padding: 5%;
+      width: 100%;
+      //border: hidden;
+      border: 1px solid rgba($color-primary,1);
+      color: $text-color;
+      font-weight: 500;
+      border-radius: $radius;
+      background: rgba($color-primary,0.1 );
+
+      &:hover{
+      background: rgba($color-primary,0.2);
+        //color: $body-bg;
+      }
+
+      &.active{
+        color: $body-bg;
+        background: $color-primary;
+        font-weight: 700;
+        border: 1px solid darken($color-primary,10%);
+
+      }
+    }
+
+}
+
+.actions-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+}
+
+.library-card{
+  margin-bottom: 0;
+  border-radius: 0;
+  //width: 100%;
+
+}
+.lib-card{
+  padding:0;
+  //margin:1rem;
+  border-radius: $radius;
+  //border: $color-primary 2px solid;
+
+
+
+}

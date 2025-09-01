@@ -64,7 +64,7 @@ class UserController extends AbstractController
                 $this->userManager->register($user);
                 $this->addFlash('success', $this->translator->trans('message.registered_successfully'));
 
-                return $this->redirectToRoute('book_index');
+                return $this->redirectToRoute('user_index');
             } catch (UniqueConstraintViolationException) {
                 $this->addFlash('error', 'message.Email in use.');
             }
@@ -73,12 +73,12 @@ class UserController extends AbstractController
         return $this->render('user/register.html.twig', ['form' => $form->createView()]);
     }
 
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    #[Route('/show', name: 'user_show', methods: ['GET'])]
-    public function show(): Response
-    {
-        return $this->render('user/show.html.twig', ['user' => $this->getUser()]);
-    }
+//    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+//    #[Route('/show', name: 'user_show', methods: ['GET'])]
+//    public function show(): Response
+//    {
+//        return $this->render('user/show.html.twig', ['user' => $this->getUser()]);
+//    }
 
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[Route('/edit', name: 'user_edit', methods: ['GET', 'PUT'])]
@@ -96,7 +96,7 @@ class UserController extends AbstractController
             $this->userManager->save($user);
             $this->addFlash('success', $this->translator->trans('message.updated_successfully'));
 
-            return $this->redirectToRoute('user_show');
+            return $this->redirectToRoute('user_index');
         }
 
         return $this->render('user/edit.html.twig', [
@@ -128,7 +128,7 @@ class UserController extends AbstractController
                     $this->userManager->upgradePassword($user, $newPassword);
                     $this->addFlash('success', 'message.Password_updated_successfully.');
 
-                    return $this->redirectToRoute('user_show');
+                    return $this->redirectToRoute('user_index');
                 } catch (\Exception $e) {
                     $this->addFlash('error', 'message.error: ' . $e->getMessage());
                 }
