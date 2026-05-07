@@ -54,21 +54,6 @@ class BookController extends AbstractController
         ]);
     }
 
-//    #[Route('/my-books', name: 'book_my_books', methods: ['GET'])]
-//    #[IsGranted('ROLE_USER')]
-//    public function myBooks(
-//        #[MapQueryString(resolver: BookListInputFiltersDtoResolver::class)] BookListInputFiltersDto $filters,
-//        #[MapQueryParameter] int $page = 1
-//    ): Response {
-//        $pagination = $this->bookService->getPaginatedUserList($page, $this->getUser(), $filters);
-//
-//        return $this->render('book/my_books.html.twig', [
-//            'pagination' => $pagination,
-//            'sortBy' => $filters->sortBy,
-//        ]);
-//    }
-
-
     #[Route('/search', name: 'book_search', methods: ['GET'])]
     public function search(
         \Symfony\Component\HttpFoundation\Request $request ,
@@ -95,59 +80,6 @@ class BookController extends AbstractController
             'perPage'    => $perPage,
         ]);
     }
-//
-//    #[Route('/create', name: 'book_create', methods: ['GET', 'POST'])]
-//    #[IsGranted('ROLE_USER')]
-//    public function create(Request $request): Response
-//    {
-//        $user = $this->getUser();
-//        $book = new Book();
-//        $form = $this->createForm(BookType::class, $book, [
-//            'method' => 'POST',
-//            'action' => $this->generateUrl('book_create'),
-//        ]);
-//
-//        $form->handleRequest($request);
-//
-//        if ($form->isSubmitted() && $form->isValid()) {
-//            $file = $form->get('file')->getData();
-//            $this->bookService->save($book, $file, $user);
-//            $this->addFlash('success', $this->translator->trans('message.created_successfully'));
-//
-//            return $this->redirectToRoute('book_index');
-//        }
-//
-//        return $this->render('book/create.html.twig', [
-//            'form' => $form->createView(),
-//        ]);
-//    }
-
-
-//    #[Route('/my_books', name: 'book_my_books', methods: ['GET'])]
-//    public function myBooks(Request $request): Response
-//    {
-//        $page = $request->query->getInt('page', 1);
-//
-//        /** @var User $user */
-//        $user = $this->getUser();
-//
-//        $filters = new BookSearchInputFiltersDto(
-//            tagId: $request->query->getInt('tagId'),
-//            bookStatus: $request->query->get('statusId', 'PUBLIC'),
-//            titlePattern: $request->query->get('title'),
-//            descriptionPattern: $request->query->get('description'),
-//            sortBy: $request->query->get('sortBy'),
-//            author: $request->query-> get('author'),
-//            minRating: $request->query->getInt('minRating')
-//        );
-//
-//        $pagination = $this->bookService->getUserBooksList($page, $user, $filters);
-//
-//        return $this->render('book/user_books.html.twig', [
-//            'pagination' => $pagination,
-//            'filters' => $filters,
-//        ]);
-//    }
 
     #[Route('/my_books', name: 'my_books', methods: ['GET'])]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
@@ -169,37 +101,6 @@ class BookController extends AbstractController
             'sortBy' => $filters->sortBy,
         ]);
     }
-
-
-
-
-
-
-//
-//
-//    #[Route('/{id}/edit', name: 'book_edit', requirements: ['id' => '\d+'], methods: ['GET', 'PUT'])]
-//    #[IsGranted('EDIT', subject: 'book')]
-//    public function edit(Request $request, Book $book): Response
-//    {
-//        $form = $this->createForm(BookEditType::class, $book, [
-//            'method' => 'PUT',
-//            'action' => $this->generateUrl('book_edit', ['id' => $book->getId()]),
-//        ]);
-//
-//        $form->handleRequest($request);
-//
-//        if ($form->isSubmitted() && $form->isValid()) {
-//            $this->bookService->edit($book);
-//            $this->addFlash('success', $this->translator->trans('message.updated_successfully'));
-//
-//            return $this->redirectToRoute('book_index');
-//        }
-//
-//        return $this->render('book/edit.html.twig', [
-//            'form' => $form->createView(),
-//            'book' => $book,
-//        ]);
-//    }
 
     /**
      * @param Book $book

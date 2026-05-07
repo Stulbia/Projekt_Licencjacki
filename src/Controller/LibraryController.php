@@ -115,6 +115,8 @@ class LibraryController extends AbstractController
             'action' => $this->generateUrl('library_index'),
         ]);
         $query = $relationRepo->getBooksByUserWithFilters($user, $filters);
+        dump($query);
+        die;
         $pagination = $paginator->paginate(
             $query,
             $page,

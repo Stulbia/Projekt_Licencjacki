@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use App\Entity\Author;
 use App\Entity\Book;
 use App\Entity\Review;
@@ -15,6 +16,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
+#[AdminDashboard(routePath: '/admin', routeName: 'admin')]
 class DashboardController extends AbstractDashboardController
 {
     public function __construct(

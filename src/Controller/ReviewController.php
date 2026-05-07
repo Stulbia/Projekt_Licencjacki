@@ -62,8 +62,13 @@ class ReviewController extends AbstractController
 
         $avg = $this->reviewService->avgRating($book->getId());
         $currentUser = $this->getUser();
+        foreach ($book->getReviews() as $review) {
+            if ($currentUser && $review->getAuthor() ===$currentUser) {
+                $UserReview = $review;
+            }}
 
-        $review = (new Review())
+         $review = $UserReview ?? new Review();
+         $review
             ->setBook($book)
             ->setAuthor($currentUser);
 

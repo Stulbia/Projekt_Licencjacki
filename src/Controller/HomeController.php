@@ -13,12 +13,14 @@ class HomeController extends AbstractController
     public function index(BookService $bookService): Response
     {
         $popularBooks = $bookService->findMostPopularBooks(1);
+        dump($popularBooks);
 
         return $this->render('home/index.html.twig', [
             'popularBooks' => $popularBooks,
         ]);
     }
 
+    //tba
     #[Route('/contact', name: 'contact')]
     public function contact(): Response
     {

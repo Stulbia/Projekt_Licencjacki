@@ -33,6 +33,7 @@
 {#    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />#}
 
     {% block stylesheets %} {% endblock %}
+            {{ encore_entry_link_tags('app') }}
 </head>
 <body class="">
 {% set ratingVisible=true %}
@@ -63,6 +64,8 @@
 
 
 {% block javascripts %}{% endblock %}
+            {{ encore_entry_script_tags('app') }}
+            {% block importmap %}{{ importmap('app') }}{% endblock %}
 {% include 'footer.html.twig' %}
 </body>
 </html>

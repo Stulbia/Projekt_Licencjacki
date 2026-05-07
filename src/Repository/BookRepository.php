@@ -18,6 +18,7 @@ use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -459,18 +460,6 @@ class BookRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
-//    public function findMostPopularBooks(int $limit = 6): array
-//    {
-//        return $this->createQueryBuilder('b')
-//            ->leftJoin('b.reviews', 'r')
-//            ->addSelect('AVG(r.rating) AS HIDDEN avg_rating')
-//            ->groupBy('b.id')
-//            ->having('COUNT(r.id) > 0')
-//            ->orderBy('avg_rating', 'DESC')
-//            ->setMaxResults($limit)
-//            ->getQuery()
-//            ->getResult();
-//    }
 
     public function findMostPopularBooks(int $limit = 10): array
     {
@@ -483,8 +472,14 @@ class BookRepository extends ServiceEntityRepository
             ->orderBy('reviews_count', 'DESC')                     // najwięcej recenzji
             ->addOrderBy('b.id', 'DESC')                           // tie-breaker opcjonalny
             ->setMaxResults($limit)
-            ->getQuery()
-            ->getResult();
+            ->leftJoin('b.author', 'a')
+            ->getQuery();
+//            ->getResult();
+
+//tu brzydki fix ladowania
+        $paginator = new Paginator($rows, true); // true oznacza fetch join collection
+
+        $rows =  iterator_to_array($paginator);
 
         return $this->hydrateAvgRatingIntoBooks($rows);
     }

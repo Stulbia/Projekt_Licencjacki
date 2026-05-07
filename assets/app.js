@@ -1,3 +1,4 @@
+import './bootstrap.js';
 // Import SCSS
 import './styles/app.scss';
 
