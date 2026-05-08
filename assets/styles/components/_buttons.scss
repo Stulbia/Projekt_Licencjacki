@@ -137,5 +137,5 @@
   padding: var(--btn-pad-y);
 }
 
-/* If you still have legacy class .btn-small, map it to .btn-sm */
+/* mapping small to sm */
 .btn-small { @extend .btn-sm; }

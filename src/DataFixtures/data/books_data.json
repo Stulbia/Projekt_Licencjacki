@@ -1,122 +1,1402 @@
 [
-  {
-    "title": "Pride and Prejudice",
-    "author": "Jane Austen",
-    "description": "A timeless romance exploring the themes of love, social standing, and misunderstanding.",
-    "cover": "pride_and_prejudice.jpg"
-  },
-  {
-    "title": "Frankenstein",
-    "author": "Mary Shelley",
-    "description": "A gothic novel about a scientist who creates a sentient creature with tragic consequences.",
-    "cover": "frankenstein.jpg"
-  },
-  {
-    "title": "Dracula",
-    "author": "Bram Stoker",
-    "description": "A chilling tale of the infamous vampire Count Dracula and his attempt to move from Transylvania to England.",
-    "cover": "dracula.jpg"
-  },
-  {
-    "title": "Jane Eyre",
-    "author": "Charlotte Brontë",
-    "description": "A powerful coming-of-age story of an orphaned girl who becomes a governess.",
-    "cover": "jane_eyre.jpg"
-  },
-  {
-    "title": "Moby-Dick",
-    "author": "Herman Melville",
-    "description": "An epic tale of obsession and revenge between a sea captain and a white whale.",
-    "cover": "moby_dick.jpg"
-  },
-  {
-    "title": "The Adventures of Sherlock Holmes",
-    "author": "Arthur Conan Doyle",
-    "description": "A collection of mysteries solved by the brilliant detective Sherlock Holmes.",
-    "cover": "sherlock_holmes.jpg"
-  },
-  {
-    "title": "The Picture of Dorian Gray",
-    "author": "Oscar Wilde",
-    "description": "A young man sells his soul to retain youth and beauty, facing moral decay.",
-    "cover": "dorian_gray.jpg"
-  },
-  {
-    "title": "The Time Machine",
-    "author": "H.G. Wells",
-    "description": "A scientist invents a machine that allows him to travel into the distant future.",
-    "cover": "time_machine.jpg"
-  },
-  {
-    "title": "Twenty Thousand Leagues Under the Sea",
-    "author": "Jules Verne",
-    "description": "An underwater adventure aboard Captain Nemo’s submarine, the Nautilus.",
-    "cover": "20k_leagues.jpg"
-  },
-  {
-    "title": "The Call of the Wild",
-    "author": "Jack London",
-    "description": "A story about a domestic dog reverting to his wild instincts in the Alaskan wilderness.",
-    "cover": "call_of_the_wild.jpg"
-  },
-  {
-    "title": "The War of the Worlds",
-    "author": "H.G. Wells",
-    "description": "Aliens invade Earth in this early science fiction classic.",
-    "cover": "war_of_the_worlds.jpg"
-  },
-  {
-    "title": "Les Misérables",
-    "author": "Victor Hugo",
-    "description": "A sweeping novel of love, justice, and redemption set during post-revolutionary France.",
-    "cover": "les_miserables.jpg"
-  },
-  {
-    "title": "Crime and Punishment",
-    "author": "Fyodor Dostoevsky",
-    "description": "A psychological drama following a man who believes he can commit a crime without consequences.",
-    "cover": "crime_and_punishment.jpg"
-  },
-  {
-    "title": "The Brothers Karamazov",
-    "author": "Fyodor Dostoevsky",
-    "description": "A philosophical novel about family, faith, and free will.",
-    "cover": "brothers_karamazov.jpg"
-  },
-  {
-    "title": "Wuthering Heights",
-    "author": "Emily Brontë",
-    "description": "A tragic story of love and revenge on the Yorkshire moors.",
-    "cover": "wuthering_heights.jpg"
-  },
-  {
-    "title": "The Scarlet Letter",
-    "author": "Nathaniel Hawthorne",
-    "description": "A tale of sin, guilt, and redemption in Puritan New England.",
-    "cover": "scarlet_letter.jpg"
-  },
-  {
-    "title": "The Jungle Book",
-    "author": "Rudyard Kipling",
-    "description": "Stories of a boy raised by wolves in the Indian jungle.",
-    "cover": "jungle_book.jpg"
-  },
-  {
-    "title": "The Count of Monte Cristo",
-    "author": "Alexandre Dumas",
-    "description": "A tale of betrayal, imprisonment, and revenge.",
-    "cover": "monte_cristo.jpg"
-  },
-  {
-    "title": "Treasure Island",
-    "author": "Robert Louis Stevenson",
-    "description": "A classic pirate adventure involving treasure maps and mutiny.",
-    "cover": "treasure_island.jpg"
-  },
-  {
-    "title": "A Tale of Two Cities",
-    "author": "Charles Dickens",
-    "description": "A novel set during the French Revolution, exploring justice and sacrifice.",
-    "cover": "tale_two_cities.jpg"
-  }
+    {
+        "title": "20 000 mil podmorskiej żeglugi",
+        "author": "Jules Gabriel Verne",
+        "description": "— Ach, komendancie! — zawołałem z przekonaniem w głosie — „Nautilus” to prawdziwie cudowny statek!\n— Tak, panie profesorze...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/20-000-mil-podmorskiej-zeglugi.jpg",
+        "tags": []
+    },
+    {
+        "title": "Abuzei i Tair",
+        "author": "Ignacy Krasicki",
+        "description": "«Winszuj, ojcze — rzekł Tair — w dobrym jestem stanie.\nJutrom szwagier sułtana i na polowanie\nZ...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/abuzei-i-tair.jpg",
+        "tags": []
+    },
+    {
+        "title": "[Ach! rzucić sieci zdarte...]",
+        "author": "Tristan Derème",
+        "description": "Ach! rzucić sieci zdarte, wędki i robaki,\nI te książki! Być prostym, jak wiejskie chłopaki...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/ach-rzucic-sieci-zdarte.jpg",
+        "tags": []
+    },
+    {
+        "title": "A co wam śpiewać",
+        "author": "Maria Konopnicka",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/a-co-wam-spiewac.jpg",
+        "tags": []
+    },
+    {
+        "title": "A cóż z tą Dzieciną...",
+        "author": "Autor nieznany ",
+        "description": "Jużci nie chce płakać Dziecina dłużej,  \nAle ukojone oczęta mruży:   \nWiec Ją włóżmy w kolebeczkę...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/a-coz-z-ta-dziecina.jpg",
+        "tags": []
+    },
+    {
+        "title": "Adam Asnyk. Sylwetka literacka",
+        "author": "Jan Sten",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/adam-asnyk-sylwetka-literacka.jpg",
+        "tags": []
+    },
+    {
+        "title": "Adaś",
+        "author": "Stanisław Jachowicz",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/adas.jpg",
+        "tags": []
+    },
+    {
+        "title": "Pieśń II, 3 (Aequam memento rebus in arduis...)",
+        "author": "Horacy",
+        "description": "Ziem skupowanych ustąpisz — i domu.\nI willi, którą żółty Tyber myje —\nUstąpisz: bogactw spiętrzonych ogromu...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/ad-dellium.jpg",
+        "tags": []
+    },
+    {
+        "title": "Adelka",
+        "author": "Stanisław Jachowicz",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/adelka.jpg",
+        "tags": []
+    },
+    {
+        "title": "Pieśń I, 30 (O Venus regina Cnidi Paphique...)",
+        "author": "Horacy",
+        "description": "Niech śpieszy z tobą i syn z strzałą w ręku,\nI Gracje z rozwianymi przepaski...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/ad-venerem.jpg",
+        "tags": []
+    },
+    {
+        "title": "Agady talmudyczne",
+        "author": "Autor nieznany ",
+        "description": "— Jest siedem niebios: pierwsze niebo nazywa się wilon i nie ma specjalnego przeznaczenia. Zwija się...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/agady-talmudyczne.jpg",
+        "tags": []
+    },
+    {
+        "title": "A jednak ja nie wątpię - bo się pora zbliża",
+        "author": "Juliusz Słowacki",
+        "description": "Dzięki Ci więc, o Boże — że już byłeś blisko,\nA jeszcześ Twojej złotej nie odsłonił...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/a-jednak-ja-nie-watpie-bo-sie-pora-zbliza.jpg",
+        "tags": []
+    },
+    {
+        "title": "Oresteja",
+        "author": " Ajschylos",
+        "description": "Podczas powyższego śpiewu ustawiono na ziemi ławki dla sędziów, oskarżonego i oskarżycieli, wniesiono stół z...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/ajschylos-oresteja.jpg",
+        "tags": []
+    },
+    {
+        "title": "Prometeusz skowany",
+        "author": " Ajschylos",
+        "description": "Najgorszej boć znamię \nChoroby, jeśli słowo w naszych uściech kłamie.\n\n",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/ajschylos-prometeusz-skowany.jpg",
+        "tags": []
+    },
+    {
+        "title": "A kiedy będziesz...",
+        "author": "Kazimierz Przerwa-Tetmajer",
+        "description": "Imienia twego niech nie śledzą — —\nja wiem i śmierć, co jest przede mną;\nkres nam...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/a-kiedy-bedziesz.jpg",
+        "tags": []
+    },
+    {
+        "title": "Akordy jesienne",
+        "author": "Jan Kasprowicz",
+        "description": "Przejdź pielgrzymem świat ten cały:\nw owych mrocznych izbach gość,\nGdzie nędzarze z nóg lecący...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/akordy-jesienne.jpg",
+        "tags": []
+    },
+    {
+        "title": "Akslop",
+        "author": "Miłosz Biedrzycki",
+        "description": "Akslop, może to jakieś duńskie miasto\njestem tu przejazdem, co prawda na\nnieco dłużej, bo...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/akslop.jpg",
+        "tags": []
+    },
+    {
+        "title": "Małe kobietki",
+        "author": "Louisa May Alcott",
+        "description": "Poczuwamy się do przykrego obowiązku, by opisać nagłe i tajemnicze zniknięcie naszej kochanej przyjaciółki, pani...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/alcott-male-kobietki.jpg",
+        "tags": []
+    },
+    {
+        "title": "Alegoria",
+        "author": "Ignacy Krasicki",
+        "description": "Gadał ksiądz o Adamie,\nI o bramie,\nI o wężu, i o Ewie,\nI o...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/alegoria-bajki-nowe.jpg",
+        "tags": []
+    },
+    {
+        "title": "Kasrylewka",
+        "author": "Szolem Alejchem",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/alejchem-kasrylewka.jpg",
+        "tags": []
+    },
+    {
+        "title": "Z jarmarku",
+        "author": "Szolem Alejchem",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/alejchem-z-jarmarku.jpg",
+        "tags": []
+    },
+    {
+        "title": "Trzej muszkieterowie",
+        "author": "Aleksander Dumas (ojciec)",
+        "description": "— O! Ty mnie nie kochasz! — wykrzyknęła Ketty. — O! Ja nieszczęśliwa!\nNa taki zarzut jest tylko...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/aleksander-dumas-trzej-muszkieterowie.jpg",
+        "tags": []
+    },
+    {
+        "title": "Trzej muszkieterowie, tom drugi",
+        "author": "Aleksander Dumas (ojciec)",
+        "description": "Trzeba pamiętać, że różne wypadki czyhają na człowieka. Życie jest to różaniec złożony z przeciwności...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/aleksander-dumas-trzej-muszkieterowie-tom-2.jpg",
+        "tags": []
+    },
+    {
+        "title": "Alinka",
+        "author": "Stanisław Jachowicz",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/alinka.jpg",
+        "tags": []
+    },
+    {
+        "title": "Serce",
+        "author": "Edmondo de Amicis",
+        "description": " \nNajdzielniejszy wszakże jest Coretti, biedny Coretti, który wstaje o piątej rano i pomaga ojcu nosić...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/amicis-serce.jpg",
+        "tags": []
+    },
+    {
+        "title": "Baśnie",
+        "author": "Hans Christian Andersen",
+        "description": "A kiedy wymówiła słowa: „Wszystko kocham serca biciem, a przestanę chyba z życiem!” — Kaj przypomniał...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/andersen-basnie.jpg",
+        "tags": []
+    },
+    {
+        "title": "Mała syrenka",
+        "author": "Hans Christian Andersen",
+        "description": "I polny kwiatek zdawał się wzajemnie dla niego tylko rozwijać się, kwitnąć, rozlewać woń leciuchną...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/andersen-mala-syrenka.jpg",
+        "tags": []
+    },
+    {
+        "title": "Motylek",
+        "author": "Hans Christian Andersen",
+        "description": "Brat najstarszy, który zajął się wyrobem cegły, zrozumiał w krótkim czasie, iż każda prostokątna, różowa...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/andersen-motylek.jpg",
+        "tags": []
+    },
+    {
+        "title": "Tylko grajek",
+        "author": "Hans Christian Andersen",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/andersen-tylko-grajek.jpg",
+        "tags": []
+    },
+    {
+        "title": "Androgyne",
+        "author": "Stanisław Przybyszewski",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/androgyne.jpg",
+        "tags": []
+    },
+    {
+        "title": "Ciemności kryją ziemię",
+        "author": "Jerzy Andrzejewski",
+        "description": "Lecz nowy stanowiąc porządek, skąd się rodziły ustawy kształtujące ów ład? Rozważając to podstawowe w...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/andrzejewski-ciemnosci-kryja-ziemie.jpg",
+        "tags": []
+    },
+    {
+        "title": "Miazga",
+        "author": "Jerzy Andrzejewski",
+        "description": "jest gęsta zadymka śnieżna, gdy obudzony w środku nocy w więziennej celi wychodzi w towarzystwie...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/andrzejewski-miazga.jpg",
+        "tags": []
+    },
+    {
+        "title": "An Frau Caroline Pichler",
+        "author": "Karol Bołoz Antoniewicz",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/an-frau-caroline-pichler.jpg",
+        "tags": []
+    },
+    {
+        "title": "Anielka",
+        "author": "Stanisław Jachowicz",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/anielka.jpg",
+        "tags": []
+    },
+    {
+        "title": "Anioł",
+        "author": "Hans Christian Andersen",
+        "description": "— Tutaj, w tej wąskiej uliczce, w piwnicznej izbie ubogiego domu, mieszkał biedny chory chłopczyk. Od...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/aniol.jpg",
+        "tags": []
+    },
+    {
+        "title": "Anioł kopalni węgla",
+        "author": "Jules Gabriel Verne",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/aniol-kopalni-wegla.jpg",
+        "tags": []
+    },
+    {
+        "title": "Anioł ognisty - mój anioł lewy",
+        "author": "Juliusz Słowacki",
+        "description": "Z grobowca mego rosną lilije,\nGrób jako biała czara prześliczna —\nŚwiatło po nocy spod wieka...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/aniol-ognisty-moj-aniol-lewy.jpg",
+        "tags": []
+    },
+    {
+        "title": "Anioł pasterzom mówił",
+        "author": "Autor nieznany ",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/aniol-pasterzom-mowil.jpg",
+        "tags": []
+    },
+    {
+        "title": "Anioły stoją na rodzinnych polach",
+        "author": "Juliusz Słowacki",
+        "description": "Serce mi pęka, lecz oko nie płacze. —\n\n",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/anioly-stoja-na-rodzinnych-polach.jpg",
+        "tags": []
+    },
+    {
+        "title": "Dybuk",
+        "author": "Sz. An-ski",
+        "description": "Nie wiem… nie pamiętam… ale przysięgam, że zawsze myślałem o tym, aby go wziąć za...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/anski-dybuk.jpg",
+        "tags": []
+    },
+    {
+        "title": "Anykščių šilelis",
+        "author": "Antanas Baranauskas",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/antanas-baranauskas-anyksci-silelis.jpg",
+        "tags": []
+    },
+    {
+        "title": "Antek",
+        "author": "Bolesław Prus",
+        "description": "Jeżeli tak, to Antek nie ma po co chodzić do szkoły. Ja tam sobie nad...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/antek.jpg",
+        "tags": []
+    },
+    {
+        "title": "Burza",
+        "author": "Karol Bołoz Antoniewicz",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/antoniewicz-burza.jpg",
+        "tags": []
+    },
+    {
+        "title": "Dobranoc",
+        "author": "Karol Bołoz Antoniewicz",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/antoniewicz-dobranoc.jpg",
+        "tags": []
+    },
+    {
+        "title": "[Gdzie bluszcz po zimnym grobie się wije...]",
+        "author": "Karol Bołoz Antoniewicz",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/antoniewicz-gdzie-bluszcz-po-zimnym-grobie-sie-wije.jpg",
+        "tags": []
+    },
+    {
+        "title": "Głos rospaczy",
+        "author": "Karol Bołoz Antoniewicz",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/antoniewicz-glos-rospaczy.jpg",
+        "tags": []
+    },
+    {
+        "title": "Grób",
+        "author": "Karol Bołoz Antoniewicz",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/antoniewicz-grob.jpg",
+        "tags": []
+    },
+    {
+        "title": "Jesień",
+        "author": "Karol Bołoz Antoniewicz",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/antoniewicz-jesien.jpg",
+        "tags": []
+    },
+    {
+        "title": "[Lecz jakże próżne są wszystkie nadzieje!...]",
+        "author": "Karol Bołoz Antoniewicz",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/antoniewicz-lecz-jakze-prozne-sa-wszystkie-nadzieje.jpg",
+        "tags": []
+    },
+    {
+        "title": "[Lecz próżna nadzieja, i martwe życzenia...]",
+        "author": "Karol Bołoz Antoniewicz",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/antoniewicz-lecz-prozna-nadzieja-i-martwe-zyczenie.jpg",
+        "tags": []
+    },
+    {
+        "title": "Łzy",
+        "author": "Karol Bołoz Antoniewicz",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/antoniewicz-lzy.jpg",
+        "tags": []
+    },
+    {
+        "title": "Miłość",
+        "author": "Karol Bołoz Antoniewicz",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/antoniewicz-milosc.jpg",
+        "tags": []
+    },
+    {
+        "title": "Noc",
+        "author": "Karol Bołoz Antoniewicz",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/antoniewicz-noc.jpg",
+        "tags": []
+    },
+    {
+        "title": "Odpowiedź opatrzności",
+        "author": "Karol Bołoz Antoniewicz",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/antoniewicz-odpowiedz-opatrznosci.jpg",
+        "tags": []
+    },
+    {
+        "title": "Oko",
+        "author": "Karol Bołoz Antoniewicz",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/antoniewicz-oko.jpg",
+        "tags": []
+    },
+    {
+        "title": "Pielgrzym",
+        "author": "Karol Bołoz Antoniewicz",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/antoniewicz-pielgrzym.jpg",
+        "tags": []
+    },
+    {
+        "title": "Ranek",
+        "author": "Karol Bołoz Antoniewicz",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/antoniewicz-ranek.jpg",
+        "tags": []
+    },
+    {
+        "title": "Sen",
+        "author": "Karol Bołoz Antoniewicz",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/antoniewicz-sen.jpg",
+        "tags": []
+    },
+    {
+        "title": "Sonety",
+        "author": "Karol Bołoz Antoniewicz",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/antoniewicz-sonety.jpg",
+        "tags": []
+    },
+    {
+        "title": "To ona",
+        "author": "Karol Bołoz Antoniewicz",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/antoniewicz-to-ona.jpg",
+        "tags": []
+    },
+    {
+        "title": "Ucieczka",
+        "author": "Karol Bołoz Antoniewicz",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/antoniewicz-ucieczka.jpg",
+        "tags": []
+    },
+    {
+        "title": "Wizyta",
+        "author": "Karol Bołoz Antoniewicz",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/antoniewicz-wizyta.jpg",
+        "tags": []
+    },
+    {
+        "title": "Współczucie",
+        "author": "Karol Bołoz Antoniewicz",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/antoniewicz-wspolczucie.jpg",
+        "tags": []
+    },
+    {
+        "title": "Wstęp",
+        "author": "Karol Bołoz Antoniewicz",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/antoniewicz-wstep.jpg",
+        "tags": []
+    },
+    {
+        "title": "Żeglarz",
+        "author": "Karol Bołoz Antoniewicz",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/antoniewicz-zeglarz.jpg",
+        "tags": []
+    },
+    {
+        "title": "Życie",
+        "author": "Karol Bołoz Antoniewicz",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/antoniewicz-zycie.jpg",
+        "tags": []
+    },
+    {
+        "title": "Antygona",
+        "author": "Sofokles",
+        "description": "Szczęśliwy, kogo w życiu klęski nie dosięgły,\nBo skoro bóg potrząśnie domowymi węgły,\nZ jednego...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/antygona.jpg",
+        "tags": []
+    },
+    {
+        "title": "Antymonachomachia",
+        "author": "Ignacy Krasicki",
+        "description": "Nie tak się dzieci matce wysługują,\nNie tak jej wdzięczność oddają i znaczą.\n\nJeśli masz...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/antymonachomachia.jpg",
+        "tags": []
+    },
+    {
+        "title": "Aptekarzowa",
+        "author": "Anton Czechow",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/aptekarzowa.jpg",
+        "tags": []
+    },
+    {
+        "title": "Architekstura średnioodwieczna",
+        "author": "Joanna Mueller",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/architekstura-srednioodwieczna.jpg",
+        "tags": []
+    },
+    {
+        "title": "O łajdactwach męskich",
+        "author": "Pietro Aretino",
+        "description": "Te przynęty są pustą bajdą, igrą dziecinną, chytrą pułapką, środkiem, aby na dudka wystrychnąć te...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/aretino-o-lajdactwach-meskich.jpg",
+        "tags": []
+    },
+    {
+        "title": "Żywoty kurtyzan",
+        "author": "Pietro Aretino",
+        "description": "Łakomstwo, gniew, pycha, zazdrość, lenistwo, skąpstwo narodziły się w tym dniu, w którym kunszt gamracki...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/aretino-zywoty-kurtyzan.jpg",
+        "tags": []
+    },
+    {
+        "title": "Argonauts of the Western Pacific",
+        "author": "Bronisław Malinowski",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/argonauts-of-the-western-pacific.jpg",
+        "tags": []
+    },
+    {
+        "title": "Aryman mści się",
+        "author": "Stefan Żeromski",
+        "description": "Uwierzył Diokles, że gdy zupełne oczyszczenie nastąpi, duch jego, jako światłość czysta, wzniesie się ku...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/aryman-msci-sie.jpg",
+        "tags": []
+    },
+    {
+        "title": "Chmury",
+        "author": "Arystofanes",
+        "description": "Zawsze tak czynim, ile razy widzim\nCzłeka, co w sercu złe skłonności pieści:\nWtrącim go...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/arystofanes-chmury.jpg",
+        "tags": []
+    },
+    {
+        "title": "Gromiwoja",
+        "author": "Arystofanes",
+        "description": "GROMIWOJA\n\nLecz gdy Eros, chłopię złote\nI Afrodis, Cypru Ksieni\nW łona i kolana męży...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/arystofanes-gromiwoja.jpg",
+        "tags": []
+    },
+    {
+        "title": "Żaby",
+        "author": "Arystofanes",
+        "description": "CHÓR\n\n\nNajmilszych świąt twórco, Jakchu uwielbiony,\nBłagamy Cię społem, bywaj w nasze strony,\nTu do...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/arystofanes-zaby.jpg",
+        "tags": []
+    },
+    {
+        "title": "Poetyka",
+        "author": "Arystoteles",
+        "description": "Drugi zaś wzgląd to charakter z istotą rzeczy zgodny; bo można stworzyć charakter męski, ale...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/arystoteles-poetyka.jpg",
+        "tags": []
+    },
+    {
+        "title": "Asbe",
+        "author": "Aleksander Świętochowski",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asbe.jpg",
+        "tags": []
+    },
+    {
+        "title": "Adamowi Pługowi",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-adamowi-plugowi.jpg",
+        "tags": []
+    },
+    {
+        "title": "Apostrofa",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-apostrofa.jpg",
+        "tags": []
+    },
+    {
+        "title": "Kęstutis",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnykas-kestutis.jpg",
+        "tags": []
+    },
+    {
+        "title": "A Sonnet (One Heart)",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-a-sonnet-one-heart.jpg",
+        "tags": []
+    },
+    {
+        "title": "Bezimiennemu",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-bezimiennemu.jpg",
+        "tags": []
+    },
+    {
+        "title": "Bez odpowiedzi",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-bez-odpowiedzi.jpg",
+        "tags": []
+    },
+    {
+        "title": "Bolesławowi Prusowi",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-boleslawowi-prusowi.jpg",
+        "tags": []
+    },
+    {
+        "title": "Choć pól i łąk",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-choc-pol-i-lak.jpg",
+        "tags": []
+    },
+    {
+        "title": "[Czego ci trzeba dziś, posępny tłumie...]",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-czego-ci-trzeba-dzis-posepny-tlumie.jpg",
+        "tags": []
+    },
+    {
+        "title": "Do Sokołów",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-do-sokolow.jpg",
+        "tags": []
+    },
+    {
+        "title": "Dwa sonety",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-dwa-sonety.jpg",
+        "tags": []
+    },
+    {
+        "title": "Dwie fazy",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-dwie-fazy.jpg",
+        "tags": []
+    },
+    {
+        "title": "Dzień wczorajszy",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-dzien-wczorajszy.jpg",
+        "tags": []
+    },
+    {
+        "title": "Fale",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-fale.jpg",
+        "tags": []
+    },
+    {
+        "title": "Fantazya ludów",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-fantazya-ludow.jpg",
+        "tags": []
+    },
+    {
+        "title": "Fresk pompejański",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-fresk-pompejanski.jpg",
+        "tags": []
+    },
+    {
+        "title": "Gałązka jaśminu",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-galazka-jasminu.jpg",
+        "tags": []
+    },
+    {
+        "title": "Głos wołający na puszczy",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-glos-wolajacy-na-puszczy.jpg",
+        "tags": []
+    },
+    {
+        "title": "Herakles",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-herakles.jpg",
+        "tags": []
+    },
+    {
+        "title": "Historyczna nowa szkoła",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-historyczna-nowa-szkola.jpg",
+        "tags": []
+    },
+    {
+        "title": "[Jednego serca...]",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-jednego-serca.jpg",
+        "tags": []
+    },
+    {
+        "title": "J. I. Kraszewskiemu",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-j-i-kraszewskiemu.jpg",
+        "tags": []
+    },
+    {
+        "title": "J. Kollarowi",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-j-kollarowi.jpg",
+        "tags": []
+    },
+    {
+        "title": "Juliuszowi Mien",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-juliuszowi-mien.jpg",
+        "tags": []
+    },
+    {
+        "title": "[Kiedym cię żegnał...]",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-kiedym-cie-zegnal.jpg",
+        "tags": []
+    },
+    {
+        "title": "Kiejstut",
+        "author": "Adam Asnyk",
+        "description": "Synu! ty się nie waż\nWątpić tak przy mnie o przyszłości naszej,\nBo tylko ojca...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-kiejstut.jpg",
+        "tags": []
+    },
+    {
+        "title": "Krąg przemian",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-krag-przemian.jpg",
+        "tags": []
+    },
+    {
+        "title": "Memnon",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-memnon.jpg",
+        "tags": []
+    },
+    {
+        "title": "[Miejmy nadzieję!]",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-miejmy-nadzieje.jpg",
+        "tags": []
+    },
+    {
+        "title": "Młodości sen",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-mlodosci-sen.jpg",
+        "tags": []
+    },
+    {
+        "title": "Morskie oko",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-morskie-oko.jpg",
+        "tags": []
+    },
+    {
+        "title": "Myśli ulotne",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-mysli-ulotne.jpg",
+        "tags": []
+    },
+    {
+        "title": "Nad głębiami",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-nad-glebiami.jpg",
+        "tags": []
+    },
+    {
+        "title": "III (Łudząca Maja otworzy ci oczy...)",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-nad-glebiami-iii-ludzaca-maja-otworzy-ci-oczy.jpg",
+        "tags": []
+    },
+    {
+        "title": "II (Wieczne ciemności, bezdenne otchłanie...)",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-nad-glebiami-ii-wieczne-ciemnosci-bezdenne-otchlanie.jpg",
+        "tags": []
+    },
+    {
+        "title": "IV (Jak ptaki, kiedy odlatywać poczną...)",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-nad-glebiami-iv-jak-ptaki-kiedy-odlatywac-poczna.jpg",
+        "tags": []
+    },
+    {
+        "title": "IX (Nieśmiertelności nie poszukuj w próchnie...)",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-nad-glebiami-ix-niesmiertelnosci-nie-poszukuj-w-prochnie.jpg",
+        "tags": []
+    },
+    {
+        "title": "I (Zmiennego bytu falo ty ruchliwa...)",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-nad-glebiami-i-zmiennego-bytu-falo-ty-ruchliwa.jpg",
+        "tags": []
+    },
+    {
+        "title": "V (Gdy nas ciemności otaczają wszędzie...)",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-nad-glebiami-v-gdy-nas-ciemnosci-otaczaja-wszedzie.jpg",
+        "tags": []
+    },
+    {
+        "title": "VIII (Noc, noc wieczysta, głuszą przedbytową...)",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-nad-glebiami-viii-noc-noc-wieczysta-glusza-przedbytowa.jpg",
+        "tags": []
+    },
+    {
+        "title": "VII (Rzucone w przestrzeń złotych gwiazd kagańce...)",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-nad-glebiami-vii-rzucone-w-przestrzen-zlotych-gwiazd-kagance.jpg",
+        "tags": []
+    },
+    {
+        "title": "VI (Na falach swoich toczy słońc miliony...)",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-nad-glebiami-vi-na-falach-swoich-toczy-slonc-miliony.jpg",
+        "tags": []
+    },
+    {
+        "title": "XIII (Przeszłość nie wraca jak żywe zjawisko...)",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-nad-glebiami-xiii-przeszlosc-nie-wraca-jak-zywe-zjawisko.jpg",
+        "tags": []
+    },
+    {
+        "title": "XI (Ileż to zgonów, i narodzin ile...)",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-nad-glebiami-xi-ilez-to-zgonow-i-narodzin-ile.jpg",
+        "tags": []
+    },
+    {
+        "title": "XII (Wzniosłe dążenia, szlachetne pobudki...)",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-nad-glebiami-xii-wzniosle-dazenia-szlachetne-pobudki.jpg",
+        "tags": []
+    },
+    {
+        "title": "XIV (Po wszystkie czasy, przez obszar daleki...)",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-nad-glebiami-xiv-po-wszystkie-czasy-przez-obszar-daleki.jpg",
+        "tags": []
+    },
+    {
+        "title": "XIX (Dopiero w związku z wszechświata ogromem...)",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-nad-glebiami-xix-dopiero-w-zwiazku-z-wszechswiata-ogromem.jpg",
+        "tags": []
+    },
+    {
+        "title": "X (Tylko treść, która z całością się splata...)",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-nad-glebiami-x-tylko-tresc-ktora-z-caloscia-sie-splata.jpg",
+        "tags": []
+    },
+    {
+        "title": "XVI (Dzień, w którym jeden z grzesznych braci koła...)",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-nad-glebiami-xvi-dzien-w-ktorym-jeden-z-grzesznych-braci-kola.jpg",
+        "tags": []
+    },
+    {
+        "title": "XVII (Co złość zniweczy, co występek zburzy...)",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-nad-glebiami-xvii-co-zlosc-zniweczy-co-wystepek-zburzy.jpg",
+        "tags": []
+    },
+    {
+        "title": "XVIII (Tak złe, jak dobre wspólną jest zdobyczą...)",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-nad-glebiami-xviii-tak-zle-jak-dobre-wspolna-jest-zdobycza.jpg",
+        "tags": []
+    },
+    {
+        "title": "XV (Na dzieci spada win ojcowskich brzemię...)",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-nad-glebiami-xv-na-dzieci-spada-win-ojcowskich-brzemie.jpg",
+        "tags": []
+    },
+    {
+        "title": "XXIII (Choć w praw niezmiennych poruszasz się kole...)",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-nad-glebiami-xxiii-choc-w-praw-niezmiennych-poruszasz-sie-kole.jpg",
+        "tags": []
+    },
+    {
+        "title": "XXII (Naprzód i wyżej!...)",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-nad-glebiami-xxii-naprzod-i-wyzej.jpg",
+        "tags": []
+    },
+    {
+        "title": "XXIV (Przez chwilę możesz ślepą być zaporą...)",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-nad-glebiami-xxiv-przez-chwile-mozesz-slepa-byc-zapora.jpg",
+        "tags": []
+    },
+    {
+        "title": "XXI (W coraz-to wyższe przeradza się wzory...)",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-nad-glebiami-xxi-w-coraz-to-wyzsze-przeradza-sie-wzory.jpg",
+        "tags": []
+    },
+    {
+        "title": "XXIX (Póki w narodzie myśl swobody żyje...)",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-nad-glebiami-xxix-poki-w-narodzie-mysl-swobody-zyje.jpg",
+        "tags": []
+    },
+    {
+        "title": "XXVIII (Ci, którzy jasność żegnają zniknioną...)",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-nad-glebiami-xxviii-ci-ktorzy-jasnosc-zegnaja-znikniona.jpg",
+        "tags": []
+    },
+    {
+        "title": "XXVII (Smutny jest schyłek roku w mgieł pomroce!...)",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-nad-glebiami-xxvii-smutny-jest-schylek-roku-w-mgiel-pomroce.jpg",
+        "tags": []
+    },
+    {
+        "title": "XXVI (Pierwotną białość słonecznych promieni...)",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-nad-glebiami-xxvi-pierwotna-bialosc-slonecznych-promieni.jpg",
+        "tags": []
+    },
+    {
+        "title": "XXV (Jako cząsteczka wszechświata myśląca...)",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-nad-glebiami-xxv-jako-czasteczka-wszechswiata-myslaca.jpg",
+        "tags": []
+    },
+    {
+        "title": "XX (W nieprzerwalności zbiorowego bytu...)",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-nad-glebiami-xx-w-nieprzerwalnosci-zbiorowego-bytu.jpg",
+        "tags": []
+    },
+    {
+        "title": "XXXIII (Pośród narodów, wyście nędzarzami!...)",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-nad-glebiami-xxxiii-posrod-narodow-wyscie-nedzarzami.jpg",
+        "tags": []
+    },
+    {
+        "title": "XXXII (Nie myśl o szczęściu! nie myśl o miłości!...)",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-nad-glebiami-xxxii-nie-mysl-o-szczesciu-nie-mysl-o-milosci.jpg",
+        "tags": []
+    },
+    {
+        "title": "XXXI (Odkąd znów padło w proch twe czoło dumne...)",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-nad-glebiami-xxxi-odkad-znow-padlo-w-proch-twe-czolo-dumne.jpg",
+        "tags": []
+    },
+    {
+        "title": "XXX (Taką, jak byłaś, nie wstaniesz z mogiły!...)",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-nad-glebiami-xxx-taka-jak-bylas-nie-wstaniesz-z-mogily.jpg",
+        "tags": []
+    },
+    {
+        "title": "No, Nothing Happened There",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-no-nothing-happened-there.jpg",
+        "tags": []
+    },
+    {
+        "title": "Oh, Void Complaints",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-oh-void-complaints.jpg",
+        "tags": []
+    },
+    {
+        "title": "To the Young",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-to-the-young.jpg",
+        "tags": []
+    },
+    {
+        "title": "Ze sceny świata",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-ze-sceny-swiata.jpg",
+        "tags": []
+    },
+    {
+        "title": "III (I powstał krzyk ogromny u monarszych dworów...)",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-ze-sceny-swiata-iii-i-powstal-krzyk-ogromny.jpg",
+        "tags": []
+    },
+    {
+        "title": "II (Rzekłem, i usłyszała mnie szalona pycha...)",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-ze-sceny-swiata-ii-rzeklem-i-uslyszala-mnie.jpg",
+        "tags": []
+    },
+    {
+        "title": "I (Oto ja, anioł zniszczeń, miecz ująłem w dłonie...)",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-ze-sceny-swiata-i-oto-ja-aniol-zniszczen.jpg",
+        "tags": []
+    },
+    {
+        "title": "IV (Wstała jutrznia czerwona, oświecając łany...)",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-ze-sceny-swiata-iv-wstala-jutrznia-czerwona.jpg",
+        "tags": []
+    },
+    {
+        "title": "IX (Na tem koniec? Nie jeszcze! Naród do ostatka...)",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-ze-sceny-swiata-ix-na-tem-koniec.jpg",
+        "tags": []
+    },
+    {
+        "title": "VIII (Tryumf mój jest zupełny: sta tysięcy trupów...)",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-ze-sceny-swiata-viii-tryumf-moj-jest-zupelny.jpg",
+        "tags": []
+    },
+    {
+        "title": "VII (Piękne dzieło zniszczenia! cudne wynalazki!)",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-ze-sceny-swiata-vii-piekne-dzielo-zniszczenia.jpg",
+        "tags": []
+    },
+    {
+        "title": "VI (Teraz to rzeź za rzezią kroczy już wspaniale...)",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-ze-sceny-swiata-vi-teraz-to-rzez-za-rzezia.jpg",
+        "tags": []
+    },
+    {
+        "title": "V (To był prolog dopiero, a teraz na scenie...)",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-ze-sceny-swiata-v-to-byl-prolog-dopiero.jpg",
+        "tags": []
+    },
+    {
+        "title": "XII (Ja jeden tryumfuję, patrząc na tę ziemię...)",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-ze-sceny-swiata-xii-ja-jeden-tryumfuje.jpg",
+        "tags": []
+    },
+    {
+        "title": "XI (O jakże piękne plony! Na smutnem zwalisku...)",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-ze-sceny-swiata-xi-o-jakze-piekne-plony.jpg",
+        "tags": []
+    },
+    {
+        "title": "X (Więc znów snują się dalej krwawych zdarzeń wzory...)",
+        "author": "Adam Asnyk",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asnyk-ze-sceny-swiata-x-wiec-znow-snuja-sie.jpg",
+        "tags": []
+    },
+    {
+        "title": "Asyż",
+        "author": "Louis Le Cardonnel",
+        "description": "Zapomniał wszystkich cierpień, straszliwej boleści:\nJest promienny, jak słońce, które wszechświat mieści.\nBy wznieść go...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/asyz.jpg",
+        "tags": []
+    },
+    {
+        "title": "Atala",
+        "author": "François-René de Chateaubriand",
+        "description": "— Nieszczęścia i cnoty Atali — rzekłem — nieznane były ludziom; niechaj jej grób, wykopany ukradkiem naszymi rękoma...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/atala.jpg",
+        "tags": []
+    },
+    {
+        "title": "Atłas i kitaj",
+        "author": "Ignacy Krasicki",
+        "description": "Atłas w sklepie z kitaju żartował do woli;\nKupił atłas pan sędzic, kitaj pan podstoli...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/atlas-i-kitaj.jpg",
+        "tags": []
+    },
+    {
+        "title": "A to biografia",
+        "author": "Joanna Mueller",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/a-to-biografia.jpg",
+        "tags": []
+    },
+    {
+        "title": "Podróż po Ameryce Północnej",
+        "author": "Olympe Audouard",
+        "description": "Ciasta amerykańskie są ciężkie, niezdrowe, jednakże dziewczęta i kobiety lubią je; na przechadzkach ciągle zachodzą...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/audouard-podroz-po-ameryce-polnocnej.jpg",
+        "tags": []
+    },
+    {
+        "title": "Australczyk",
+        "author": "Eliza Orzeszkowa",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/australczyk.jpg",
+        "tags": []
+    },
+    {
+        "title": "Autobiografia w listach",
+        "author": "Eliza Orzeszkowa",
+        "description": "Zdaniem moim, twórcy studiów nad autorami zbyt mało zwracają uwagi na ciekawość umysłową, która jest...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/autobiografia-w-listach.jpg",
+        "tags": []
+    },
+    {
+        "title": "Autoentyzm",
+        "author": "Joanna Mueller",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/autoentyzm.jpg",
+        "tags": []
+    },
+    {
+        "title": "Żydówki",
+        "author": "Autorka nieznana ",
+        "description": "Tkwiły tak do południa od samego rana \n  Na klęczkach, czarne cienie, z rękami wzniesionymi. \n  W...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/autorka-nieznana-zydowki.jpg",
+        "tags": []
+    },
+    {
+        "title": "Ave Maria",
+        "author": "Antonina Domańska",
+        "description": "Brak opisu.",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/ave-maria.jpg",
+        "tags": []
+    },
+    {
+        "title": "Konkin",
+        "author": "Izaak Babel",
+        "description": " — Wiadoma rzecz, że sztab — mówi Spirka — ale ich ośmiu, a nas dwóch…\n— Nadymaj żagle, Spirka...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/babel-konkin.jpg",
+        "tags": []
+    },
+    {
+        "title": "Bachantki",
+        "author": "Eurypides",
+        "description": "Niewieściej ci płótnianki trza do tego lasu.\n\n\nPENTHEUS\n\n\nMężczyzna, mam przedzierzgnąć się w babę? O...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/bachantki.jpg",
+        "tags": []
+    },
+    {
+        "title": "1942, 1943, 1944",
+        "author": "Krzysztof Kamil Baczyński",
+        "description": "Pożegnane już, zapomniane.\nŚnieg jak dłonią zasłoni oczy.\nSłychać jeszcze — nim chłód zostanie —\njak za...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/baczynski-1942-1943-1944.jpg",
+        "tags": []
+    },
+    {
+        "title": "[1942, 1943, 1944 - Motto]",
+        "author": "Krzysztof Kamil Baczyński",
+        "description": "Nocą, gdy ciemność jest jak zwierzę czarne,\nstoi cisza jak lęku drgający biały słup.\nI...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/baczynski-1942-1943-1944-motto-i-dedykacja.jpg",
+        "tags": []
+    },
+    {
+        "title": "[Ach, umieram, umieram...]",
+        "author": "Krzysztof Kamil Baczyński",
+        "description": "Szli czarni, wychudzeni, z błyskiem żądzy ślepym,\njak nędzne i żałosne, milczące pogrzeby,\ni tratowali...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/baczynski-ach-umieram-umieram.jpg",
+        "tags": []
+    },
+    {
+        "title": "Ad aristum fuscum",
+        "author": "Krzysztof Kamil Baczyński",
+        "description": "Człek czysty, przez zbrodnie nie sklęty\nnie musi nosić mauryjskich pocisków\nnie trzeba jemu cięciwy...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/baczynski-ad-aristum-fuscum.jpg",
+        "tags": []
+    },
+    {
+        "title": "Bajka",
+        "author": "Krzysztof Kamil Baczyński",
+        "description": "Potem morza dzieliły się, tarły\nszorstką skórą bokiem o bok;\ncoś wchodziło, a potem marło...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/baczynski-bajka.jpg",
+        "tags": []
+    },
+    {
+        "title": "Ballada morska",
+        "author": "Krzysztof Kamil Baczyński",
+        "description": "Po morzu, gdzie ryby jak jaskry\n\n\npryskały w górę i w głąb,\nna korabiu z...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/baczynski-ballada-morska.jpg",
+        "tags": []
+    },
+    {
+        "title": "Ballada o rzece",
+        "author": "Krzysztof Kamil Baczyński",
+        "description": "Rzeka pachnie jak ryba.\nRyba jest liściem deszczu\noderwanym od białej gałęzi szelestu,\nod zbuntowanych...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/baczynski-ballada-o-rzece.jpg",
+        "tags": []
+    },
+    {
+        "title": "Ballada o trzech królach",
+        "author": "Krzysztof Kamil Baczyński",
+        "description": "I poczuli nagle serca trzy,\nco jak pięści stężały od żalu.\nWięc już w wielkim...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/baczynski-ballada-o-trzech-krolach.jpg",
+        "tags": []
+    },
+    {
+        "title": "Ballada zimowa",
+        "author": "Krzysztof Kamil Baczyński",
+        "description": "Chmura z miedzi uderza,\nblaskiem bije w puklerzach,\njeśli puklerz — to oczy z ołowiu.\n\n\nW...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/baczynski-ballada-zimowa.jpg",
+        "tags": []
+    },
+    {
+        "title": "Bez imienia",
+        "author": "Krzysztof Kamil Baczyński",
+        "description": "Oto jest chwila bez imienia:\ndrzwi się wydęły i zgasły.\nNie odróżnisz postaci w cieniach...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/baczynski-bez-imienia.jpg",
+        "tags": []
+    },
+    {
+        "title": "Biała magia",
+        "author": "Krzysztof Kamil Baczyński",
+        "description": "Stojąc przed lustrem ciszy\nBarbara z rękami u włosów\nnalewa w szklane ciało\nsrebrne kropelki...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/baczynski-biala-magia.jpg",
+        "tags": []
+    },
+    {
+        "title": "Bohater",
+        "author": "Krzysztof Kamil Baczyński",
+        "description": "A ten, który przeciw niemu zawoła\no swej sile i wstrząśnie owadem\nwszechmałości — przejdzie w...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/baczynski-bohater.jpg",
+        "tags": []
+    },
+    {
+        "title": "[Byłeś jak wielkie, stare drzewo...]",
+        "author": "Krzysztof Kamil Baczyński",
+        "description": "I zmartwychwstaniesz jak Bóg z grobu\nz huraganowym tchem u skroni,\nramiona ziemi się przed...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/baczynski-byles-jak-wielkie-stare-drzewo.jpg",
+        "tags": []
+    },
+    {
+        "title": "Ciało",
+        "author": "Krzysztof Kamil Baczyński",
+        "description": "Czyny, spomiędzy których nikt jasny,\nbo nieświadomie za sobą wloką\nruchy straszliwe martwej powłoki\nw...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/baczynski-cialo.jpg",
+        "tags": []
+    },
+    {
+        "title": "Ciemna miłość",
+        "author": "Krzysztof Kamil Baczyński",
+        "description": "dusz trzepot nieostrożnie pobratany z ciałem\n\n",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/baczynski-ciemna-milosc.jpg",
+        "tags": []
+    },
+    {
+        "title": "Ci ludzie",
+        "author": "Krzysztof Kamil Baczyński",
+        "description": "Malowana piosenko herosów,\ngdzie ty?\nMaszerują kompanie martwe\npo rozciętych węzłach losu:\nsame hełmy i...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/baczynski-ci-ludzie.jpg",
+        "tags": []
+    },
+    {
+        "title": "Co jest we mnie",
+        "author": "Krzysztof Kamil Baczyński",
+        "description": "I powrócę między ludzi w gniew i miłość\nw kruchym ciele, w nieostrożnym, w szklanej...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/baczynski-co-jest-we-mnie.jpg",
+        "tags": []
+    },
+    {
+        "title": "Czart",
+        "author": "Krzysztof Kamil Baczyński",
+        "description": "Melancholijne damy o rękach z żółtego wosku,\nkukły z oczami z fałszywych obłoków,\npobladłe wargi...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/baczynski-czart.jpg",
+        "tags": []
+    },
+    {
+        "title": "Deszcze",
+        "author": "Krzysztof Kamil Baczyński",
+        "description": "I to, że miłość, a nie taka,\ni to, że nie dość cios bolesny,\na...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/baczynski-deszcze.jpg",
+        "tags": []
+    },
+    {
+        "title": "[Dokąd to jeszcze?]",
+        "author": "Krzysztof Kamil Baczyński",
+        "description": "O, bo ja jestem mieczem krzywdy wszelkiej,\nprzez moje ręce wyciągnięte we śnie\nwędrują grzechy...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/baczynski-dokad-to-jeszcze-ten-cien-stoi-we-mnie.jpg",
+        "tags": []
+    },
+    {
+        "title": "Do Matki Boskiej",
+        "author": "Krzysztof Kamil Baczyński",
+        "description": "Mario, obłoków ciszo.\nCiężko nam Boga dźwigać,\njeszcze ciężej odrosły świat,\nnieba wysokie ciężej; nieba...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/baczynski-do-matki-boskiej.jpg",
+        "tags": []
+    },
+    {
+        "title": "Do przyjaciela",
+        "author": "Krzysztof Kamil Baczyński",
+        "description": "Bo się wierzy, że milczenie to śpiewanie,\na jak śpiewać, to Bóg nas tak śpiewem...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/baczynski-do-przyjaciela.jpg",
+        "tags": []
+    },
+    {
+        "title": "Dramat",
+        "author": "Krzysztof Kamil Baczyński",
+        "description": "Ale żywy będzie,\non nie to jedno uniesie, ty już teraz\nmasz swój lot rozwiązany...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/baczynski-dramat.jpg",
+        "tags": []
+    },
+    {
+        "title": "Dwie miłości",
+        "author": "Krzysztof Kamil Baczyński",
+        "description": "I pokochałeś jeszcze ziemię grozy\nz ognistym śladem wielkich kroków bożych,\nziemię, gdzie bracia popieleją...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/baczynski-dwie-milosci.jpg",
+        "tags": []
+    },
+    {
+        "title": "[Dymy, wysokie sztandary...]",
+        "author": "Krzysztof Kamil Baczyński",
+        "description": "A ludzie mieszkają w ziemi,\nświat przenoszą głęboko. Zdaje się, żyją tam\nmatki jak grona...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/baczynski-dymy-wysokie-sztandary.jpg",
+        "tags": []
+    },
+    {
+        "title": "Dzieło dla rąk",
+        "author": "Krzysztof Kamil Baczyński",
+        "description": "Kiedy przeklęto wszelki płód człowieczy,\naby nie cierpiał, aby nie mógł trwać,\nbłogosławieni byli ci...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/baczynski-dzielo-dla-rak.jpg",
+        "tags": []
+    },
+    {
+        "title": "Dzień sądu",
+        "author": "Krzysztof Kamil Baczyński",
+        "description": "Wtedyś ziemi pobratany,\nkiedy trud największy wzniesiesz,\ngdy choć jedno drzewo w lesie\nnie odcięte...",
+        "cover": "https:\/\/wolnelektury.pl\/media\/book\/cover\/baczynski-dzien-sadu.jpg",
+        "tags": []
+    }
 ]
