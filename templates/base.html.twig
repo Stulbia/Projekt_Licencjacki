@@ -3,6 +3,9 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
+    {% block additional_meta %}
+    <meta name="turbo-visit-control" content="reload">
+    {%  endblock %}
     <title>{% block title %}App{% endblock %}</title>
 
     {{ encore_entry_link_tags('app') }}
@@ -17,7 +20,11 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+{#    {% block javascript %}#}
+{#        {{ importmap('app') }}#}
 
+
+{#    {% endblock %}#}
 
     {# Choices.js styles #}
 {#    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />#}

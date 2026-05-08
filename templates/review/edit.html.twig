@@ -5,7 +5,7 @@
     <section class="review-form-container">
         <h2>Edytuj swoją recenzję</h2>
 
-        {{ form_start(form, { attr: { class: 'review-form' } }) }}
+        {{ form_start(form, { attr: { class: 'review-form' } ,data-turbo="false" }) }}
 
         {# ---------- Rating: hidden Symfony field + star buttons ---------- #}
         {% set current = form.rating.vars.value ?? 5 %}
@@ -85,7 +85,7 @@
 
     {# ---------- Behavior: star buttons drive hidden rating ---------- #}
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('turbo:load', () => {
             const ratingInput = document.getElementById('{{ form.rating.vars.id }}');
             const group   = document.getElementById('starRating');
             const stars   = Array.from(group.querySelectorAll('.star'));

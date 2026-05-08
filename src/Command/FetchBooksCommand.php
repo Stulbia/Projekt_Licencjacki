@@ -26,12 +26,14 @@ class FetchBooksCommand extends Command
             $detailResponse = $client->request('GET', $bookInfo['href']);
             $details = $detailResponse->toArray();
 
+            // Szukamy opisu w 'description'. Jeśli go nie ma, bierzemy 'fragment_data' jako fallback.
+            $rawDescription = $details['description'] ?? ($details['fragment_data']['html'] ?? 'Brak opisu.');
+
             $finalData[] = [
                 'title'       => $details['title'],
                 'author'      => $details['authors'][0]['name'] ?? 'Anonim',
-                'description' => strip_tags($details['fragment_data']['html'] ?? 'Brak opisu.'),
+                'description' => trim(strip_tags($rawDescription)),
                 'cover'       => $details['cover'],
-                // Pobieramy gatunek, rodzaj i epokę jako listę tagów
                 'tags'        => array_filter([
                     $details['genre'] ?? null,
                     $details['kind'] ?? null,

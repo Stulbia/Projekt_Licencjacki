@@ -21,7 +21,7 @@
                 </div>
             {% endif %}
 
-            <form class="login-form" method="post" novalidate>
+            <form class="login-form" method="post" data-turbo="false" novalidate>
                 <div class="form-group">
                     <label class="form-label" for="input-email">{{ 'label.email'|trans }}</label>
                     <input
@@ -55,14 +55,15 @@
                     <label for="remember-me" class="form-check__label">{{ 'label.remember_me'|trans }}</label>
                 </div>
 
-                <button class="btn btn-primary btn-lg btn-block" type="submit">
-                    {{ 'action.sign_in'|trans }}
-                </button>
+                <button class="btn btn-primary btn-lg btn-block" type="submit"
+                        >
+                        {{ 'action.sign_in'|trans }}
+                                </button>
 
-                <div class="login-divider" role="separator" aria-label="or"></div>
+                                <div class=" login-divider" role="separator" aria-label="or"></div>
 
                 <a class="btn btn-google btn-lg btn-block" href="{{ path('connect_google_start') }}">
-                    🔓 Google
+                     Google
                 </a>
             </form>
         </div>

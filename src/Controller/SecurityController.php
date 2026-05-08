@@ -21,10 +21,16 @@ class SecurityController extends AbstractController
         if ($this->getUser() != null) {
             return $this->redirectToRoute('homepage');
         };
+
+        $response = new Response();
+        if ($error) {
+            $response->setStatusCode(Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
         return $this->render('security/login.html.twig', [
             'last_username' => $lastUsername,
             'error' => $error,
-        ]);
+        ], $response);
     }
 
     #[Route(path: '/logout', name: 'app_logout')]

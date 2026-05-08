@@ -4,6 +4,79 @@
 
 {% block body %}
 
+    <script>
+        document.addEventListener('turbo:load', () => {
+            // ----- Filters toggle -----
+            const toggleBtn = document.querySelector('.filters-toggle');
+            const tg = document.getElementsByClassName('tg')
+            const panel = document.getElementById('filters-panel');
+            if (toggleBtn && panel) {
+                toggleBtn.addEventListener('click', () => {
+                    const isHidden = panel.hasAttribute('hidden');
+                    if (isHidden) {
+                        panel.removeAttribute('hidden');
+                        // toggleBtn.textContent = ' Ukryj filtry';
+                        tg.textContent='talk'
+                        toggleBtn.setAttribute('aria-expanded', 'true');
+                    } else {
+                        panel.setAttribute('hidden', '');
+                        // toggleBtn.textContent = ' Pokaż filtry';
+                        tg.textContent = 'nie'
+                        toggleBtn.setAttribute('aria-expanded', 'false');
+                    }
+                });
+            }
+
+            // ----- Live rating preview -----
+            const range = document.getElementById('min-rating-range');
+            const preview = document.getElementById('rating-preview');
+            if (range && preview) {
+                const sync = () => { preview.textContent = range.value; };
+                sync(); range.addEventListener('input', sync); range.addEventListener('change', sync);
+            }
+
+            // ----- Tag filters: sync checkboxes <-> hidden <select> -----
+            document.querySelectorAll('.tag-filter').forEach(section => {
+                const hiddenSelect =
+                    section.querySelector('select.hidden-tag-select, select.hidden-tag-select');
+                const checkboxes = section.querySelectorAll('.tag-dropdown input[type="checkbox"]');
+                const toggle = section.querySelector('.tag-toggle');
+                const dropdown = section.querySelector('.tag-dropdown');
+
+                if (toggle && dropdown) {
+                    toggle.addEventListener('click', () => {
+                        const isCollapsed = dropdown.classList.toggle('collapsed');
+                        toggle.setAttribute('aria-expanded', String(!isCollapsed));
+                    });
+                }
+
+                if (!hiddenSelect) return;
+                hiddenSelect.setAttribute('multiple', 'multiple');
+
+                const setSelected = (val, on) => {
+                    const opt = Array.from(hiddenSelect.options).find(o => o.value === val);
+                    if (opt) opt.selected = on;
+                };
+
+                checkboxes.forEach(cb => cb.addEventListener('change', () => setSelected(cb.value, cb.checked)));
+
+                const selected = Array.from(hiddenSelect.options).filter(o => o.selected).map(o => o.value);
+                checkboxes.forEach(cb => { cb.checked = selected.includes(cb.value); });
+            });
+
+            // ----- Responsive per-page: viewport -> ?pp=... -----
+            const BREAKS = [{min:0,pp:4},{min:1440,pp:6},{min:1920,pp:8}];
+            const desiredPP = w => BREAKS.reduce((p,b)=> w>=b.min?b.pp:p, BREAKS[0].pp);
+            const url = new URL(window.location.href);
+            const current = parseInt(url.searchParams.get('pp') || '{{ perPage|default(4) }}', 10);
+            const want = desiredPP(window.innerWidth);
+            const setPP = pp => { url.searchParams.set('pp', String(pp)); url.searchParams.delete('page'); window.location.replace(url.toString()); };
+            const userChose = url.searchParams.has('pp');
+            // if (!userChose && !Number.isNaN(current) && current !== want) { setPP(want); return; }
+            let last = desiredPP(window.innerWidth), t;
+            window.addEventListener('resize', () => { clearTimeout(t); t=setTimeout(()=>{const now=desiredPP(window.innerWidth); if(now!==last && !userChose){setPP(now);} last=now;},200); });
+        });
+    </script>
     <div class="search">
         <h1><span class="material-symbols-outlined">search</span> Jakich książek szukasz ?  </h1>
 
@@ -86,78 +159,5 @@
         {% endif %}
     </section>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // ----- Filters toggle -----
-            const toggleBtn = document.querySelector('.filters-toggle');
-            const tg = document.getElementsByClassName('tg')
-            const panel = document.getElementById('filters-panel');
-            if (toggleBtn && panel) {
-                toggleBtn.addEventListener('click', () => {
-                    const isHidden = panel.hasAttribute('hidden');
-                    if (isHidden) {
-                        panel.removeAttribute('hidden');
-                        // toggleBtn.textContent = ' Ukryj filtry';
-                        tg.textContent='talk'
-                        toggleBtn.setAttribute('aria-expanded', 'true');
-                    } else {
-                        panel.setAttribute('hidden', '');
-                        // toggleBtn.textContent = ' Pokaż filtry';
-                        tg.textContent = 'nie'
-                        toggleBtn.setAttribute('aria-expanded', 'false');
-                    }
-                });
-            }
-
-            // ----- Live rating preview -----
-            const range = document.getElementById('min-rating-range');
-            const preview = document.getElementById('rating-preview');
-            if (range && preview) {
-                const sync = () => { preview.textContent = range.value; };
-                sync(); range.addEventListener('input', sync); range.addEventListener('change', sync);
-            }
-
-            // ----- Tag filters: sync checkboxes <-> hidden <select> -----
-            document.querySelectorAll('.tag-filter').forEach(section => {
-                const hiddenSelect =
-                    section.querySelector('select.hidden-tag-select, select.hidden-tag-select');
-                const checkboxes = section.querySelectorAll('.tag-dropdown input[type="checkbox"]');
-                const toggle = section.querySelector('.tag-toggle');
-                const dropdown = section.querySelector('.tag-dropdown');
-
-                if (toggle && dropdown) {
-                    toggle.addEventListener('click', () => {
-                        const isCollapsed = dropdown.classList.toggle('collapsed');
-                        toggle.setAttribute('aria-expanded', String(!isCollapsed));
-                    });
-                }
-
-                if (!hiddenSelect) return;
-                hiddenSelect.setAttribute('multiple', 'multiple');
-
-                const setSelected = (val, on) => {
-                    const opt = Array.from(hiddenSelect.options).find(o => o.value === val);
-                    if (opt) opt.selected = on;
-                };
-
-                checkboxes.forEach(cb => cb.addEventListener('change', () => setSelected(cb.value, cb.checked)));
-
-                const selected = Array.from(hiddenSelect.options).filter(o => o.selected).map(o => o.value);
-                checkboxes.forEach(cb => { cb.checked = selected.includes(cb.value); });
-            });
-
-            // ----- Responsive per-page: viewport -> ?pp=... -----
-            const BREAKS = [{min:0,pp:4},{min:1440,pp:6},{min:1920,pp:8}];
-            const desiredPP = w => BREAKS.reduce((p,b)=> w>=b.min?b.pp:p, BREAKS[0].pp);
-            const url = new URL(window.location.href);
-            const current = parseInt(url.searchParams.get('pp') || '{{ perPage|default(4) }}', 10);
-            const want = desiredPP(window.innerWidth);
-            const setPP = pp => { url.searchParams.set('pp', String(pp)); url.searchParams.delete('page'); window.location.replace(url.toString()); };
-            const userChose = url.searchParams.has('pp');
-            // if (!userChose && !Number.isNaN(current) && current !== want) { setPP(want); return; }
-            let last = desiredPP(window.innerWidth), t;
-            window.addEventListener('resize', () => { clearTimeout(t); t=setTimeout(()=>{const now=desiredPP(window.innerWidth); if(now!==last && !userChose){setPP(now);} last=now;},200); });
-        });
-    </script>
 
 {% endblock %}

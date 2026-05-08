@@ -91,7 +91,7 @@
 
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('turbo:load', () => {
             const ratingInput = document.getElementById('{{ form.rating.vars.id }}');
             const group   = document.getElementById('starRating');
             const stars   = Array.from(group.querySelectorAll('.star'));
