@@ -1,5 +1,7 @@
-<article class="library-card" data-title="{{ book.title }}"
-         data-author="{{ book.author ? book.author.name : '' }}">
+<div class="liberal-card" data-title="{{ book.title }}"
+     data-author="{{ book.author ? book.author.name : '' }}">
+<article class="library-card" >
+
 
     {% if book.coverFilename %}
     <div class="frame">
@@ -45,6 +47,9 @@
 
 
 </article>
+
 {%  if var is defined %}
     {% include "library/_actions.html.twig" %}
 {% endif %}
+
+</div>

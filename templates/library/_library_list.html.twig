@@ -22,29 +22,59 @@
 {#    });#}
 {#</script>#}
 
+{#<script>#}
+{#    (function () {#}
+{#        let librarySearchBound = false;#}
+
+{#        document.addEventListener('turbo:load', function () {#}
+{#            if (librarySearchBound) return;#}
+{#            const inp = document.getElementById('libSearch');#}
+{#            if (!inp) return;#}
+
+{#            librarySearchBound = true;#}
+
+{#            inp.addEventListener('input', function (e) {#}
+{#                const q = e.target.value.trim().toLowerCase();#}
+{#                document.querySelectorAll('.book-card').forEach(function (card) {#}
+{#                    const t = (card.dataset.title || '').toLowerCase();#}
+{#                    const a = (card.dataset.author || '').toLowerCase();#}
+{#                    card.style.display = (t.includes(q) || a.includes(q)) ? '' : 'none';#}
+{#                });#}
+{#            });#}
+{#        });#}
+{#    })();#}
+{#</script>#}
 <script>
     (function () {
-        let librarySearchBound = false;
+        document.addEventListener('turbo:load', init);
+        document.addEventListener('DOMContentLoaded', init);
 
-        document.addEventListener('turbo:load', function () {
-            if (librarySearchBound) return;
+        let bound = false;
+
+        function init() {
             const inp = document.getElementById('libSearch');
-            if (!inp) return;
+            if (!inp || bound) return;
+            bound = true;
 
-            librarySearchBound = true;
+            inp.addEventListener('input', function () {
+                const q = inp.value.trim().toLowerCase();
+                console.log(q);
+                let i = 0;
 
-            inp.addEventListener('input', function (e) {
-                const q = e.target.value.trim().toLowerCase();
-                document.querySelectorAll('.book-card').forEach(function (card) {
-                    const t = (card.dataset.title || '').toLowerCase();
+                // szuka lib-card, nie book-card
+                document.querySelectorAll('.liberal-card').forEach(function (card) {
+                    const t = (card.dataset.title  || '').toLowerCase();
                     const a = (card.dataset.author || '').toLowerCase();
+                    console.log(i)
+                    console.log(t);
+                    console.log(a);
+                    i = i+1;
                     card.style.display = (t.includes(q) || a.includes(q)) ? '' : 'none';
                 });
             });
-        });
+        }
     })();
 </script>
-
 
 
 {% if pagination.items is not empty %}
