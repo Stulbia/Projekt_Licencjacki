@@ -4,28 +4,33 @@
 
 {% block body %}
 
-    <script>
+    <script defer>
         document.addEventListener('turbo:load', () => {
             // ----- Filters toggle -----
             const toggleBtn = document.querySelector('.filters-toggle');
             const tg = document.getElementsByClassName('tg')
             const panel = document.getElementById('filters-panel');
-            if (toggleBtn && panel) {
-                toggleBtn.addEventListener('click', () => {
+            // if (!toggleBtn || !panel) return;
+            if (!toggleBtn || !panel || toggleBtn.dataset.bound) return;
+            toggleBtn.dataset.bound = 'true'; // mark as bound
+
+            toggleBtn.addEventListener('click', () => {
                     const isHidden = panel.hasAttribute('hidden');
                     if (isHidden) {
                         panel.removeAttribute('hidden');
                         // toggleBtn.textContent = ' Ukryj filtry';
                         tg.textContent='talk'
                         toggleBtn.setAttribute('aria-expanded', 'true');
+                        // console.log('tak');
                     } else {
                         panel.setAttribute('hidden', '');
                         // toggleBtn.textContent = ' Pokaż filtry';
                         tg.textContent = 'nie'
                         toggleBtn.setAttribute('aria-expanded', 'false');
+                        // console.log('nie');
                     }
                 });
-            }
+
 
             // ----- Live rating preview -----
             const range = document.getElementById('min-rating-range');
@@ -118,8 +123,8 @@
         <form method="get" class="per-page-form">
             <label>
                 Pozycji na stronę:
-                <select name="pp" onchange="this.form.submit()">
-                    {% set choices = [4,5,6,8,12,24] %}
+                <select name="pp" onchange="this.form.submit()" >
+                    {% set choices = [1,4,8,10,25,50] %}
                     {% for n in choices %}
                         <option value="{{ n }}" {{ perPage == n ? 'selected' : '' }}>{{ n }}</option>
                     {% endfor %}

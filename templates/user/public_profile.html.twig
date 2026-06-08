@@ -39,7 +39,11 @@
 
         <section class="profile-reviews">
             <h2 class="profile-section-title">Opis</h2>
-            <p>{{ user.opis }}</p>
+            {% if user.description is defined%}
+                <p>{{ user.opis }}</p>
+            {% else %}
+            <p>{{ 'message.no_description'|trans }}</p>
+        {% endif %}
         </section>
         {# ---------- Social accounts ---------- #}
         <section class="profile-reviews">

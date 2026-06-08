@@ -21,3 +21,10 @@ a {
    text-align: center;
   }
 }
+
+.text-bold {
+  //text-decoration: solid;
+  //text-emphasis-color: ;
+  font-weight: bold;
+  color: $darker-secondary;
+}

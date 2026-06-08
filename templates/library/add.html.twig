@@ -4,10 +4,12 @@
 
 
     {%set formVisible = true %}
-    {{ form_start(form,{ 'attr' : { 'class': 'add-to-lib' } }) }}
+{#    <turbo-frame id="book_library_form" target="_top">#}
+    {{ form_start(form,{ 'attr' : { 'class': 'add-to-lib', 'data-turbo': 'false' } }) }}
     {{ form_row(form.status) }}
-    <button class="btn add-review">Zapisz</button>
+    <button class="btn add-review" data-turbo="false">Zapisz</button>
     {{ form_end(form) }}
+{#    </turbo-frame>#}
 {% endblock %}
 
 {% set formVisible = true %}

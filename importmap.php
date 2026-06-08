@@ -25,4 +25,13 @@ return [
     '@hotwired/turbo' => [
         'version' => '8.0.23',
     ],
+    '@symfony/ux-turbo' => [
+        'version' => '3.1.0',
+    ],
+    '@symfony/stimulus-bridge' => [
+        'path' => './vendor/symfony/stimulus-bundle/assets/dist/loader.js',
+    ],
+    'swiper' => [
+        'version' => '12.2.0',
+    ],
 ];

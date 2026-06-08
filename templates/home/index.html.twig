@@ -5,11 +5,20 @@
 
 {% block title %}Witamy w Bibliotece!{% endblock %}
 
-{# --- Styles: include Swiper + a tiny carousel tweak stylesheet --- #}
+
+{#{% block stylesheets %}#}
+{#    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>#}
+{#    {{ parent() }}#}
+
+
+{#{% endblock %}#}
+
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
-
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" media="print" onload="this.media='all'"/>
+    <noscript>
+        <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
+    </noscript>
 {% endblock %}
 
 {% block body %}
@@ -27,7 +36,7 @@
         {% endif %}
     </section>
 
-    {# ---------------- POPULAR (Swiper carousel with mobile “peek”) ---------------- #}
+
     <section class="popular container">
         <h2>Najpopularniejsze książki</h2>
 
@@ -116,53 +125,97 @@
     </section>
 
 {% endblock %}
-
 {% block javascripts %}
     {{ parent() }}
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+{#    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>#}
     <script>
         (function () {
-            const slidesCount = {{ popularBooks|length|default(0) }};
-            const per2 = Math.min(2, slidesCount || 1);
-            const per3 = Math.min(3, slidesCount || 1);
-            const per4 = Math.min(4, slidesCount || 1);
+            function initSwiper() {
+                const slidesCount = {{ popularBooks|length|default(0) }};
+                const per2 = Math.min(2, slidesCount || 1);
+                const per3 = Math.min(3, slidesCount || 1);
+                const per4 = Math.min(4, slidesCount || 1);
 
-            new Swiper('.myPopularCarousel', {
-                // only loop if we actually have something to loop
-                loop: slidesCount > 1,
+                const el = document.querySelector('.myPopularCarousel');
+                if (!el) return;
 
-                // mobile-first “peek”
-                slidesPerView: Math.min(1.1, slidesCount || 1),
-                centeredSlides: true,
-                spaceBetween: 12,
-                slidesOffsetBefore: 16,
-                slidesOffsetAfter: 16,
+                // Destroy previous instance if navigating back
+                if (el.swiper) el.swiper.destroy(true, true);
 
-                breakpoints: {
-                    640:  {
-                        slidesPerView: per2,
-                        centeredSlides: false,
-                        slidesOffsetBefore: 0,
-                        slidesOffsetAfter: 0,
-                        spaceBetween: 16
+                new Swiper(el, {
+                    loop: slidesCount > 1,
+                    slidesPerView: Math.min(1.1, slidesCount || 1),
+                    centeredSlides: true,
+                    spaceBetween: 12,
+                    slidesOffsetBefore: 16,
+                    slidesOffsetAfter: 16,
+                    breakpoints: {
+                        640:  { slidesPerView: per2, centeredSlides: true, slidesOffsetBefore: 0, slidesOffsetAfter: 0, spaceBetween: 16 },
+                        900:  { slidesPerView: per3, spaceBetween: 16, centeredSlides: false },
+                        1200: { slidesPerView: per4, spaceBetween: 16, centeredSlides: false }
                     },
-                    900:  { slidesPerView: per3, spaceBetween: 16, centeredSlides: false },
-                    1200: { slidesPerView: per4, spaceBetween: 16, centeredSlides: false }
-                },
+                    watchOverflow: false,
+                    allowTouchMove: slidesCount > 1,
+                    navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+                    pagination: { el: '.swiper-pagination', clickable: true },
+                    grabCursor: true,
+                });
+            }
 
-                // keep controls active even if slides == slidesPerView
-                watchOverflow: false,
-                allowTouchMove: slidesCount > 1,
-
-                navigation: {
-                    nextEl: '.swiper-button-next',
-                    prevEl: '.swiper-button-prev'
-                },
-                pagination: { el: '.swiper-pagination', clickable: true },
-                grabCursor: true,
-                autoHeight: true
-            });
+            // Turbo events cover all navigation cases
+            document.addEventListener('turbo:load', initSwiper);
+            // Fallback for non-Turbo environments
+            document.addEventListener('DOMContentLoaded', initSwiper);
         })();
     </script>
 {% endblock %}
+
+{#{% block javascripts %}#}
+{#    {{ parent() }}#}
+{#    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>#}
+{#    <script>#}
+{#        (function () {#}
+{#            const slidesCount = {{ popularBooks|length|default(0) }};#}
+{#            const per2 = Math.min(2, slidesCount || 1);#}
+{#            const per3 = Math.min(3, slidesCount || 1);#}
+{#            const per4 = Math.min(4, slidesCount || 1);#}
+
+{#            new Swiper('.myPopularCarousel', {#}
+{#                // only loop if we actually have something to loop#}
+{#                loop: slidesCount > 1,#}
+
+{#                // mobile-first “peek”#}
+{#                slidesPerView: Math.min(1.1, slidesCount || 1),#}
+{#                centeredSlides: true,#}
+{#                spaceBetween: 12,#}
+{#                slidesOffsetBefore: 16,#}
+{#                slidesOffsetAfter: 16,#}
+
+{#                breakpoints: {#}
+{#                    640:  {#}
+{#                        slidesPerView: per2,#}
+{#                        centeredSlides: true,#}
+{#                        slidesOffsetBefore: 0,#}
+{#                        slidesOffsetAfter: 0,#}
+{#                        spaceBetween: 16#}
+{#                    },#}
+{#                    900:  { slidesPerView: per3, spaceBetween: 16, centeredSlides: false },#}
+{#                    1200: { slidesPerView: per4, spaceBetween: 16, centeredSlides: false }#}
+{#                },#}
+
+{#                // keep controls active even if slides == slidesPerView#}
+{#                watchOverflow: false,#}
+{#                allowTouchMove: slidesCount > 1,#}
+
+{#                navigation: {#}
+{#                    nextEl: '.swiper-button-next',#}
+{#                    prevEl: '.swiper-button-prev'#}
+{#                },#}
+{#                pagination: { el: '.swiper-pagination', clickable: true },#}
+{#                grabCursor: true,#}
+{#                autoHeight: true#}
+{#            });#}
+{#        })();#}
+{#    </script>#}
+{#{% endblock %}#}
 

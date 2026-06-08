@@ -529,7 +529,46 @@ class BookRepository extends ServiceEntityRepository
     }
 
 
+// BookRepository
+    public function findBooksWithTagSimilarity(array $userVector, User $user, int $limit): array
+    {
+        $tagIds = array_keys($userVector);
 
+        if (empty($tagIds)) {
+            return [];
+        }
+
+        // wbudowujemy wartości bezpośrednio w DQL - unikamy problemów z typami
+        $weightCases = '';
+        foreach ($userVector as $tagId => $weight) {
+            $tagId = (int) $tagId;
+            $weight = (float) $weight;
+            $weightCases .= " WHEN t.id = {$tagId} THEN {$weight}";
+        }
+
+        $tagIdList = implode(',', array_map('intval', $tagIds));
+
+        $dql = "
+        SELECT b, 
+               SUM(CASE {$weightCases} ELSE 0 END) AS HIDDEN similarity
+        FROM App\Entity\Book b
+        JOIN b.tags t
+        WHERE t.id IN ({$tagIdList})
+          AND b.id NOT IN (
+              SELECT IDENTITY(r.book) 
+              FROM App\Entity\Review r 
+              WHERE r.author = :user
+          )
+        GROUP BY b.id
+        ORDER BY similarity DESC
+    ";
+
+        return $this->getEntityManager()
+            ->createQuery($dql)
+            ->setParameter('user', $user)
+            ->setMaxResults($limit)
+            ->getResult();
+    }
 
 
 

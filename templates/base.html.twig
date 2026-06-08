@@ -3,12 +3,12 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    {% block additional_meta %}
-    <meta name="turbo-visit-control" content="reload">
-    {%  endblock %}
+{#    {% block additional_meta %}#}
+{#    <meta name="turbo-visit-control" content="reload">#}
+{#    {%  endblock %}#}
     <title>{% block title %}App{% endblock %}</title>
 
-    {{ encore_entry_link_tags('app') }}
+{#    {{ encore_entry_link_tags('app') }}#}
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,20 +17,163 @@
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
     />
+    <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-{#    {% block javascript %}#}
+    {% block javascript %}
 {#        {{ importmap('app') }}#}
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js" defer></script>
+ {% block importmap %}{{ importmap('app') }}
+ {% endblock %}
 
+<script defer>
+(function () {
+  const STORAGE_KEY = 'site-theme';
+  const THEMES = ['light', 'dark', 'forest', 'contrast'];
 
-{#    {% endblock %}#}
+  function applyTheme(theme) {
+    if (!THEMES.includes(theme)) return;
+    document.documentElement.setAttribute('data-theme', theme);
+    sessionStorage.setItem(STORAGE_KEY, theme);
+    syncActiveState(theme);
+  }
+
+  function syncActiveState(theme) {
+    document.querySelectorAll('[data-theme-option]').forEach(btn => {
+      const active = btn.dataset.themeOption === theme;
+      btn.classList.toggle('themeOption--active', active);
+      btn.setAttribute('aria-checked', active ? 'true' : 'false');
+    });
+  }
+
+  window.ThemeSwitcher = { apply: applyTheme };
+
+  // ── Inicjalizacja dropdownu ──────────────────────────────────────
+  // Uruchamiana przy każdej nawigacji Turbo (i przy pierwszym załadowaniu)
+
+  function initDropdown() {
+    const toggleBtn = document.getElementById('themeToggleBtn');
+    const dropdown  = document.getElementById('themeDropdown');
+    if (!toggleBtn || !dropdown) return;
+
+    // Sync stanu przy wejściu na stronę
+    const current = document.documentElement.getAttribute('data-theme') || 'light';
+    syncActiveState(current);
+
+    function openDropdown(open) {
+      toggleBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      dropdown.hidden = !open;
+    }
+
+    toggleBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openDropdown(toggleBtn.getAttribute('aria-expanded') !== 'true');
+    });
+
+    dropdown.addEventListener('click', (e) => {
+      const opt = e.target.closest('[data-theme-option]');
+      if (!opt) return;
+      applyTheme(opt.dataset.themeOption);
+      openDropdown(false);
+    });
+
+    document.addEventListener('click', () => openDropdown(false));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') openDropdown(false);
+    });
+  }
+
+  // ── Hamburger ────────────────────────────────────────────────────
+
+  function initHamburger() {
+    const btn   = document.getElementById('hamburger');
+    const panel = document.getElementById('navLinks');
+    const icon  = btn?.querySelector('.ms-icon');
+    if (!btn || !panel || !icon) return;
+
+    function setOpen(open) {
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      panel.setAttribute('data-open', open ? 'true' : 'false');
+      btn.setAttribute('aria-label', open ? 'Zamknij menu' : 'Menu');
+      icon.textContent = open ? 'close' : 'menu';
+    }
+
+    btn.addEventListener('click', () => {
+      setOpen(btn.getAttribute('aria-expanded') !== 'true');
+    });
+
+    panel.addEventListener('click', (e) => {
+      if (e.target.closest('a')) setOpen(false);
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') setOpen(false);
+    });
+
+    const mq = window.matchMedia('(min-width: 769px)');
+    mq.addEventListener('change', (ev) => { if (ev.matches) setOpen(false); });
+  }
+
+  // ── Turbo events ─────────────────────────────────────────────────
+  // turbo:load odpowiednik DOMContentLoaded dla Turbo Drive
+  // turbo:render odpala się też po partial renders (streams, frames)
+
+  document.addEventListener('turbo:load', () => {
+    initHamburger();
+    initDropdown();
+  });
+
+  // Jeśli Turbo nie jest dostępne (np. strona załadowana bez JS Turbo),
+  // fallback na klasyczny event
+  document.addEventListener('DOMContentLoaded', () => {
+    if (typeof Turbo === 'undefined') {
+      initHamburger();
+      initDropdown();
+    }
+  });
+
+})();
+</script>
+<script defer> (function () {
+  const STORAGE_KEY = 'site-theme';
+  const THEMES = ['light', 'dark', 'forest', 'contrast'];
+  const DEFAULT = 'light';
+
+  // Odczyt z sessionStorage, fallback do systemowego dark mode
+  function getSavedTheme() {
+    const saved = sessionStorage.getItem(STORAGE_KEY);
+    if (saved && THEMES.includes(saved)) return saved;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : DEFAULT;
+  }
+
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    sessionStorage.setItem(STORAGE_KEY, theme);
+
+    // Synchronizuj aktywny stan w dropdownie
+    document.querySelectorAll('[data-theme-option]').forEach(btn => {
+      btn.classList.toggle('theme-option--active', btn.dataset.themeOption === theme);
+      btn.setAttribute('aria-checked', btn.dataset.themeOption === theme ? 'true' : 'false');
+    });
+  }
+
+  // Expose globally, żeby dropdown mógł wołać
+  window.ThemeSwitcher = {
+    apply: applyTheme,
+    current: () => document.documentElement.getAttribute('data-theme') || DEFAULT,
+  };
+
+  // Zastosuj przy załadowaniu (przed renderem, bez flashowania)
+  applyTheme(getSavedTheme());
+})();</script>
+    {% endblock %}
 
     {# Choices.js styles #}
 {#    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />#}
 
-    {% block stylesheets %} {% endblock %}
-            {{ encore_entry_link_tags('app') }}
+    {% block stylesheets %}
+    {% endblock %}
 </head>
 <body class="">
 {% set ratingVisible=true %}
@@ -61,8 +204,7 @@
 
 
 {% block javascripts %}{% endblock %}
-            {{ encore_entry_script_tags('app') }}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
+
 {% include 'footer.html.twig' %}
 </body>
 </html>

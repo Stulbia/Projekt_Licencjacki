@@ -165,7 +165,7 @@ class BookService implements BookServiceInterface
          return $this->paginator->paginate(
              $this->bookRepository->FindMostPopularBooks(),
              $page,
-             5,
+             10,
              [
              'wrap-queries' => true,
              'useOutputWalkers' => true,

@@ -49,8 +49,8 @@
   border: 1px solid transparent;
 
   &.alert-danger {
-    background: mix($color-accent-first, $body-bg, 10%);
-    border-color: mix($color-accent-first, #000, 20%);
+    background: $lighter-accent-first;
+    border-color:$lighter-accent-first;
     color: $color-accent-first;
   }
 }

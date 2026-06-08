@@ -75,7 +75,7 @@
       border-radius: $radius;
       font-weight: 600;
       transition: background 0.3s;
-      &:hover { background: mix($color-primary, $text-color,   10%); color: $body-bg; }
+      &:hover { background: $darker-primary; color: $body-bg; }
     }
 
     .themeControls .navButton {

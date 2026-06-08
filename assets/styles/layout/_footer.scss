@@ -8,8 +8,14 @@ footer {
 .footer-bottom{
   //margin: 0;
   padding-top: 1rem;
-  background: $body-bg;
-  color:$text-color;
+  background: $muted-dark;
+  color:$body-bg;
+  p{
+    margin: 0;
+    border: 0;
+    padding: 0;
+    color:$body-bg;
+  }
 }
 
 }
@@ -61,7 +67,9 @@ footer {
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 1.5rem;
-
+    @media (max-width: 767px) {
+      justify-content: center;
+    }
     .footer-column {
       min-width: 150px;
 
@@ -79,7 +87,7 @@ footer {
         text-decoration: none;
 
         &:hover {
-          color: $color-primary;
+          color: $color-accent-second;
         }
       }
     }

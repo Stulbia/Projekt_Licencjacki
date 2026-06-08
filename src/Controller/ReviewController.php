@@ -43,7 +43,7 @@ class ReviewController extends AbstractController
         if ($user) {
             $pagination = $this->reviewService->getPaginatedUserList($page, $user);
         } else {
-            return $this->redirectToRoute('login');
+            return $this->redirectToRoute('app_login');
         }
         return $this->render('review/my_reviews.html.twig', [
             'pagination' => $pagination,
@@ -85,7 +85,6 @@ class ReviewController extends AbstractController
             }
             $em->persist($review);
             $em->flush();
-
             return $this->redirectToRoute('book_show', ['slug' => $book->getSlug()]);
         }
         $user = $this->getUser();

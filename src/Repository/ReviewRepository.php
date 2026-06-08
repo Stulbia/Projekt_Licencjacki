@@ -175,4 +175,18 @@ class ReviewRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult() ?? 0.0);
     }
+
+    public function findWithTagsByAuthor(User $user): array
+    {
+        return $this->createQueryBuilder('r')
+            ->select('r', 'b', 'ta', 't')
+            ->join('r.book', 'b')
+            ->leftJoin('b.tags', 'bt')
+            ->leftJoin('r.tagAssignments', 'ta')
+            ->leftJoin('ta.tag', 't')
+            ->where('r.author = :author')
+            ->setParameter('author', $user)
+            ->getQuery()
+            ->getResult();
+    }
 }

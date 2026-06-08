@@ -6,12 +6,12 @@
     <main class="auth-page">
         <section class="auth-card register-card">
             <h1 class="auth-title">{{ page_title }}</h1>
-
+          {% include 'default/_flash_messages.html.twig' %}
             {{ form_start(form, { attr: { class: 'auth-form' } }) }}
             {{ form_widget(form) }}
 
             <div class="auth-actions">
-                <button class="btn btn-lg btn-primary" type="submit">
+                <button class="btn btn-lg btn-primary" type="submit" data-turbo="false">
                     {{ submit_label }}
                 </button>
 

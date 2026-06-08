@@ -5,7 +5,7 @@
     <section class="review-form-container">
         <h2>Edytuj swoją recenzję</h2>
 
-        {{ form_start(form, { attr: { class: 'review-form' } ,data-turbo="false" }) }}
+        {{ form_start(form, { attr: { class: 'review-form' } }) }}
 
         {# ---------- Rating: hidden Symfony field + star buttons ---------- #}
         {% set current = form.rating.vars.value ?? 5 %}
