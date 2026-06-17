@@ -17,6 +17,7 @@ class FetchBooksCommand extends Command
         $output->writeln('Pobieranie listy książek...');
         $response = $client->request('GET', 'https://wolnelektury.pl/api/books/');
         $allBooks = $response->toArray();
+        shuffle($allBooks);
         $subset = array_slice($allBooks, 0, 200);
 
         $finalData = [];

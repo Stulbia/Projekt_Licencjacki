@@ -237,7 +237,7 @@ $hero-btn-text: $color-accent-third;
     height: 32px;
     z-index: 5;          /* <<< make sure they’re above cards */
     color: $text-color;
-    &::after { font-size: 20px; }
+    &::after { font-size: 1.25rem; }
   }
 
   .swiper-button-prev { left: -10px; }  /* push outside */
@@ -505,7 +505,7 @@ $hero-btn-text: $color-accent-third;
 }
 
 .themeChevron {
-  font-size: 18px;
+  font-size: 1.125rem;
   transition: transform 0.2s;
 }
 
@@ -540,7 +540,7 @@ $hero-btn-text: $color-accent-third;
   padding: 8px 10px;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-family: inherit;
   color: var(--text-color);
   text-align: left;
@@ -554,7 +554,7 @@ $hero-btn-text: $color-accent-third;
   font-weight: 600;
 }
 
-.themeSwatch {
+.themeSwatch,{
   width: 18px;
   height: 18px;
   border-radius: 50%;
@@ -564,7 +564,8 @@ $hero-btn-text: $color-accent-third;
 
 
 @media (max-width: 900px) {
-  #themeToggleBtn{
+  .themeDropdownWrapper {display:none}
+  #themeToggleBtn, .themeDropdown , #fontSizeToggleBtn{
     display: none;
     width:0;
     height:0;
@@ -579,7 +580,7 @@ $hero-btn-text: $color-accent-third;
     };
   }
   @media (max-width: 768px) {
-    #themeToggleBtn{
+    #themeToggleBtn, #fontSizeToggleBtn{
       display: none;
       width: 0;
       height: 0;

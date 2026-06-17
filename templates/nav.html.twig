@@ -15,7 +15,39 @@
 
 
     <div id="navLinks" class="navLinks" data-open="false">
+        {# === DROPDOWN ROZMIARU CZCIONKI === #}
+        <div class="themeDropdownWrapper">
+            <button class="navLink themeToggleBtn"
+                    id="fontSizeToggleBtn"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    aria-controls="fontSizeDropdown">
+                <span class="material-symbols-outlined" aria-hidden="true">format_size</span>
+                Czcionka
+                <span class="material-symbols-outlined themeChevron" aria-hidden="true">expand_more</span>
+            </button>
 
+            <ul class="themeDropdown" id="fontSizeDropdown" role="menu" hidden>
+                <li role="none">
+                    <button class="themeOption" data-fontsize-option="small" role="menuitemradio" aria-checked="false">
+                        <span style="font-size:0.75rem; font-weight:bold; width:24px; display:inline-block">A</span>
+                        Mała
+                    </button>
+                </li>
+                <li role="none">
+                    <button class="themeOption" data-fontsize-option="medium" role="menuitemradio" aria-checked="false">
+                        <span style="font-size:1rem; font-weight:bold; width:24px; display:inline-block">A</span>
+                        Normalna
+                    </button>
+                </li>
+                <li role="none">
+                    <button class="themeOption" data-fontsize-option="large" role="menuitemradio" aria-checked="false">
+                        <span style="font-size:1.25rem; font-weight:bold; width:24px; display:inline-block">A</span>
+                        Duża
+                    </button>
+                </li>
+            </ul>
+        </div>
     {# === DROPDOWN MOTYWU === #}
     <div class="themeDropdownWrapper">
         <button class="navLink themeToggleBtn"
@@ -27,6 +59,7 @@
             Motyw
             <span class="material-symbols-outlined themeChevron" aria-hidden="true">expand_more</span>
         </button>
+
 
         <ul class="themeDropdown" id="themeDropdown" role="menu" hidden>
             <li role="none">

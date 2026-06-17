@@ -121,7 +121,7 @@ $radius: if(global-variable-exists(radius), $radius, 14px);
     background: none;
     //box-shadow: var(--card-shadow);
     top: 42%;
-    &:after { font-size: 16px; color: $text-color; }
+    &:after { font-size: 1rem; color: $text-color; }
     @media (max-width: 767px) {
 
         display: none;

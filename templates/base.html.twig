@@ -135,12 +135,78 @@
 
 })();
 </script>
+<script defer>
+(function () {
+  const STORAGE_KEY = 'site-fontsize';
+  const SIZES = ['small', 'medium', 'large'];
+  const SIZE_MAP = { small: '14px', medium: '16px', large: '19px' };
+  const DEFAULT = 'medium';
+
+  function getSaved() {
+    const s = sessionStorage.getItem(STORAGE_KEY);
+    return SIZES.includes(s) ? s : DEFAULT;
+  }
+
+  function applySize(size) {
+    if (!SIZES.includes(size)) return;
+    document.documentElement.style.setProperty('font-size', SIZE_MAP[size]);
+    sessionStorage.setItem(STORAGE_KEY, size);
+    syncActive(size);
+  }
+
+  function syncActive(size) {
+    document.querySelectorAll('[data-fontsize-option]').forEach(btn => {
+      const active = btn.dataset.fontsizeOption === size;
+      btn.classList.toggle('themeOption--active', active);
+      btn.setAttribute('aria-checked', active ? 'true' : 'false');
+    });
+  }
+
+  function initFontDropdown() {
+    const toggleBtn = document.getElementById('fontSizeToggleBtn');
+    const dropdown  = document.getElementById('fontSizeDropdown');
+    if (!toggleBtn || !dropdown) return;
+
+    syncActive(getSaved());
+
+    function openDropdown(open) {
+      toggleBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      dropdown.hidden = !open;
+    }
+
+    toggleBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openDropdown(toggleBtn.getAttribute('aria-expanded') !== 'true');
+    });
+
+    dropdown.addEventListener('click', (e) => {
+      const opt = e.target.closest('[data-fontsize-option]');
+      if (!opt) return;
+      applySize(opt.dataset.fontsizeOption);
+      openDropdown(false);
+    });
+
+    document.addEventListener('click', () => openDropdown(false));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') openDropdown(false);
+    });
+  }
+
+  // Zastosuj od razu (przed renderem)
+  applySize(getSaved());
+
+  document.addEventListener('turbo:load', initFontDropdown);
+  document.addEventListener('DOMContentLoaded', () => {
+    if (typeof Turbo === 'undefined') initFontDropdown();
+  });
+})();
+</script>
 <script defer> (function () {
   const STORAGE_KEY = 'site-theme';
   const THEMES = ['light', 'dark', 'forest', 'contrast'];
   const DEFAULT = 'light';
 
-  // Odczyt z sessionStorage, fallback do systemowego dark mode
+
   function getSavedTheme() {
     const saved = sessionStorage.getItem(STORAGE_KEY);
     if (saved && THEMES.includes(saved)) return saved;

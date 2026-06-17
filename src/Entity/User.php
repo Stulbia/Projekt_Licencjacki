@@ -239,7 +239,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, Account>
      */
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Account::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Account::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $accounts;
 
     public function getPlainPassword(): ?string
@@ -265,7 +265,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->accounts->contains($account)) {
             $this->accounts->add($account);
-            $account->setProfile($this);
+            $account->setUser($this);
         }
 
         return $this;
@@ -275,8 +275,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->accounts->removeElement($account)) {
             // set the owning side to null (unless already changed)
-            if ($account->getProfile() === $this) {
-                $account->setProfile(null);
+            if ($account->getUser() === $this) {
+                $account->setUser(null);
             }
         }
 
