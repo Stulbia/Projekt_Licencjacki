@@ -1,19 +1,157 @@
-$body-bg: rgb(249, 243, 235);
-$text-color: #000000;
-$font-stack: 'Commissioner ', system-ui, sans-serif;
-//'Roboto'
-$color-primary: #0f4c5c;
-$color-secondary: #e36414 ;
-$color-accent-first: #9a031e ;
-$color-accent-second: #fb8b24;
-$color-accent-third: #5f0f40;
-$radius: 10px;
 
-$gradient-bg:
-        //linear-gradient(32deg, rgba(1, 0, 26, 0.64) 0%, rgba(9, 74, 121, 0.46) 43%, rgba(49, 63, 42, 0.47) 100%),
-        linear-gradient(
+:root, html[data-theme="light"] {
+        --body-bg: rgb(249, 243, 235);
+        --text-color: #000000;
+        --font-stack: 'Roboto', 'Commissioner ', system-ui, sans-serif;
+        --color-prime: #0f4c5c;
+        --color-secondary: #e36414;
+        --color-accent-first: #9a031e;
+        --color-accent-second: #f69842;
+        --color-accent-third: #5f0f40;
+        --lighter-primary: #07a487;
+        --darker-secondary: #c54b17;
+        --darker-primary: #0b4057;
+        --lighter-secondary: #eedfcf;
+        --darker-accent-first: #47001b;
+        --lighter-accent-first: #c80c0c;
+        --muted-light: #886553;
+        --muted-dark: #052125;
+        --bg-darken: rgb(255, 241, 222);
+        --gradient-bg: linear-gradient(
                         90deg,
-                        $color-primary 0%,
-                        $color-accent-first 38%,
-                        $color-accent-second 100%
+                        var(--color-prime)      5%,
+                        var(--color-accent-first) 50%,
+                        var(--color-accent-second) 100%
         );
+
+        --gradient-secondary: linear-gradient(
+                        135deg,
+                        var(--color-prime)       15%,
+                        var(--lighter-primary) 45%,
+                        var(--color-secondary)     100%
+        );
+}
+
+:root, html[data-theme="dark"] {
+        --body-bg: rgb(1, 1, 26);
+        --text-color: #fff9f5;
+        --font-stack: 'Roboto', 'Commissioner ', system-ui, sans-serif;
+        --color-prime: #00d9f7;
+        --color-secondary: #dd0098;
+        --color-accent-first: #de003f;
+        --color-accent-second: #3dffd5;
+        --color-accent-third: #6715c5;
+        --lighter-primary: #240575;
+        --darker-secondary: #d33be6;
+        --darker-primary: #4bbdee;
+        --lighter-secondary: #0050b3;
+        --darker-accent-first: #290062;
+        --lighter-accent-first: #cf0058;
+        --muted-light: #521898;
+        --muted-dark: #698bb6;
+        --bg-darken: rgb(73, 85, 152);
+        --gradient-bg: linear-gradient(
+                        90deg,
+                        var(--color-prime)      5%,
+                        var(--color-accent-first) 50%,
+                        var(--color-accent-second) 100%
+        );
+
+        --gradient-secondary: linear-gradient(
+                        135deg,
+                        var(--color-prime)       15%,
+                        var(--lighter-primary) 45%,
+                        var(--color-secondary)     100%
+        );
+}
+
+
+:root, html[data-theme="forest"] {
+        --body-bg: rgb(248, 236, 221);
+        --text-color: #04270d;
+        --font-stack: 'Roboto', 'Commissioner ', system-ui, sans-serif;
+        --color-prime: #074837;
+        --color-secondary: #296f43;
+        --color-accent-first: #107b2d;
+        --color-accent-second: #73b132;
+        --color-accent-third: #112d00;
+        //--muted-light: #b756c8;
+        --lighter-primary: #58b950;
+        --darker-secondary: #0f6b15;
+        --darker-primary: #307838;
+        --lighter-secondary: #2b8145;
+        --darker-accent-first: #052c02;
+        --lighter-accent-first: #ac3838;
+        --muted-light: #538859;
+        --muted-dark: #0b3f1b;
+        --bg-darken: rgb(255, 240, 220);
+        --gradient-bg: linear-gradient(
+                        90deg,
+                        var(--color-prime)      5%,
+                        var(--color-accent-first) 50%,
+                        var(--color-accent-second) 100%
+        );
+
+        --gradient-secondary: linear-gradient(
+                        135deg,
+                        var(--color-prime)       15%,
+                        #618527,
+                        var(--color-secondary)     100%
+        );
+}
+
+
+:root, html[data-theme="contrast"] {
+        --body-bg: #000000;
+        --text-color: #ffff00;
+        --font-stack: 'Roboto', 'Commissioner ', system-ui, sans-serif;
+        --color-prime: #ffff00;
+        --color-secondary: #ffff00;
+        --color-accent-first: #ffff00;
+        --color-accent-second: #0000ff;
+        --color-accent-third: #ffff00;
+        --lighter-primary: #000000;
+        --darker-secondary: #ffff00;
+        --darker-primary: #ffff00;
+        --lighter-secondary: #4f4fff;
+        --darker-accent-first: #000000;
+        --lighter-accent-first: #000000;
+        --muted-light: #55657d;
+        --muted-dark: #0000ff;
+        --bg-darken: rgb(0, 0, 0);
+        --gradient-secondary: #ffff00;
+        --gradient-bg: #ffff00;
+}
+
+$body-bg:             var(--body-bg);
+$text-color:          var(--text-color);
+$color-primary:       var(--color-prime);
+$color-secondary:     var(--color-secondary);
+$color-accent-first:  var(--color-accent-first);
+$color-accent-second: var(--color-accent-second);
+$color-accent-third:  var(--color-accent-third);
+$lighter-primary:     var(--lighter-primary);
+$darker-secondary:    var(--darker-secondary);
+$darker-primary:      var(--darker-primary);
+$lighter-secondary:   var(--lighter-secondary);
+$darker-accent-first: var(  --darker-accent-first);
+$lighter-accent-first: var(--lighter-accent-first);
+$muted-light: var(--muted-light);
+$muted-dark: var(--muted-dark);
+$bg-darken: var(--bg-darken);
+
+
+
+
+$font-stack: 'Roboto', 'Commissioner ', system-ui, sans-serif;
+
+
+
+
+$radius: 10px;
+$-swiper-theme-color: $text-color;
+
+
+
+$gradient-bg:var(--gradient-bg);
+$gradient-secondary:var(--gradient-secondary);

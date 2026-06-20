@@ -64,12 +64,12 @@
         }
 
         a:hover {
-          background: mix($color-secondary, $body-bg, 20%);
+          background: $color-secondary;
           color: $body-bg;
         }
 
         &.active span {
-          background: $color-secondary;
+          background: $darker-secondary;
           color: $body-bg;
         }
       }

@@ -40,10 +40,10 @@
 {#        {{ form_row(form.reviewTags) }}#}
 
 
-        <div class="form-group">
+        <div class="form-group" data-turbo="false">
             {{ form_label(form.reviewTags, null, { label_attr: { class: 'formLabel' } }) }}
 
-            <div class="tag-pills" id="reviewTagsField" data-enhance="tag-pills">
+            <div class="tag-pills" id="reviewTagsField" data-enhance="tag-pills" data-turbo="true">
                 {% for child in form.reviewTags %}
                     <label class="tagPill">
                         {{ form_widget(child, { attr: { class: 'tagPillInput' } }) }}
@@ -56,7 +56,7 @@
         </div>
 
 
-<div class="button-container">
+<div class="button-container" data-turbo="false">
         <button type="submit" class="btn add-review"> Zapisz</button>
 </div>
         {# Normal end -> includes CSRF & any hidden fields; won't duplicate rendered fields #}
@@ -91,7 +91,7 @@
 
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('turbo:load', () => {
             const ratingInput = document.getElementById('{{ form.rating.vars.id }}');
             const group   = document.getElementById('starRating');
             const stars   = Array.from(group.querySelectorAll('.star'));

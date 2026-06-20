@@ -1,21 +1,22 @@
-
 {% extends 'base.html.twig' %}
 
 {% block title %}Dla Ciebie{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
-    {# Jeśli Swiper nie jest globalnie dodany, dołącz CSS tutaj #}
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" media="print" onload="this.media='all'"/>
+    <noscript>
+        <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
+    </noscript>
 {% endblock %}
 
 {% block body %}
     <section class="forYouPage">
+
         {# ---------- HERO ---------- #}
         <header class="hero">
             <div class="heroInner">
                 <h1 class="heroTitle">Polecane książki</h1>
-
                 {% if app.user %}
                     <p class="heroSubtitle">
                         Pozycje wybierane są na podstawie Twoich ocen. Im więcej czytasz, tym trafniejsze propozycje!
@@ -33,106 +34,104 @@
         </header>
 
         <div class="forYouContent">
-            {# --------- Sekcja: Na podstawie Twoich ocen (główna) --------- #}
-        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-            <section class="recommendSection">
-                <div class="sectionHeader">
+
+            {# ---------- Dopasowane do Ciebie ---------- #}
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <section class="recommendSection">
                     <h2 class="sectionTitle">Dopasowane do Ciebie</h2>
-                </div>
+                    {% if yourBooks is not empty %}
+                        {{ _self.carousel(yourBooks, 'forYou') }}
+                    {% else %}
+                        <p class="muted">
+                            Brak rekomendacji na ten moment. Przeczytaj kilka książek lub napisz recenzję, by zobaczyć propozycje!
+                        </p>
+                    {% endif %}
+                </section>
+            {% endif %}
 
-                {% if yourBooks is not empty %}
-                    <div class="swiper forYouCarousel" data-carousel="forYou">
-                        <div class="swiper-wrapper">
-                            {% for book in yourBooks %}
-                                <div class="swiper-slide">
-                                    {% include 'book_card.html.twig' with { book: book } %}
-                                </div>
-                            {% endfor %}
-                        </div>
-                        <div class="swiper-button-prev"></div>
-                        <div class="swiper-button-next"></div>
-                        <div class="swiper-pagination"></div>
-                    </div>
-                {% else %}
-                    <p class="emptyNotice">
-                        Brak rekomendacji na ten moment. Przeczytaj kilka książek lub napisz recenzję, by zobaczyć propozycje!
-                    </p>
-                {% endif %}
-            </section>
-        {% endif %}
-{#            {% set popularBooks = books %}#}
-
+            {# ---------- Popularne ---------- #}
             {% if popularBooks is defined and popularBooks is not empty %}
                 <section class="recommendSection">
-                    <div class="sectionHeader">
-                        <h2 class="sectionTitle">Popularne wśród czytelników</h2>
-                    </div>
-
-                    <div class="swiper forYouCarousel" data-carousel="popular">
-                        <div class="swiper-wrapper">
-                            {% for book in popularBooks %}
-                                <div class="swiper-slide">
-                                    {% include 'book_card.html.twig' with { book: book } %}
-                                </div>
-                            {% endfor %}
-                        </div>
-                        <div class="swiper-button-prev"></div>
-                        <div class="swiper-button-next"></div>
-                        <div class="swiper-pagination"></div>
-                    </div>
+                    <h2 class="sectionTitle">Popularne wśród czytelników</h2>
+                    {{ _self.carousel(popularBooks, 'popular') }}
                 </section>
             {% endif %}
 
-            {% if topBooks is defined and popularBooks is not empty %}
+            {# ---------- Najwyżej oceniane ---------- #}
+            {% if topBooks is defined and topBooks is not empty %}
                 <section class="recommendSection">
-                    <div class="sectionHeader">
-                        <h2 class="sectionTitle">Najwyżej oceniane</h2>
-                    </div>
-
-                    <div class="swiper forYouCarousel" data-carousel="popular">
-                        <div class="swiper-wrapper">
-                            {% for book in topBooks %}
-                                <div class="swiper-slide">
-                                    {% include 'book_card.html.twig' with { book: book } %}
-                                </div>
-                            {% endfor %}
-                        </div>
-                        <div class="swiper-button-prev"></div>
-                        <div class="swiper-button-next"></div>
-                        <div class="swiper-pagination"></div>
-                    </div>
+                    <h2 class="sectionTitle">Najwyżej oceniane</h2>
+                    {{ _self.carousel(topBooks, 'top') }}
                 </section>
             {% endif %}
-
-
 
         </div>
     </section>
 {% endblock %}
 
+{# ---------- Carousel macro ---------- #}
+{% macro carousel(books, id) %}
+    <div class="swiper forYouCarousel" data-carousel="{{ id }}" aria-label="Karuzela książek">
+        <div class="swiper-wrapper">
+            {% for book in books %}
+                <div class="swiper-slide">
+                    {% include 'book_card.html.twig' with { book: book } %}
+                </div>
+            {% endfor %}
+        </div>
+        <div class="swiper-button-prev" aria-label="Poprzednia książka"></div>
+        <div class="swiper-button-next" aria-label="Następna książka"></div>
+        <div class="swiper-pagination" aria-hidden="true"></div>
+    </div>
+    <noscript>
+        <div class="popularGrid">
+            {% for book in books %}
+                <div class="popularItem">
+                    {% include 'book_card.html.twig' with { book: book } %}
+                </div>
+            {% endfor %}
+        </div>
+    </noscript>
+{% endmacro %}
+
 {% block javascripts %}
     {{ parent() }}
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script>
-        document.querySelectorAll('.forYouCarousel').forEach((el) => {
-            new Swiper(el, {
-                loop: true,
-                slidesPerView: 1.2,
-                spaceBetween: 16,
-                centeredSlidesBounds: true,
-                breakpoints: {
-                    640: { slidesPerView: 2.2 },
-                    960: { slidesPerView: 3.2 },
-                    1280:{ slidesPerView: 4.2 }
-                },
-                navigation: {
-                    nextEl: el.querySelector('.swiper-button-next'),
-                    prevEl: el.querySelector('.swiper-button-prev'),
-                },
-                pagination: {
-                    el: el.querySelector('.swiper-pagination'),
-                    clickable: true
-                }
+        document.addEventListener('turbo:load', function () {
+            if (typeof Swiper === 'undefined') return;
+
+            document.querySelectorAll('.forYouCarousel').forEach(function (el) {
+                if (el.swiper) el.swiper.destroy(true, true);
+
+                const slidesCount = el.querySelectorAll('.swiper-slide').length;
+                const per2 = Math.min(2, slidesCount || 1);
+                const per3 = Math.min(3, slidesCount || 1);
+                const per4 = Math.min(4, slidesCount || 1);
+
+                new Swiper(el, {
+                    loop: slidesCount > 1,
+                    slidesPerView: Math.min(1.1, slidesCount || 1),
+                    centeredSlides: true,
+                    spaceBetween: 12,
+                    slidesOffsetBefore: 16,
+                    slidesOffsetAfter: 16,
+                    breakpoints: {
+                        640:  { slidesPerView: per2, centeredSlides: true, slidesOffsetBefore: 0, slidesOffsetAfter: 0, spaceBetween: 16 },
+                        900:  { slidesPerView: per3, spaceBetween: 16, centeredSlides: false },
+                        1200: { slidesPerView: per4, spaceBetween: 16, centeredSlides: false }
+                    },
+                    watchOverflow: false,
+                    allowTouchMove: slidesCount > 1,
+                    navigation: {
+                        nextEl: el.querySelector('.swiper-button-next'),
+                        prevEl: el.querySelector('.swiper-button-prev'),
+                    },
+                    pagination: {
+                        el: el.querySelector('.swiper-pagination'),
+                        clickable: true
+                    },
+                    grabCursor: true,
+                });
             });
         });
     </script>

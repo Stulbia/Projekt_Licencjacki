@@ -1,9 +1,10 @@
 <nav class="navBar">
     <div class="navLogo">
-       <a href="{{ path('homepage') }}"> <span class="material-symbols-outlined">menu_book</span> Biblioteka</a>
+        <a href="{{ path('homepage') }}">
+            <span class="material-symbols-outlined">menu_book</span> Biblioteka
+        </a>
     </div>
 
-    {# Hamburger on the right #}
     <button id="hamburger"
             class="navHamburger"
             aria-label="Menu"
@@ -13,8 +14,83 @@
     </button>
 
 
-    {# Collapsible links #}
     <div id="navLinks" class="navLinks" data-open="false">
+        {# === DROPDOWN ROZMIARU CZCIONKI === #}
+        <div class="themeDropdownWrapper">
+            <button class="navLink themeToggleBtn"
+                    id="fontSizeToggleBtn"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    aria-controls="fontSizeDropdown">
+                <span class="material-symbols-outlined" aria-hidden="true">format_size</span>
+                Czcionka
+                <span class="material-symbols-outlined themeChevron" aria-hidden="true">expand_more</span>
+            </button>
+
+            <ul class="themeDropdown" id="fontSizeDropdown" role="menu" hidden>
+                <li role="none">
+                    <button class="themeOption" data-fontsize-option="small" role="menuitemradio" aria-checked="false">
+                        <span style="font-size:0.75rem; font-weight:bold; width:24px; display:inline-block">A</span>
+                        Mała
+                    </button>
+                </li>
+                <li role="none">
+                    <button class="themeOption" data-fontsize-option="medium" role="menuitemradio" aria-checked="false">
+                        <span style="font-size:1rem; font-weight:bold; width:24px; display:inline-block">A</span>
+                        Normalna
+                    </button>
+                </li>
+                <li role="none">
+                    <button class="themeOption" data-fontsize-option="large" role="menuitemradio" aria-checked="false">
+                        <span style="font-size:1.25rem; font-weight:bold; width:24px; display:inline-block">A</span>
+                        Duża
+                    </button>
+                </li>
+            </ul>
+        </div>
+    {# === DROPDOWN MOTYWU === #}
+    <div class="themeDropdownWrapper">
+        <button class="navLink themeToggleBtn"
+                id="themeToggleBtn"
+                aria-haspopup="true"
+                aria-expanded="false"
+                aria-controls="themeDropdown">
+            <span class="material-symbols-outlined" aria-hidden="true">palette</span>
+            Motyw
+            <span class="material-symbols-outlined themeChevron" aria-hidden="true">expand_more</span>
+        </button>
+
+
+        <ul class="themeDropdown" id="themeDropdown" role="menu" hidden>
+            <li role="none">
+                <button class="themeOption" data-theme-option="light" role="menuitemradio" aria-checked="false">
+                    <span class="themeSwatch" style="background:linear-gradient(135deg,#f9f3eb 50%,darkorange 50%, #00977f 80%  )"></span>
+                    Jasny
+                </button>
+            </li>
+            <li role="none">
+                <button class="themeOption" data-theme-option="dark" role="menuitemradio" aria-checked="false">
+                    <span class="themeSwatch" style="background:linear-gradient(135deg,#01011a 50%,#00d9f7 50%, deeppink 90%)"></span>
+                    Ciemny
+                </button>
+            </li>
+            <li role="none">
+                <button class="themeOption" data-theme-option="forest" role="menuitemradio" aria-checked="false">
+                    <span class="themeSwatch" style="background:linear-gradient(135deg,  #efefed 50%, #6d8935 50%, #00643a 80%)"></span>
+                    Leśny
+                </button>
+            </li>
+            <li role="none">
+                <button class="themeOption" data-theme-option="contrast" role="menuitemradio" aria-checked="false">
+                    <span class="themeSwatch" style="background:linear-gradient(135deg,#000 50%,#ffff00 50%)"></span>
+                    Kontrast
+                </button>
+            </li>
+        </ul>
+    </div>
+
+
+
         <a class="navLink" href="{{ path('homepage') }}">Strona Głowna</a>
         <a class="navLink" href="{{ path('for_you_index') }}">Polecane</a>
         <a class="navLink" href="{{ path('book_search') }}">Szukaj</a>
@@ -29,37 +105,5 @@
             <a class="navLink loginBtn" href="{{ path('user_register') }}">Zarejestruj</a>
         {% endif %}
     </div>
+
 </nav>
-
-<script>
-    (function () {
-        const btn = document.getElementById('hamburger');
-        const panel = document.getElementById('navLinks');
-        const icon = btn?.querySelector('.ms-icon');
-        if (!btn || !panel || !icon) return;
-
-        function setOpen(open) {
-            btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-            panel.setAttribute('data-open', open ? 'true' : 'false');
-            btn.setAttribute('aria-label', open ? 'Zamknij menu' : 'Menu');
-            icon.textContent = open ? 'close' : 'menu'; // 👈 switch icon
-        }
-
-        btn.addEventListener('click', () => {
-            const open = btn.getAttribute('aria-expanded') === 'true';
-            setOpen(!open);
-        });
-
-        panel.addEventListener('click', (e) => {
-            if (e.target.closest('a')) setOpen(false);
-        });
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') setOpen(false);
-        });
-
-        // Reset when switching to desktop
-        const mq = window.matchMedia('(min-width: 769px)');
-        mq.addEventListener('change', (ev) => { if (ev.matches) setOpen(false); });
-    })();
-</script>

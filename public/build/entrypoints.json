@@ -1,0 +1,14 @@
+{
+  "entrypoints": {
+    "app": {
+      "js": [
+        "/~22_gacon/build/runtime.js",
+        "/~22_gacon/build/vendors-node_modules_hotwired_stimulus_dist_stimulus_js-node_modules_hotwired_turbo_dist_turb-b3a66a.js",
+        "/~22_gacon/build/app.js"
+      ],
+      "css": [
+        "/~22_gacon/build/app.css"
+      ]
+    }
+  }
+}

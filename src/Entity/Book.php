@@ -53,9 +53,9 @@ class Book
     #[ORM\JoinTable(name: 'books_tags')]
     private Collection $tags;
 
-    #[ORM\Column(type: Types::TEXT, length: 255, nullable: false)]
+    #[ORM\Column(type: Types::TEXT, length: 5000, nullable: false)]
     #[Assert\NotBlank]
-    #[Assert\Length(min: 1, max: 255)]
+    #[Assert\Length(min: 1, max: 5000)]
     private ?string $description = null;
 
     #[ORM\OneToMany(mappedBy: 'book', targetEntity: Review::class, orphanRemoval: true)]

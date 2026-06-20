@@ -97,25 +97,39 @@ abstract class AbstractBaseFixtures extends Fixture
      * @psalm-suppress MixedAssignment
      * @psalm-suppress UnusedForeachValue
      */
+
     protected function getRandomReference(string $groupName): object
     {
         if (!isset($this->referencesIndex[$groupName])) {
             $this->referencesIndex[$groupName] = [];
 
-            foreach (array_keys($this->referenceRepository->getReferences()) as $key) {
-                if (str_starts_with((string) $key, $groupName.'_')) {
-                    $this->referencesIndex[$groupName][] = $key;
+            // 1. Pobieramy tablicę pogrupowaną: [Klasa => [NazwaReferencji => Obiekt]]
+            $referencesByClass = $this->referenceRepository->getReferencesByClass();
+
+            // 2. Przeszukujemy wszystkie klasy
+            foreach ($referencesByClass as $class => $references) {
+                foreach (array_keys($references) as $key) {
+                    // Sprawdzamy czy klucz (nazwa referencji) zaczyna się od naszej grupy
+                    if (str_starts_with((string) $key, $groupName . '_')) {
+                        // Zapisujemy klucz ORAZ nazwę klasy (bo getReference jej teraz wymaga!)
+                        $this->referencesIndex[$groupName][] = [
+                            'key' => (string) $key,
+                            'class' => $class
+                        ];
+                    }
                 }
             }
         }
 
         if (empty($this->referencesIndex[$groupName])) {
-            throw new \InvalidArgumentException(sprintf('Did not find any references saved with the group name "%s"', $groupName));
+            throw new \InvalidArgumentException(sprintf('Brak referencji dla grupy "%s"', $groupName));
         }
 
-        $randomReferenceKey = (string) $this->faker->randomElement($this->referencesIndex[$groupName]);
+        // 3. Losujemy wpis (teraz to tablica z kluczem i klasą)
+        $randomData = $this->faker->randomElement($this->referencesIndex[$groupName]);
 
-        return $this->getReference($randomReferenceKey);
+        // 4. Wywołujemy getReference z DWOMA argumentami (tak jak w Twoim kodzie źródłowym)
+        return $this->referenceRepository->getReference($randomData['key'], $randomData['class']);
     }
 
     /**
@@ -152,5 +166,4 @@ abstract class AbstractBaseFixtures extends Fixture
 
         return $references;
     }
-
 }

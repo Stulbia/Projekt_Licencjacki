@@ -66,10 +66,8 @@ class BookService implements BookServiceInterface
     public function getSearchList(int $page, BookSearchInputFiltersDto $filters, int $items): PaginationInterface
     {
         $parsedFilters = $this->prepareSearchFilters($filters);
-//       dump($parsedFilters); die;
-    //    dump($this->bookRepository->querySearch($parsedFilters)); die;
-        return $this->paginator->paginate(
-//            $this->bookRepository->querySearch($parsedFilters),
+//var_dump($parsedFilters);        
+return $this->paginator->paginate(
             $this->bookRepository->searchWithAvgRating($parsedFilters),
             $page,
             $items,
@@ -168,7 +166,7 @@ class BookService implements BookServiceInterface
          return $this->paginator->paginate(
              $this->bookRepository->FindMostPopularBooks(),
              $page,
-             5,
+             10,
              [
              'wrap-queries' => true,
              'useOutputWalkers' => true,

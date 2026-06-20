@@ -3,20 +3,13 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
+{#    {% block additional_meta %}#}
+{#    <meta name="turbo-visit-control" content="reload">#}
+{#    {%  endblock %}#}
     <title>{% block title %}App{% endblock %}</title>
 
-    {{ encore_entry_link_tags('app') }}
-
-{#    <link rel="preconnect" href="https://fonts.googleapis.com">#}
-{#    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>#}
-{#    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">#}
-
-
-{#    #}{# Google Fonts Roboto #}
-{#    <link rel="preconnect" href="https://fonts.googleapis.com">#}
-{#    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>#}
-{#    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">#}
-
+{#    {{ encore_entry_link_tags('app') }}#}
+<base href="https://jawor.wzks.uj.edu.pl/~22_gacon/build">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@100..900&display=swap" rel="stylesheet">
@@ -24,15 +17,230 @@
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
     />
-
+    <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
+    <link rel="stylesheet" href="https://jawor.wzks.uj.edu.pl/~22_gacon/build/app.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    {% block javascript %}
+{#        {{ importmap('app') }}#}
+<script src="https://jawor.wzks.uj.edu.pl/~22_gacon/build/app.js" defer></script>
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js" defer></script>
+ {% block importmap %}{{ importmap('app') }}
+ {% endblock %}
 
+<script defer>
+(function () {
+  const STORAGE_KEY = 'site-theme';
+  const THEMES = ['light', 'dark', 'forest', 'contrast'];
+
+  function applyTheme(theme) {
+    if (!THEMES.includes(theme)) return;
+    document.documentElement.setAttribute('data-theme', theme);
+    sessionStorage.setItem(STORAGE_KEY, theme);
+    syncActiveState(theme);
+  }
+
+  function syncActiveState(theme) {
+    document.querySelectorAll('[data-theme-option]').forEach(btn => {
+      const active = btn.dataset.themeOption === theme;
+      btn.classList.toggle('themeOption--active', active);
+      btn.setAttribute('aria-checked', active ? 'true' : 'false');
+    });
+  }
+
+  window.ThemeSwitcher = { apply: applyTheme };
+
+  // ── Inicjalizacja dropdownu ──────────────────────────────────────
+  // Uruchamiana przy każdej nawigacji Turbo (i przy pierwszym załadowaniu)
+
+  function initDropdown() {
+    const toggleBtn = document.getElementById('themeToggleBtn');
+    const dropdown  = document.getElementById('themeDropdown');
+    if (!toggleBtn || !dropdown) return;
+
+    // Sync stanu przy wejściu na stronę
+    const current = document.documentElement.getAttribute('data-theme') || 'light';
+    syncActiveState(current);
+
+    function openDropdown(open) {
+      toggleBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      dropdown.hidden = !open;
+    }
+
+    toggleBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openDropdown(toggleBtn.getAttribute('aria-expanded') !== 'true');
+    });
+
+    dropdown.addEventListener('click', (e) => {
+      const opt = e.target.closest('[data-theme-option]');
+      if (!opt) return;
+      applyTheme(opt.dataset.themeOption);
+      openDropdown(false);
+    });
+
+    document.addEventListener('click', () => openDropdown(false));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') openDropdown(false);
+    });
+  }
+
+  // ── Hamburger ────────────────────────────────────────────────────
+
+  function initHamburger() {
+    const btn   = document.getElementById('hamburger');
+    const panel = document.getElementById('navLinks');
+    const icon  = btn?.querySelector('.ms-icon');
+    if (!btn || !panel || !icon) return;
+
+    function setOpen(open) {
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      panel.setAttribute('data-open', open ? 'true' : 'false');
+      btn.setAttribute('aria-label', open ? 'Zamknij menu' : 'Menu');
+      icon.textContent = open ? 'close' : 'menu';
+    }
+
+    btn.addEventListener('click', () => {
+      setOpen(btn.getAttribute('aria-expanded') !== 'true');
+    });
+
+    panel.addEventListener('click', (e) => {
+      if (e.target.closest('a')) setOpen(false);
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') setOpen(false);
+    });
+
+    const mq = window.matchMedia('(min-width: 769px)');
+    mq.addEventListener('change', (ev) => { if (ev.matches) setOpen(false); });
+  }
+
+  // ── Turbo events ─────────────────────────────────────────────────
+  // turbo:load odpowiednik DOMContentLoaded dla Turbo Drive
+  // turbo:render odpala się też po partial renders (streams, frames)
+
+  document.addEventListener('turbo:load', () => {
+    initHamburger();
+    initDropdown();
+  });
+
+  // Jeśli Turbo nie jest dostępne (np. strona załadowana bez JS Turbo),
+  // fallback na klasyczny event
+  document.addEventListener('DOMContentLoaded', () => {
+    if (typeof Turbo === 'undefined') {
+      initHamburger();
+      initDropdown();
+    }
+  });
+
+})();
+</script>
+<script defer>
+(function () {
+  const STORAGE_KEY = 'site-fontsize';
+  const SIZES = ['small', 'medium', 'large'];
+  const SIZE_MAP = { small: '14px', medium: '16px', large: '19px' };
+  const DEFAULT = 'medium';
+
+  function getSaved() {
+    const s = sessionStorage.getItem(STORAGE_KEY);
+    return SIZES.includes(s) ? s : DEFAULT;
+  }
+
+  function applySize(size) {
+    if (!SIZES.includes(size)) return;
+    document.documentElement.style.setProperty('font-size', SIZE_MAP[size]);
+    sessionStorage.setItem(STORAGE_KEY, size);
+    syncActive(size);
+  }
+
+  function syncActive(size) {
+    document.querySelectorAll('[data-fontsize-option]').forEach(btn => {
+      const active = btn.dataset.fontsizeOption === size;
+      btn.classList.toggle('themeOption--active', active);
+      btn.setAttribute('aria-checked', active ? 'true' : 'false');
+    });
+  }
+
+  function initFontDropdown() {
+    const toggleBtn = document.getElementById('fontSizeToggleBtn');
+    const dropdown  = document.getElementById('fontSizeDropdown');
+    if (!toggleBtn || !dropdown) return;
+
+    syncActive(getSaved());
+
+    function openDropdown(open) {
+      toggleBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      dropdown.hidden = !open;
+    }
+
+    toggleBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openDropdown(toggleBtn.getAttribute('aria-expanded') !== 'true');
+    });
+
+    dropdown.addEventListener('click', (e) => {
+      const opt = e.target.closest('[data-fontsize-option]');
+      if (!opt) return;
+      applySize(opt.dataset.fontsizeOption);
+      openDropdown(false);
+    });
+
+    document.addEventListener('click', () => openDropdown(false));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') openDropdown(false);
+    });
+  }
+
+  // Zastosuj od razu (przed renderem)
+  applySize(getSaved());
+
+  document.addEventListener('turbo:load', initFontDropdown);
+  document.addEventListener('DOMContentLoaded', () => {
+    if (typeof Turbo === 'undefined') initFontDropdown();
+  });
+})();
+</script>
+<script defer> (function () {
+  const STORAGE_KEY = 'site-theme';
+  const THEMES = ['light', 'dark', 'forest', 'contrast'];
+  const DEFAULT = 'light';
+
+
+  function getSavedTheme() {
+    const saved = sessionStorage.getItem(STORAGE_KEY);
+    if (saved && THEMES.includes(saved)) return saved;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : DEFAULT;
+  }
+
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    sessionStorage.setItem(STORAGE_KEY, theme);
+
+    // Synchronizuj aktywny stan w dropdownie
+    document.querySelectorAll('[data-theme-option]').forEach(btn => {
+      btn.classList.toggle('theme-option--active', btn.dataset.themeOption === theme);
+      btn.setAttribute('aria-checked', btn.dataset.themeOption === theme ? 'true' : 'false');
+    });
+  }
+
+  // Expose globally, żeby dropdown mógł wołać
+  window.ThemeSwitcher = {
+    apply: applyTheme,
+    current: () => document.documentElement.getAttribute('data-theme') || DEFAULT,
+  };
+
+  // Zastosuj przy załadowaniu (przed renderem, bez flashowania)
+  applyTheme(getSavedTheme());
+})();</script>
+    {% endblock %}
 
     {# Choices.js styles #}
 {#    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />#}
 
-    {% block stylesheets %} {% endblock %}
+    {% block stylesheets %}
+    {% endblock %}
 </head>
 <body class="">
 {% set ratingVisible=true %}
@@ -63,6 +271,7 @@
 
 
 {% block javascripts %}{% endblock %}
+
 {% include 'footer.html.twig' %}
 </body>
 </html>

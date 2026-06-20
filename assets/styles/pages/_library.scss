@@ -130,7 +130,7 @@
   margin: 1rem 0 2rem;
   padding: 1rem;
   border-radius: $radius;
-  background: mix($body-bg, $color-secondary, 96%);
+  background: $lighter-secondary;
   border: 1px dashed rgba(0,0,0,.1);
   color: $text-color;
 
@@ -202,7 +202,7 @@
     margin-bottom: 0;
     margin-top: 0;
     border: hidden;
-    background: mix($color-accent-second,$body-bg,90%);
+    background: $color-accent-second;
   }
 
 }
@@ -282,7 +282,7 @@
         color: $body-bg;
         background: $color-primary;
         font-weight: 700;
-        border: 1px solid darken($color-primary,10%);
+        border: 1px solid $darker-primary;
 
       }
     }

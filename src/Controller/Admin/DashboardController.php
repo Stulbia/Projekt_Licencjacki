@@ -2,19 +2,22 @@
 
 namespace App\Controller\Admin;
 
+use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use App\Entity\Author;
 use App\Entity\Book;
 use App\Entity\Review;
 use App\Entity\ReviewTag;
 use App\Entity\Tag;
-use App\Entity\User;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\RequestContext;
 
+#[AdminDashboard(routePath: '/', routeName: 'adminDashboard')]
 class DashboardController extends AbstractDashboardController
 {
     public function __construct(
@@ -22,7 +25,7 @@ class DashboardController extends AbstractDashboardController
     ) {
     }
 
-    #[Route('/admin', name: 'admin')]
+//    #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
         // redirect od razu do listy książek
@@ -35,6 +38,12 @@ class DashboardController extends AbstractDashboardController
 
     public function configureDashboard(): Dashboard
     {
+
+    /** @var RequestContext
+     */
+    $context = $this->container->get('router')->getContext();
+        $context->setBaseUrl('/~22_gacon');
+
         return Dashboard::new()
             ->setTitle('Panel administracyjny');
     }
@@ -45,16 +54,15 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToDashboard('Strona główna', 'fa fa-home');
 
         yield MenuItem::section('Zasoby główne');
-        yield MenuItem::linkToCrud('Książki', 'fas fa-book', Book::class);
-        yield MenuItem::linkToCrud('Tagi Książek', 'fas fa-tags', Tag::class);
-        yield MenuItem::linkToCrud('Autorzy', 'fas fa-user-pen', Author::class);
+        yield MenuItem::linkTo(BookCrudController::class, 'Książki', 'fas fa-book') ->setAction(Action::INDEX);
+        yield MenuItem::linkTo(TagCrudController::class, 'Tagi Książek', 'fas fa-tags') ->setAction(Action::INDEX);
+        yield MenuItem::linkTo(AuthorCrudController::class, 'Autorzy', 'fas fa-user-pen') ->setAction(Action::INDEX);
 
         yield MenuItem::section('Recenzje i tagi');
-        yield MenuItem::linkToCrud('Recenzje', 'fas fa-star', Review::class);
-        yield MenuItem::linkToCrud('Tagi recenzji', 'fas fa-tags', ReviewTag::class);
-
+        yield MenuItem::linkTo(ReviewCrudController::class, 'Recenzje', 'fas fa-star') ->setAction(Action::INDEX);
+        yield MenuItem::linkTo(ReviewTagCrudController::class, 'Tagi recenzji', 'fas fa-tags') ->setAction(Action::INDEX);
         yield MenuItem::section('Zarządzanie użytkownikami');
-        yield MenuItem::linkToCrud('Użytkownicy', 'fas fa-users', User::class);
+        yield MenuItem::linkTo(UserCrudController::class, 'Konta i Hasła', 'fas fa-users')->setAction(Action::INDEX);
 
         yield MenuItem::section();
         yield MenuItem::linkToRoute('Powrót do aplikacji', 'fas fa-arrow-left', 'homepage');

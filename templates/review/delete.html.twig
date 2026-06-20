@@ -12,7 +12,7 @@
         {{ form_start(form) }}
         <div class="review-actions">
             <a href="{{ path('book_show', { slug: review.book.slug }) }}" class="btn btn-outline-primary mt-2">Anuluj</a>
-        <button type="submit" class="btn  btn-danger">Usuń</button>
+        <button type="submit" class="btn  btn-danger" data-turbo="false">Usuń</button>
         {{ form_end(form) }}
 
 

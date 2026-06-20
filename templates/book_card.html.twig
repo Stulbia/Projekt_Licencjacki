@@ -5,11 +5,17 @@
         <div class="frame">
         <img src="{{ asset('uploads/covers/' ~ book.coverFilename) }}"
              alt="Okładka {{ book.title }}"
-             class="book-cover">
+             class="book-cover"
+             width="80"
+             height="120"
+             loading="lazy">
     {% else %}
         <img src="{{ asset('uploads/defaultCover.svg') }}"
              alt="Domyślna okładka książki {{ book.title }}"
-             class="book-cover">
+             class="book-cover"
+             width="80"
+             height="120"
+             loading="lazy">
     {% endif %}
         </div>
     <h3 class="book-title">
@@ -36,9 +42,9 @@
             <span class="rating-number">{{ avgRounded }}</span>
         </div>
     {% else %}
-        {% if ratingVisible %}
+{#        {% if ratingVisible %}#}
         <div class="book-rating book-rating--muted">Brak ocen</div>
-        {%endif%}
+{#        {%endif%}#}
     {% endif %}
 
 

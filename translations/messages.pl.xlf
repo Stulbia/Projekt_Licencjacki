@@ -568,6 +568,38 @@
       <trans-unit id="message.no_social_profile"><source>message.no_social_profiles</source><target>Brak dodanych profili społecznościowych.</target></trans-unit>
   <trans-unit id="form.avatar.label"><source>form.avatar.label</source><target>Wybierz nowy avatar</target></trans-unit>
 
+      <trans-unit id="file_upload.add_files">
+        <source>file_upload.add_files</source>
+        <target>Dodaj pliki</target>
+      </trans-unit>
+      <trans-unit id="file_upload.add_file">
+        <source>file_upload.add_file</source>
+        <target>Dodaj plik</target>
+      </trans-unit>
+      <trans-unit id="file_upload.clear_all">
+        <source>file_upload.clear_all</source>
+        <target>Wyczyść wszystko</target>
+      </trans-unit>
+      <trans-unit id="action.download">
+        <source>action.download</source>
+        <target>Pobierz</target>
+      </trans-unit>
+
+
+       <trans-unit id="download">
+         <source>download</source>
+         <target>Pobierz</target>
+       </trans-unit>
+       <trans-unit id="message.email_already_exists">
+         <source>message.email_already_exists</source>
+         <target>Ten adres e-mail już istnieje w bazie danych.</target>
+       </trans-unit>
+       <trans-unit id="message.no_description">
+         <source>message.no_description</source>
+         <target>Brak opisu.</target>
+       </trans-unit>
+
+
         </body>
     </file>
 </xliff>

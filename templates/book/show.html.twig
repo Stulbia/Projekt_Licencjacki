@@ -85,7 +85,8 @@
 
                                 <form method="post"
                                       action="{{ path('library_remove', { id: book.id }) }}"
-                                      class="remove-from-lib">
+                                      class="remove-from-lib"
+                                data-turbo = 'false'>
 {#                                      onsubmit="return confirm('Usunąć tę książkę z Twojej biblioteczki?');">#}
                                     <input type="hidden" name="_token" value="{{ csrf_token('remove_library_' ~ book.id) }}">
                                     <button class="btn add-review mt2"> <span class="material-symbols-outlined">close</span> Usuń z biblioteczki</button>
@@ -99,12 +100,11 @@
                         {% endif %}
 
                     {% else %}
-                        <p class="textNotice mt2">🔒 <a href="{{ path('app_login') }}">Zaloguj się</a>, aby dodawać książki do biblioteczki i pisać recenzje.</p>
+                        <p class="textNotice mt2"> <a href="{{ path('app_login') }}" class="text-bold">Zaloguj się</a>, aby dodawać książki do biblioteczki i pisać recenzje.</p>
                     {% endif %}
                 {% endblock %}
 
             </div>
-
 
 
 

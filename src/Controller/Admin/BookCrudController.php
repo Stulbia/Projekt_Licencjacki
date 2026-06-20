@@ -10,6 +10,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 
 class BookCrudController extends AbstractCrudController
 {
@@ -18,18 +19,26 @@ class BookCrudController extends AbstractCrudController
         return Book::class;
     }
 
+    public function configureCrud(Crud $crud): Crud
+    {
+        return $crud
+            ->setEntityLabelInSingular('Książka')
+            ->setEntityLabelInPlural('Książki');
+    }
+
+
     public function configureFields(string $pageName): iterable
     {
         return [
 //            IdField::new('id')->onlyOnIndex(),
-            TextField::new('title'),
-            TextEditorField::new('description'),
-            ImageField::new('coverFilename', 'Photo')
+            TextField::new('title', 'tytuł'),
+            TextEditorField::new('description', 'opis'),
+            ImageField::new('coverFilename', 'Okładka')
                 ->setBasePath('uploads/covers')        // do wyświetlania
                 ->setUploadDir('public/uploads/covers') // do zapisu
                 ->setUploadedFileNamePattern('[slug]-[timestamp].[extension]')
                 ->setRequired(false),
-            AssociationField::new('tags') ->hideOnIndex(),
+            AssociationField::new('tags', 'tagi') ->hideOnIndex(),
         ];
     }
 }

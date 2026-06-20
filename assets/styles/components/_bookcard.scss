@@ -16,7 +16,7 @@ $book-text-muted: $color-accent-third;
 $book-link-hover: $color-secondary;
 $book-cover-bg: $color-primary;
 $stars-accent: $color-accent-second;
-$stars-accent-muted: mix($body-bg,$color-secondary,90%);
+$stars-accent-muted:  $muted-light;
 // Shadows
 $book-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 $book-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.12);
@@ -44,6 +44,7 @@ $book-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.12);
   .book-cover {
     width: $book-cover-width;
     height: $book-cover-height;
+    min-height: $book-cover-height;
     object-fit: cover;
     border-radius: $book-cover-radius;
     margin-bottom: 0.75rem;
@@ -179,7 +180,7 @@ $book-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.12);
       height: 100%;
       width: 0;
       border-radius: 999px;
-      background: linear-gradient(90deg, $color-accent-first, lighten($color-accent-second, 12%));
+      background: linear-gradient(90deg, $color-accent-first, $lighter-accent-first );
       transition: width .25s ease;
     }
   }

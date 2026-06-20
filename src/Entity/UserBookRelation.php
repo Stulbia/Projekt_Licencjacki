@@ -27,6 +27,12 @@ class UserBookRelation
     #[ORM\Column(enumType: ReadingStatus::class)]
     private ReadingStatus $status = ReadingStatus::TO_READ;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $pages = 0;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $progress = 0;
+
     #[ORM\Column]
     #[Gedmo\Timestampable(on: 'create')]
     private ?\DateTimeImmutable $createdAt = null;

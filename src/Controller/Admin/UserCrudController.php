@@ -3,8 +3,13 @@
 namespace App\Controller\Admin;
 
 use App\Entity\User;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
@@ -28,6 +33,28 @@ class UserCrudController extends AbstractCrudController
         return User::class;
     }
 
+    public function configureActions(Actions $actions): Actions
+    {
+        return $actions
+            ->update(Crud::PAGE_INDEX, Action::BATCH_DELETE, function (Action $action) {
+                return $action
+                    ->setIcon('fa fa-trash')
+                    ->setLabel('Usuń zaznaczone')
+                    ->setHtmlAttributes([
+                                             'class' => 'btn btn-danger action-batchDelete'
+                    ]);
+            });
+
+
+    }
+    public function configureCrud(Crud $crud): Crud
+    {
+        return $crud
+            ->setEntityLabelInSingular('Użytkownik')
+            ->setEntityLabelInPlural('Użytkownicy');
+    }
+
+
     public function configureFields(string $pageName): iterable
     {
         return [
@@ -47,6 +74,10 @@ class UserCrudController extends AbstractCrudController
                 ->onlyOnForms()
                 ->setRequired(false)
                 ->setHelp('Wpisz tylko jeśli chcesz ustawić nowe hasło.'),
+          CollectionField::new('accounts', "Odnośniki")
+                ->useEntryCrudForm(AccountCrudController::class)
+                ->setFormTypeOption('by_reference', false)
+//
         ];
     }
 

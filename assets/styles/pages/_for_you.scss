@@ -1,12 +1,12 @@
 @use '../variables' as *;
 
-$accent: if(global-variable-exists(primary-color), $color-primary, #2e7d6a);
-$radius: if(global-variable-exists(radius), $radius, 14px);
+$accent: $color-primary;
+$radius: 14px;
 
 .forYouPage {
   --card-shadow: 0 6px 24px rgba(0,0,0,.08);
   --ring: rgba(46,125,106,.25);
-  --hero-grad: linear-gradient(135deg, #0f5570 0%, #2c8f55 38%, #c2751d 100%);
+  --hero-grad: $gradient-secondary;
 
   display: block;
   color: inherit;
@@ -14,7 +14,8 @@ $radius: if(global-variable-exists(radius), $radius, 14px);
 
 /* ---------- HERO ---------- */
 .hero {
-  background: var(--hero-grad);
+  background: $gradient-secondary;
+          //var(--hero-grad);
   color: $body-bg;
   padding: clamp(2rem, 5vw, 4rem) 1rem;
   margin-bottom: 1.5rem;
@@ -53,7 +54,7 @@ $radius: if(global-variable-exists(radius), $radius, 14px);
 
       &.btnPrimary {
         background: $body-bg;
-        color: #0f172a;
+        color: $text-color;
       }
       &.btnSecondary {
         background: rgba(255,255,255,.15);
@@ -104,26 +105,33 @@ $radius: if(global-variable-exists(radius), $radius, 14px);
 
 /* ---------- KARUZELE ---------- */
 .forYouCarousel {
+  --swiper-theme-color: #{$color-primary};
   position: relative;
 
   .swiper-slide {
     height: auto; /* żeby karta określała wysokość */
   }
 
+
   .swiper-button-prev,
   .swiper-button-next {
     width: 42px;
     height: 42px;
-    border-radius: 50%;
-    background: $body-bg;
-    box-shadow: var(--card-shadow);
+    //border-radius: 50%;
+    background: none;
+    //box-shadow: var(--card-shadow);
     top: 42%;
-    &:after { font-size: 16px; color: #0f172a; }
+    &:after { font-size: 1rem; color: $text-color; }
+    @media (max-width: 767px) {
+
+        display: none;
+
+    }
   }
 
   .swiper-pagination-bullet {
-    background: rgba(0,0,0,.3);
-    &-active { background: $accent; }
+    background: $lighter-secondary;
+    &-active { background: $color-secondary; }
   }
 
   .swiper-pagination {

@@ -137,8 +137,16 @@
 
 }
 .filters-toggle:hover{
-  background: mix($body-bg,$color-secondary,95%);
-  border-color: $color-secondary;
+  background: $color-secondary;
+  border-color: $darker-secondary;
+  color: $text-color;
+  .span{
+    color:$text-color;
+  }
+  transform: translateY(-0.05px);
+  animation: 0.5s ease;
+
+  .material-symbols-outlined{color:white;}
 }
 
 /* --- filter panel card --- */

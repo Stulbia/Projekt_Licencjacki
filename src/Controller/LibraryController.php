@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\Routing\Annotation\Route;
+
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/library')]
@@ -34,7 +35,8 @@ class LibraryController extends AbstractController
         Request $request,
         EntityManagerInterface $em,
         UserBookRelationRepository $relationRepo
-    ): Response {
+    ): Response
+    {
         $user = $this->getUser();
         $relation = $relationRepo->findOneBy(['book' => $book, 'owner' => $user]);
         $avg = $this->reviewService->avgRating($book->getId());
@@ -67,18 +69,12 @@ class LibraryController extends AbstractController
 
 
 
-
-
-
-
-
         if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($relation);
             $em->flush();
-
+//            var_dump('12');
             $this->addFlash('success', 'Dodano do Twojej biblioteczki!');
-
-            return $this->redirectToRoute('book_show', ['slug' => $book->getSlug(), 'avg' => $avg]);
+            return $this->redirectToRoute('book_show', ['slug' => $book->getSlug(), 'avg' => $avg], status: Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('library/add.html.twig', [
@@ -107,7 +103,8 @@ class LibraryController extends AbstractController
         UserBookRelationRepository $relationRepo,
         PaginatorInterface $paginator,
         #[MapQueryParameter] int $page = 1
-    ): Response {
+    ): Response
+    {
 
         $user = $this->getUser();
 
@@ -115,6 +112,7 @@ class LibraryController extends AbstractController
             'action' => $this->generateUrl('library_index'),
         ]);
         $query = $relationRepo->getBooksByUserWithFilters($user, $filters);
+
         $pagination = $paginator->paginate(
             $query,
             $page,
@@ -152,7 +150,8 @@ class LibraryController extends AbstractController
         Request $request,
         EntityManagerInterface $em,
         UserBookRelationRepository $relationRepo
-    ): Response {
+    ): Response
+    {
         $user = $this->getUser();
         if (!$user) {
             return $this->redirectToRoute('login');
@@ -179,7 +178,8 @@ class LibraryController extends AbstractController
         Request $request,
         EntityManagerInterface $em,
         UserBookRelationRepository $relationRepo
-    ): Response {
+    ): Response
+    {
         $user = $this->getUser();
         if (!$user) {
             return $this->redirectToRoute('login');
@@ -213,7 +213,8 @@ class LibraryController extends AbstractController
         Request $request,
         EntityManagerInterface $em,
         UserBookRelationRepository $relationRepo
-    ): Response {
+    ): Response
+    {
         $user = $this->getUser();
         if (!$user) {
             return $this->redirectToRoute('login');

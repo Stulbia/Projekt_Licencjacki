@@ -4,110 +4,33 @@
 
 {% block body %}
 
-    <div class="search">
-        <h1><span class="material-symbols-outlined">search</span> Jakich książek szukasz ?  </h1>
-
-
-
-        {{ form_start(form, {
-            method: 'get',
-            action: path(app.request.attributes.get('_route')),
-            attr: { id: 'book-search-form', class: 'filter-form' }
-        }) }}
-
-
-        <div class="quick-search">
-            {{ form_widget(form.title, {
-                attr: { class: 'quick-search-input', placeholder: 'Szukaj po tytule…' }
-            }) }}
-
-            <button class="filters-toggle" type="button" aria-expanded="false" aria-controls="filters-panel">
-                {#            Pokaż filtry#}
-                <span class="material-symbols-outlined">tune</span>
-            </button>
-            <button class="btn btn-primary" type="submit"><span class="material-symbols-outlined toggle">search</span></button>
-
-        </div>
-
-        <aside>
-            <div id="filters-panel" class="filters-panel" hidden>
-                {% include '_book_search_filters.html.twig' with { form: form } %}
-            </div>
-        </aside>
-
-        {# Render remaining #}
-        {{ form_rest(form) }}
-
-        {{ form_end(form, { render_rest: false }) }}
-        {# END SYMFONY FORM #}
-    </div>
-    <section class="search-results">
-        <form method="get" class="per-page-form">
-            <label>
-                Pozycji na stronę:
-                <select name="pp" onchange="this.form.submit()">
-                    {% set choices = [4,5,6,8,12,24] %}
-                    {% for n in choices %}
-                        <option value="{{ n }}" {{ perPage == n ? 'selected' : '' }}>{{ n }}</option>
-                    {% endfor %}
-                </select>
-            </label>
-            {% for key, val in app.request.query.all %}
-                {% if key not in ['pp','page'] %}
-                    {% if val is iterable %}
-                        {% for v in val %}
-                            <input type="hidden" name="{{ key }}[]" value="{{ v }}">
-                        {% endfor %}
-                    {% else %}
-                        <input type="hidden" name="{{ key }}" value="{{ val }}">
-                    {% endif %}
-                {% endif %}
-            {% endfor %}
-        </form>
-
-
-        <h2 class="search-results__title">Wyniki</h2>
-
-        {% if pagination.items is not empty %}
-
-            <div class="bookshelf">
-                {% for book in pagination.items %}
-                    <div class="book-slot">
-                        {% include 'book_card.html.twig' %}
-                    </div>
-                {% endfor %}
-            </div>
-
-            <div class="shelf-pagination">
-                {{ knp_pagination_render(pagination) }}
-            </div>
-        {% else %}
-            <p class="no-results">Brak wyników wyszukiwania.</p>
-        {% endif %}
-    </section>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
+    <script defer>
+        document.addEventListener('turbo:load', () => {
             // ----- Filters toggle -----
             const toggleBtn = document.querySelector('.filters-toggle');
             const tg = document.getElementsByClassName('tg')
             const panel = document.getElementById('filters-panel');
-            if (toggleBtn && panel) {
-                toggleBtn.addEventListener('click', () => {
+            // if (!toggleBtn || !panel) return;
+            if (!toggleBtn || !panel || toggleBtn.dataset.bound) return;
+            toggleBtn.dataset.bound = 'true'; // mark as bound
+
+            toggleBtn.addEventListener('click', () => {
                     const isHidden = panel.hasAttribute('hidden');
                     if (isHidden) {
                         panel.removeAttribute('hidden');
                         // toggleBtn.textContent = ' Ukryj filtry';
                         tg.textContent='talk'
                         toggleBtn.setAttribute('aria-expanded', 'true');
+                        // console.log('tak');
                     } else {
                         panel.setAttribute('hidden', '');
                         // toggleBtn.textContent = ' Pokaż filtry';
                         tg.textContent = 'nie'
                         toggleBtn.setAttribute('aria-expanded', 'false');
+                        // console.log('nie');
                     }
                 });
-            }
+
 
             // ----- Live rating preview -----
             const range = document.getElementById('min-rating-range');
@@ -159,5 +82,87 @@
             window.addEventListener('resize', () => { clearTimeout(t); t=setTimeout(()=>{const now=desiredPP(window.innerWidth); if(now!==last && !userChose){setPP(now);} last=now;},200); });
         });
     </script>
+    <div class="search">
+        <h1><span class="material-symbols-outlined">search</span> Jakich książek szukasz ?  </h1>
+
+
+
+        {{ form_start(form, {
+            method: 'get',
+            action: path(app.request.attributes.get('_route')),
+            attr: { id: 'book-search-form', class: 'filter-form' }
+        }) }}
+
+
+        <div class="quick-search">
+            {{ form_widget(form.title, {
+                attr: { class: 'quick-search-input', placeholder: 'Szukaj po tytule…' }
+            }) }}
+
+            <button class="filters-toggle" type="button" aria-expanded="false" aria-controls="filters-panel">
+                {#            Pokaż filtry#}
+                <span class="material-symbols-outlined">tune</span>
+            </button>
+            <button class="btn btn-primary" type="submit"><span class="material-symbols-outlined toggle">search</span></button>
+
+        </div>
+
+        <aside>
+            <div id="filters-panel" class="filters-panel" hidden>
+                {% include '_book_search_filters.html.twig' with { form: form } %}
+            </div>
+        </aside>
+
+        {# Render remaining #}
+        {{ form_rest(form) }}
+
+        {{ form_end(form, { render_rest: false }) }}
+        {# END SYMFONY FORM #}
+    </div>
+    <section class="search-results">
+        <form method="get" class="per-page-form">
+            <label>
+                Pozycji na stronę:
+                <select name="pp" onchange="this.form.submit()" >
+                    {% set choices = [1,4,8,10,25,50] %}
+                    {% for n in choices %}
+                        <option value="{{ n }}" {{ perPage == n ? 'selected' : '' }}>{{ n }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            {% for key, val in app.request.query.all %}
+                {% if key not in ['pp','page'] %}
+                    {% if val is iterable %}
+                        {% for v in val %}
+                            <input type="hidden" name="{{ key }}[]" value="{{ v }}">
+                        {% endfor %}
+                    {% else %}
+                        <input type="hidden" name="{{ key }}" value="{{ val }}">
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </form>
+
+
+        <h2 class="search-results__title">Wyniki</h2>
+
+        {% if pagination.items is not empty %}
+
+            <div class="bookshelf">
+                {% for book in pagination.items %}
+                    <div class="book-slot">
+                        {% include 'book_card.html.twig' %}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="shelf-pagination">
+                {{ knp_pagination_render(pagination) }}
+            </div>
+        {% else %}
+            <p class="no-results">Brak wyników wyszukiwania.</p>
+        {% endif %}
+    </section>
+
 
 {% endblock %}

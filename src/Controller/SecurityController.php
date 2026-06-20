@@ -1,55 +1,4 @@
 <?php
-//
-///**
-// * Class SecurityController.
-// */
-//
-//namespace App\Controller;
-//
-//use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-//use Symfony\Component\HttpFoundation\Response;
-//use Symfony\Component\Routing\Annotation\Route;
-//use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-//
-///**
-// * Class SecurityController.
-// *
-// * Controller responsible for handling security-related actions such as login and logout.
-// */
-//class SecurityController extends AbstractController
-//{
-//    /**
-//     * Login action.
-//     *
-//     * @param AuthenticationUtils $authenticationUtils Authentication utilities
-//     *
-//     * @return Response HTTP response
-//     */
-//    #[Route(path: '/login', name: 'app_login')]
-//    public function login(AuthenticationUtils $authenticationUtils): Response
-//    {
-//        $error = $authenticationUtils->getLastAuthenticationError();
-//        $lastUsername = $authenticationUtils->getLastUsername();
-//        return $this->render('security/login.html.twig', [
-//            'last_username' => $lastUsername,
-//            'error' => $error,
-//        ]);
-//    }
-//
-//    /**
-//     * Logout action.
-//     *
-//     * This action will be intercepted by the Symfony security system.
-//     *
-//     * @throws \LogicException this method can be blank - it will be intercepted by the logout key on your firewall
-//     */
-//    #[Route(path: '/logout', name: 'app_logout')]
-//    public function logout(): void
-//    {
-//        throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
-//    }
-//}
-
 
 namespace App\Controller;
 
@@ -59,8 +8,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
@@ -69,11 +18,19 @@ class SecurityController extends AbstractController
     {
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
+        if ($this->getUser() != null) {
+            return $this->redirectToRoute('homepage');
+        };
+
+        $response = new Response();
+        if ($error) {
+            $response->setStatusCode(Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
 
         return $this->render('security/login.html.twig', [
             'last_username' => $lastUsername,
             'error' => $error,
-        ]);
+        ], $response);
     }
 
     #[Route(path: '/logout', name: 'app_logout')]
@@ -106,6 +63,7 @@ class SecurityController extends AbstractController
     {
         // Możesz tu dodać fejkowe dane do sesji, jeśli chcesz symulować dane użytkownika
         $session->set('mock_tiktok', true);
+
         return $this->redirectToRoute('mock_tiktok_check');
     }
 

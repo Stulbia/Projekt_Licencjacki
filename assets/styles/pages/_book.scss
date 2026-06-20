@@ -74,7 +74,7 @@
 
       &.full { color: $color-accent-second;  font-variation-settings: 'FILL' 1; }
       &.half { color: $color-accent-second; }
-      &.empty { color: rgba($text-color, .3); }
+      &.empty { color: rgba($muted-light, .3); }
     }
 
     .rating-number {
@@ -102,9 +102,9 @@
     align-items: center;
     padding: .35rem .75rem;
     border-radius: 999px;
-    background: rgba($color-secondary, .1);
-    border: 1px solid rgba($color-secondary, .25);
-    color: $color-accent-third;
+    background: $lighter-primary;
+    border: 1px solid $darker-primary;
+    color: $text-color;
     font-weight: 600;
     font-size: .9rem;
     line-height: 1;
@@ -165,7 +165,7 @@
 .bookDescription {
   margin-right: 10%;
   line-height: 1.65;
-  color: var(--text-color, #1f2937);
+  color: $darker-primary;
 }
 
 /* ---------- Responsive ---------- */
@@ -241,7 +241,7 @@
 .add-review{
   height: 3rem;
   background: $color-accent-first;
-  border: darken($color-accent-first,10%);
+  border: $darker-accent-first;
 }
 }
 
@@ -250,13 +250,18 @@
   max-height: 300px;
   //line-height: 3rem;
   gap: 1rem;
+
   margin-top: 0;
   //padding: 5%;
+  width: fit-content;
 
   font-weight: 700;
 
   .add-to-lib{
-   display: flex; flex-direction: row;
+   display: flex; flex-direction: row; ;
+    overflow:hidden;
+    border: solid $darker-secondary 2px;
+    border-radius: 9px;
   }
   .mb-3{
     padding: 5px;
@@ -265,6 +270,9 @@
     display:none;
   }
 
+  .mb-3{
+    padding:0;
+  }
 
   /* ---- Styled select ---- */
   .form-select {
@@ -272,25 +280,31 @@
     -webkit-appearance: none;
     -moz-appearance: none;
 
-    display: inline-block;
+    //display: inline-block;
     min-width: 200px;
-    padding: .55rem 2.2rem .55rem .9rem;
+    padding: 1rem;
     font: inherit;
-    font-size: .95rem;
+    font-size: 1rem;
     font-weight: 500;
-    line-height: 1.2;
+    line-height: 1.4;
     color: $text-color;
+    justify-content: center;
     background: $body-bg;
-    border: 1px solid rgba($color-accent-third,.15);
-    border-radius: .65rem;
+    //border: 1px solid $color-accent-third;
+    //border-radius: 8%;
     box-shadow: 0 1px 2px rgba(0,0,0,.04);
     cursor: pointer;
     transition: border-color .18s ease, box-shadow .18s ease;
+    //border-radius: 25%;
+    //border-color: $color-secondary;
+    //border-width: 2px;
+    border:none;
+
   }
 
   /* hover */
   .form-select:hover {
-    border-color: $color-accent-third;
+    //border-color: $color-accent-third;
   }
 
   /* focus */
@@ -309,8 +323,8 @@
 
 
 }
-.add-review{
-  margin-left: 0;
-
-}
+//.add-review{
+//  margin-left: 0;
+//
+//}
 

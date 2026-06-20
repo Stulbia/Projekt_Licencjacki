@@ -67,7 +67,7 @@ $hero-btn-text: $color-accent-third;
     &:hover {
       transform: translateY(-2px);
       box-shadow: 0 10px 22px rgba(0,0,0,0.26);
-      background: darken($hero-btn-bg, 8%);
+      //background: $lighter-secondary;
     }
   }
 }
@@ -236,8 +236,8 @@ $hero-btn-text: $color-accent-third;
     width: 32px;
     height: 32px;
     z-index: 5;          /* <<< make sure they’re above cards */
-    color: currentColor; /* or set a color explicitly e.g. #333 */
-    &::after { font-size: 20px; }
+    color: $text-color;
+    &::after { font-size: 1.25rem; }
   }
 
   .swiper-button-prev { left: -10px; }  /* push outside */
@@ -285,7 +285,7 @@ $hero-btn-text: $color-accent-third;
   .book-card {
     transform: none;
     box-shadow:none;
-    border: solid 1px mix($color-primary,$body-bg,20%);
+    border: solid 1px $lighter-primary;
     margin:1rem;
     //background: red;
     &:hover{
@@ -359,7 +359,7 @@ $hero-btn-text: $color-accent-third;
           margin-top: 0;
           font-size: .95rem;
           font-weight: 600;
-          color: mix($text-color,$color-primary,30%);
+          color: $darker-primary;
           background: $body-bg;
           border: 1px solid rgba(0,0,0,.1);
           border-radius: $radius;
@@ -367,7 +367,7 @@ $hero-btn-text: $color-accent-third;
           transition: all .2s ease;
 
           &:hover {
-            background: mix($body-bg, $color-secondary, 90%);
+            background: $muted-light;
             color: $color-secondary;
             text-decoration: none;
           }
@@ -391,8 +391,10 @@ $hero-btn-text: $color-accent-third;
 }
 
 .reviews-header{
-  --hero-grad: linear-gradient(135deg, #0f5570 0%, #2c8f55 38%, #c2751d 100%);
-  background: var(--hero-grad);
+  //--hero-grad: linear-gradient(135deg, #0f5570 0%, #2c8f55 38%, #c2751d 100%);
+  //background: var(--hero-grad);
+
+  background: $gradient-secondary;
   color: $body-bg;
   padding: clamp(2rem, 5vw, 4rem) 1rem;
   margin-bottom: 1.5rem;
@@ -449,16 +451,17 @@ $hero-btn-text: $color-accent-third;
     border-radius: 999px;
     font-size: .9rem;
     font-weight: 600;
-    background: mix($body-bg, $color-primary, 96%);
-    border: 1px solid rgba(0,0,0,.1);
+    background: $bg-darken;
+    border: 2px solid $lighter-secondary;
     color: $text-color;
     text-decoration: none;
     transition: transform .08s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease;
 
     &:hover {
       transform: translateY(-1px);
-      border-color: $color-primary;
-      color: $color-primary;
+      border-color: $darker-accent-first;
+      color: $darker-accent-first;
+      background: $color-accent-second;
       box-shadow: 0 1px 6px rgba(0,0,0,.06);
     }
 
@@ -483,4 +486,113 @@ $hero-btn-text: $color-accent-third;
 
 .auth-card {
  .btn-danger{width: 100%}
+}
+
+
+
+.themeDropdownWrapper {
+  position: relative;
+}
+
+.themeToggleBtn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-family: inherit;
+}
+
+.themeChevron {
+  font-size: 1.125rem;
+  transition: transform 0.2s;
+}
+
+.themeToggleBtn[aria-expanded="true"] .themeChevron {
+  transform: rotate(180deg);
+}
+
+.themeDropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  background: var(--body-bg);
+  border: 1px solid var(--muted-light);
+  border-radius: 8px;
+  padding: 6px;
+  min-width: 160px;
+  list-style: none;
+  margin: 0;
+  z-index: 200;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+
+.themeDropdown[hidden] { display: none; }
+
+.themeOption {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  border: none;
+  background: none;
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-family: inherit;
+  color: var(--text-color);
+  text-align: left;
+  transition: background 0.12s;
+}
+
+.themeOption:hover { background: var(--lighter-secondary); }
+
+.themeOption--active {
+  background: var(--lighter-secondary);
+  font-weight: 600;
+}
+
+.themeSwatch,{
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  //border: 1px solid rgba(0,0,0,0.15);
+  flex-shrink: 0;
+}
+
+
+@media (max-width: 900px) {
+  .themeDropdownWrapper {display:none}
+  #themeToggleBtn, .themeDropdown , #fontSizeToggleBtn{
+    display: none;
+    width:0;
+    height:0;
+    overflow: hidden;
+    margin:0;
+    padding:0;
+    border:0;
+    .material-symbols-outlined, .p, .button{
+      display: none;
+      height: 0;
+      width: 0;
+    };
+  }
+  @media (max-width: 768px) {
+    #themeToggleBtn, #fontSizeToggleBtn{
+      display: none;
+      width: 0;
+      height: 0;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+      border:0;
+      .material-symbols-outlined, .p, .button{
+        display: none;
+        height: 0;
+        width: 0;
+      };
+    }
+  }
 }

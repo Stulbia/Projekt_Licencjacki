@@ -71,6 +71,11 @@
     block-size: clamp(140px, 22vw, 220px);
     border-radius: 50%;
     overflow: hidden;
+    color: $body-bg;
+
+    .profile-avatar__icon{
+
+    }
   }
 
   .profile-avatar__img {
@@ -82,8 +87,7 @@
 
   .profile-avatar__placeholder {
     background:
-            radial-gradient(120% 120% at 20% 10%, rgba(0,0,0,.08), transparent 60%),
-            mix($body-bg, $color-primary, 92%);
+            radial-gradient(120% 120% at 20% 10%, rgba(0,0,0,.08), transparent 60%),$body-bg;
     color: $text-color;
     display: grid;
     place-items: center;
@@ -104,21 +108,23 @@
     display: grid;
     grid-template-columns: max(120px) 1fr;
     gap: .5rem 1rem;
-    background: rgba($body-bg,1);
-    border: 1px solid rgba(0,0,0,.06);
+    //background: rgba($body-bg,1);
+    border: 1px solid $bg-darken;
     border-radius: $radius;
     padding: clamp(.75rem, 2vw, 1rem);
 
     dt {
       font-weight: 700;
-      color: $text-color;
+      //color: $text-color;
+      color: $body-bg;
       opacity: .8;
     }
 
     dd {
       margin: 0;
       font-weight: 600;
-      color: $text-color;
+      //color: $text-color;
+      color:$body-bg;
     }
   }
 
@@ -145,15 +151,27 @@
     margin: .25rem 0 0;
     color: rgba(0,0,0,.65);
   }
+  .reviews-list{
+    padding: 0;
+  }
 }
 
 /* review list (uses your included review/_card) */
-.reviewList {
+.reviewsList {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
   gap: .9rem;
+  ul {
+    padding: 0;
+    margin:0;
+    justify-content: left;
+    display: flex;
+  }
+  .review-card-extended{
+    margin-left: 0;
+  }
 }
 
 /* book grid override (if you want denser cards on profile) */
@@ -242,7 +260,7 @@
       margin-top: 0;
       font-size: .95rem;
       font-weight: 600;
-      color: mix($text-color,$color-primary,30%);
+      color: $muted-dark;
       background: $body-bg;
       border: 1px solid rgba(0,0,0,.1);
       border-radius: $radius;
@@ -250,7 +268,7 @@
       transition: all .2s ease;
 
       &:hover {
-        background: mix($body-bg, $color-secondary, 90%);
+        background: $darker-secondary;
         color: $color-secondary;
         text-decoration: none;
       }

@@ -3,7 +3,7 @@
 
 .review-card {
   background: inherit;
-  border: 1px solid mix($body-bg,$color-accent-third,80%);
+  border: 1px solid $color-accent-third;
   border-radius: 0.75rem;
   padding: 1.2rem;
   margin: 0.5rem 0.5rem 1.5rem;
@@ -16,7 +16,7 @@
 
   &.review-user-own {
     border-color: $color-accent-third; // highlight own review
-    background: mix($color-primary,$body-bg, 2%);
+    background: $bg-darken;
   }
 
   .review-header {
@@ -37,14 +37,14 @@
 
     strong {
       font-weight: 600;
-      color: mix($text-color,$body-bg,90%);
+      color: $muted-dark;
     }
   }
 
   .review-comment {
     font-size: 1rem;
     line-height: 1.5;
-    color: mix($body-bg,$text-color,15%);
+    color: $text-color;
     margin-bottom: 0.8rem;
   }
 
@@ -55,8 +55,8 @@
     margin-bottom: 1rem;
 
     .tag-badge {
-      background: mix($color-secondary,$body-bg,10%);
-      color: mix($color-accent-first,$text-color,70%);
+      background: $color-accent-second;
+      color: $darker-accent-first;
       padding: 0.3rem 0.6rem;
       border-radius: 999px;
       border: solid rgba($color-secondary,.4) 1px;
@@ -110,7 +110,7 @@
   .review-stars {
     --star-size: 1.1rem;
     --star-gap: 0.15rem;
-    --star-color: $color-accent-first;      // empty
+    --star-color: $muted-light;      // empty
     --star-active: $color-accent-second;     // filled/half
 
     display: inline-flex;
@@ -134,7 +134,7 @@
 
     .not-filled{
       font-variation-settings: 'FILL' 0;
-      color: mix($body-bg,$color-primary,50%);
+      color: $muted-light;
     }
 
 

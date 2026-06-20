@@ -41,19 +41,7 @@
 }
 
 /* ---------- Alerts ---------- */
-.alert {
-  padding: .75rem .9rem;
-  border-radius: $radius;
-  font-size: .95rem;
-  margin-bottom: 1rem;
-  border: 1px solid transparent;
 
-  &.alert-danger {
-    background: mix($color-accent-first, $body-bg, 10%);
-    border-color: mix($color-accent-first, #000, 20%);
-    color: $color-accent-first;
-  }
-}
 
 /* ---------- Form ---------- */
 .login-form { display: grid; gap: .9rem; }
