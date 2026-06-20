@@ -21,7 +21,7 @@
 /* Success */
 .flashsuccess,
 .alert-success {
-  background: mix(#fff, #28a745, 85%);
+  background: #82ff70;
   border-color: #28a745;
   color: #0b4118;
 }
@@ -30,7 +30,7 @@
 .flasherror,
 .alert-danger,
 .alert-error {
-  background: mix(#fff, #dc3545, 85%);
+  background: #ffc5c9;
   border-color: #dc3545;
   color: #4e0c12;
 }
@@ -38,7 +38,7 @@
 /* Warning */
 .flashwarning,
 .alert-warning {
-  background: mix(#fff, #ffc107, 85%);
+  background: #ffe9bb;
   border-color: #ffc107;
   color: #3b2d03;
 }
@@ -46,7 +46,7 @@
 /* Info */
 .flashinfo,
 .alert-info {
-  background: mix(#fff, #17a2b8, 85%);
+  background: #bbfbff;
   border-color: #17a2b8;
   color: #04333b;
 }

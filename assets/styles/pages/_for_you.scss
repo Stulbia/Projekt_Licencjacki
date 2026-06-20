@@ -1,7 +1,7 @@
 @use '../variables' as *;
 
 $accent: $color-primary;
-$radius: if(global-variable-exists(radius), $radius, 14px);
+$radius: 14px;
 
 .forYouPage {
   --card-shadow: 0 6px 24px rgba(0,0,0,.08);

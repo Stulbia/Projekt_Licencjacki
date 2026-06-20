@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-#[Route('/book/admin')]
+#[Route('/book/administer')]
 class BookEditController extends AbstractController
 {
     public function __construct(

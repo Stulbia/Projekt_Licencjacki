@@ -26,6 +26,7 @@ class BookCrudController extends AbstractCrudController
             ->setEntityLabelInPlural('Książki');
     }
 
+
     public function configureFields(string $pageName): iterable
     {
         return [

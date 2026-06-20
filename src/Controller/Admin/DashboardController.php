@@ -15,8 +15,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\RequestContext;
 
-#[AdminDashboard(routePath: '/admin', routeName: 'admin')]
+#[AdminDashboard(routePath: '/', routeName: 'adminDashboard')]
 class DashboardController extends AbstractDashboardController
 {
     public function __construct(
@@ -24,7 +25,7 @@ class DashboardController extends AbstractDashboardController
     ) {
     }
 
-    #[Route('/admin', name: 'admin')]
+//    #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
         // redirect od razu do listy książek
@@ -37,6 +38,12 @@ class DashboardController extends AbstractDashboardController
 
     public function configureDashboard(): Dashboard
     {
+
+    /** @var RequestContext
+     */
+    $context = $this->container->get('router')->getContext();
+        $context->setBaseUrl('/~22_gacon');
+
         return Dashboard::new()
             ->setTitle('Panel administracyjny');
     }

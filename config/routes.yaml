@@ -8,3 +8,15 @@ controllers:
 default_route:
     path: /
     controller: App\Controller\HomeController::index
+
+adminDashboard_user_detail:
+  path: /admin/user/{entityId}
+  requirements:
+    entityId: '\d+'
+
+#block_fake_batch_get:
+#  path: /admin/user/batch-delete
+#  methods: [GET]
+#  controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction
+#  defaults:
+#    route: adminDashboard_user_index

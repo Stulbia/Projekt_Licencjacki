@@ -50,17 +50,38 @@ class ReviewRepository extends ServiceEntityRepository
 //            ->andWhere('review.author = :author')
 //            ->setParameter('author', $user);
 //    }
-
     public function queryByAuthor(User $user): QueryBuilder
     {
         return $this->createQueryBuilder('r')
             ->leftJoin('r.book', 'b')
-            ->leftJoin('b.author', 'a')
             ->addSelect('b')
             ->andWhere('r.author = :author')
             ->setParameter('author', $user)
             ->orderBy('r.rating', 'DESC');
     }
+
+    public function findWithTagsByAuthor(User $user): array
+    {
+        return $this->createQueryBuilder('r')
+            ->select('r', 'b', 'ta', 't')
+            ->join('r.book', 'b')
+            ->leftJoin('r.tagAssignments', 'ta')
+            ->leftJoin('ta.tag', 't')
+            ->where('r.author = :author')
+            ->setParameter('author', $user)
+            ->getQuery()
+            ->getResult();
+    }
+//    public function queryByAuthor(User $user): QueryBuilder
+//    {
+//        return $this->createQueryBuilder('r')
+//            ->leftJoin('r.book', 'b')
+//            ->leftJoin('b.author', 'a')
+//            ->addSelect('b')
+//            ->andWhere('r.author = :author')
+//            ->setParameter('author', $user)
+//            ->orderBy('r.rating', 'DESC');
+//    }
 
     public function topReviewsByAuthor(User $user): QueryBuilder
     {
@@ -176,17 +197,17 @@ class ReviewRepository extends ServiceEntityRepository
             ->getSingleScalarResult() ?? 0.0);
     }
 
-    public function findWithTagsByAuthor(User $user): array
-    {
-        return $this->createQueryBuilder('r')
-            ->select('r', 'b', 'ta', 't')
-            ->join('r.book', 'b')
-            ->leftJoin('b.tags', 'bt')
-            ->leftJoin('r.tagAssignments', 'ta')
-            ->leftJoin('ta.tag', 't')
-            ->where('r.author = :author')
-            ->setParameter('author', $user)
-            ->getQuery()
-            ->getResult();
-    }
+//    public function findWithTagsByAuthor(User $user): array
+//    {
+//        return $this->createQueryBuilder('r')
+//            ->select('r', 'b', 'ta', 't')
+//            ->join('r.book', 'b')
+//            ->leftJoin('b.tags', 'bt')
+//            ->leftJoin('r.tagAssignments', 'ta')
+//            ->leftJoin('ta.tag', 't')
+//            ->where('r.author = :author')
+//            ->setParameter('author', $user)
+//            ->getQuery()
+//            ->getResult();
+//    }
 }

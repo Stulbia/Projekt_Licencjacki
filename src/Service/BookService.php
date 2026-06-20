@@ -66,7 +66,8 @@ class BookService implements BookServiceInterface
     public function getSearchList(int $page, BookSearchInputFiltersDto $filters, int $items): PaginationInterface
     {
         $parsedFilters = $this->prepareSearchFilters($filters);
-        return $this->paginator->paginate(
+//var_dump($parsedFilters);        
+return $this->paginator->paginate(
             $this->bookRepository->searchWithAvgRating($parsedFilters),
             $page,
             $items,

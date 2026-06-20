@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Biblioteka{% endblock %}
+
+{% block body %}
+    <section class="library-page">
+        <div class="library-container">
+            <h1 class="library-title">Biblioteczka</h1>
+
+            {% set var = true %}
+
+        {% include 'library/_library_list.html.twig' %}
+
+        </div>
+    </section>
+
+    <script>
+        (function() {
+	function initLibraryShelves() {
+            const STORAGE_KEY = 'libraryShelvesState';
+            const root = document.querySelector('.library-page');
+            if (!root) return;
+
+            const state = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+
+            // Initialize shelves from saved state
+            document.querySelectorAll('.shelf').forEach(shelf => {
+                const key = shelf.getAttribute('data-shelf-key');
+                const header = shelf.querySelector('.shelf-header');
+                const panel = shelf.querySelector('.shelf-panel');
+
+
+		if(!header || !panel ) return;
+
+                const isOpen = state[key] !== undefined ? !!state[key] : true;
+                header.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                panel.classList.toggle('is-open', isOpen);
+
+
+		header.removeEventListener('click', toggleShelf);
+                
+		function toggleShelf() {
+                    const expanded = header.getAttribute('aria-expanded') === 'true';
+                    header.setAttribute('aria-expanded', (!expanded).toString());
+                    panel.classList.toggle('is-open', !expanded);
+                    state[key] = !expanded;
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+                }
+
+		header.addEventListener('click', toggleShelf);
+
+
+
+	
+            });
+}
+        })();
+	document.addEventListener('turbo:load', initLibraryShelves);
+    </script>
+
+{% endblock %}
+
